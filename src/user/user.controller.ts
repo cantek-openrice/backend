@@ -11,13 +11,14 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './interfaces/user.interface';
 
-@Controller('api/v0/user')
+@Controller('api/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getUsers() {
+  async getUsers(): Promise<User[]> {
     return await this.userService.getUsers();
   }
 
