@@ -12,6 +12,7 @@
     "jmconfig",
     "knexfile",
     "mpeltonen",
+    "nestjs",
     "opendb",
     "openrice",
     "opensdf",
