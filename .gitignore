@@ -148,9 +148,6 @@ ipch/
 *.vspx
 *.sap
 
-# Visual Studio Trace Files
-*.e2e
-
 # TFS 2012 Local Workspace
 $tf/
 
@@ -174,10 +171,6 @@ _TeamCity*
 # AxoCover is a Code Coverage Tool
 .axoCover/*
 !.axoCover/settings.json
-
-# Visual Studio code coverage results
-*.coverage
-*.coveragexml
 
 # NCrunch
 _NCrunch_*
@@ -330,13 +323,6 @@ paket-files/
 .idea/
 *.sln.iml
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
 # CodeRush
 .cr/
 
@@ -362,7 +348,6 @@ __pycache__/
 
 # OpenCover UI analysis results
 OpenCover/
-coverage/
 
 ### macOS template
 # General
@@ -395,6 +380,12 @@ Temporary Items
 =======
 # Local
 .env
+.env*.local
 dist
 .webpack
 .serverless/**/*.zip
+
+# Supabase
+./supabase/branches
+./supabase/temp
+./supabase/env
