@@ -1,7 +1,7 @@
 import type { Knex } from 'knex';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
-dotenv.config({ path: __dirname + '/./.env.local' });
+dotenv.config();
 
 const config: { [key: string]: Knex.Config } = {
   development: {
@@ -10,10 +10,13 @@ const config: { [key: string]: Knex.Config } = {
     //   filename: './dev.sqlite3',
     // },
     client: 'postgresql',
+    // debug: true,
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT_NUMBER),
+      database: process.env.DB_NAME,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
     },
     pool: {
       min: 2,

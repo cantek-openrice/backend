@@ -1,20 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from './interfaces/user.interface';
 import { Knex } from 'knex';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
-  private readonly users: User[] = [];
-  constructor(@Inject('knex') private readonly knex: Knex) {}
+  constructor(@Inject('KnexConnection') private readonly knex: Knex) {}
 
   async getUsers() {
-    return await this.knex.select('*').from('users');
+    return await this.knex.select('*').from('user');
   }
 
   async getUserById(id: string) {
-    return await this.knex.select('*').from('users').where('id', id);
+    return await this.knex.select('*').from('user').where('id', id);
   }
 
   async createUser(user: CreateUserDto) {
@@ -25,14 +23,14 @@ export class UserService {
         modified_at: new Date(),
         active: true,
       })
-      .into('users')
+      .into('user')
       .returning('*');
   }
 
   async updateUser(id: string, user: UpdateUserDto) {
     return await this.knex
       .update({ ...user, modified_at: new Date() })
-      .from('users')
+      .from('user')
       .where('id', id)
       .returning('*');
   }
@@ -40,7 +38,7 @@ export class UserService {
   async deleteUser(id: string) {
     return await this.knex
       .update({ active: false, modified_at: new Date() })
-      .from('users')
+      .from('user')
       .where('id', id)
       .returning('*');
   }

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { KnexModule } from './global/knex/knex.module';
+import { KnexModule } from './global/modules/knex.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [KnexModule],
+  imports: [KnexModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })
