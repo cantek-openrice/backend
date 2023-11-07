@@ -10,6 +10,7 @@
     "url": "https://cantek-openrice.github.com/backend"
   },
   "scripts": {
+    "start": "nest start",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "dev": "nest start --watch",
