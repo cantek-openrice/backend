@@ -11,7 +11,7 @@ export class UserService {
     return await this.knex.select('*').from('user');
   }
 
-  async getUserById(id: string) {
+  async getUserByID(id: string) {
     return await this.knex.select('*').from('user').where('id', id);
   }
 
@@ -28,17 +28,15 @@ export class UserService {
   }
 
   async updateUser(id: string, user: UpdateUserDto) {
-    return await this.knex
+    return await this.knex('user')
       .update({ ...user, modified_at: new Date() })
-      .from('user')
       .where('id', id)
       .returning('*');
   }
 
   async deleteUser(id: string) {
-    return await this.knex
+    return await this.knex('user')
       .update({ active: false, modified_at: new Date() })
-      .from('user')
       .where('id', id)
       .returning('*');
   }

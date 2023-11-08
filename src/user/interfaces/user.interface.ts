@@ -1,7 +1,7 @@
 import { Role } from 'src/global/utils/enums/Role';
 
 export interface User {
-  id: string;
+  user_id: string;
   username: string;
   password: string;
   created_at: Date;
