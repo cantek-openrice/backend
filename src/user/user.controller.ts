@@ -23,20 +23,20 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUserById(@Param() id: string) {
-    return await this.userService.getUserById(id);
+  async getUserByID(@Param() id: string) {
+    return (await this.userService.getUserByID(id))[0];
   }
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
-    return await this.userService.createUser(createUserDto);
+    return (await this.userService.createUser(createUserDto))[0];
   }
 
   @Put(':id')
   async updateUser(@Param() id: string, @Body() updateUserDto: UpdateUserDto) {
-    const userFound = await this.userService.getUserById(id);
+    const userFound = await this.userService.getUserByID(id);
     if (userFound) {
-      return this.userService.updateUser(id, updateUserDto);
+      return (await this.userService.updateUser(id, updateUserDto))[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),
@@ -47,9 +47,9 @@ export class UserController {
 
   @Delete('id')
   async deleteUser(@Param() id: string) {
-    const userFound = await this.userService.getUserById(id);
+    const userFound = await this.userService.getUserByID(id);
     if (userFound) {
-      return await this.userService.deleteUser(id);
+      return (await this.userService.deleteUser(id))[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),
