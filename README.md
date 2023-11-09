@@ -1,4 +1,4 @@
-# Openrice Backend
+# Openrice Canada Backend
 
 This is a backend built with `NestJS`
 

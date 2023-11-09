@@ -1,8 +1,8 @@
 {
-  "name": "openrice_backend",
+  "name": "openrice_canada_backend",
   "private": true,
-  "version": "1.0.0",
-  "description": "Nest TypeScript starter repository",
+  "version": "0.0.1",
+  "description": "Openrice Canada Backend",
   "license": "GPL-3.0",
   "homepage": "",
   "repository": {
