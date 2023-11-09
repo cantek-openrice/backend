@@ -7,6 +7,8 @@ import { RestaurantModule } from './restaurant/restaurant.module';
 import { DishModule } from './dish/dish.module';
 import { RestaurantDishModule } from './restaurantDish/restaurantDish.module';
 import { DistrictModule } from './district/district.module';
+import { PhotoCategoryModule } from './photoCategory/photoCategory.module';
+import { PhotoModule } from './photo/photo.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { DistrictModule } from './district/district.module';
     DishModule,
     RestaurantDishModule,
     DistrictModule,
+    PhotoCategoryModule,
+    PhotoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

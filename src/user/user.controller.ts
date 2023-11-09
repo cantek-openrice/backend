@@ -45,7 +45,7 @@ export class UserController {
     }
   }
 
-  @Delete('id')
+  @Delete(':id')
   async deleteUser(@Param() id: string) {
     const userFound = await this.userService.getUserByID(id);
     if (userFound) {
