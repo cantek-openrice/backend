@@ -38,10 +38,9 @@ export class RestaurantDishController {
 
   @Delete(':id')
   async deleteRestaurantDish(@Param() id: string) {
-    const dishFound = await this.restaurantDishService.getRestaurantDishByID(
-      id,
-    );
-    if (dishFound) {
+    const restaurantDishFound =
+      await this.restaurantDishService.getRestaurantDishByID(id);
+    if (restaurantDishFound) {
       return (await this.restaurantDishService.deleteRestaurantDish(id))[0];
     } else {
       throw new BadRequestException('Bad request', {
