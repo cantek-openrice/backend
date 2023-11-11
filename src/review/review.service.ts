@@ -12,7 +12,7 @@ export class ReviewService {
   }
 
   async getReviewByID(id: string) {
-    return await this.knex.select('*').from('review').where('id', id);
+    return await this.knex.select('*').from('review').where('review_id', id);
   }
 
   async createReview(review: CreateReviewDto) {
@@ -30,14 +30,14 @@ export class ReviewService {
   async updateReview(id: string, review: UpdateReviewDto) {
     return await this.knex('review')
       .update({ ...review, modified_at: new Date() })
-      .where('id', id)
+      .where('review_id', id)
       .returning('*');
   }
 
   async deleteReview(id: string) {
     return await this.knex('review')
       .update({ active: false, modified_at: new Date() })
-      .where('id', id)
+      .where('review_id', id)
       .returning('*');
   }
 

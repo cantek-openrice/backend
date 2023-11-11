@@ -10,6 +10,9 @@ export class PaymentMethodService {
   }
 
   async getPaymentMethodByID(id: string) {
-    return await this.knex.select('*').from('payment_method').where('id', id);
+    return await this.knex
+      .select('*')
+      .from('payment_method')
+      .where('payment_method_id', id);
   }
 }

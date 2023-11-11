@@ -10,6 +10,6 @@ export class DishService {
   }
 
   async getDishByID(id: string) {
-    return await this.knex.select('*').from('dish').where('id', id);
+    return await this.knex.select('*').from('dish').where('dish_id', id);
   }
 }

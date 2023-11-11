@@ -11,7 +11,10 @@ export class RestaurantDishService {
   }
 
   async getRestaurantDishByID(id: string) {
-    return await this.knex.select('*').from('restaurant_dish').where('id', id);
+    return await this.knex
+      .select('*')
+      .from('restaurant_dish')
+      .where('restaurant_dish_id', id);
   }
 
   async createRestaurantDish(restaurantDish: CreateRestaurantDishDto) {
@@ -28,7 +31,7 @@ export class RestaurantDishService {
   async deleteRestaurantDish(id: string) {
     return await this.knex('restaurant_dish')
       .update({ active: false, modified_at: new Date() })
-      .where('id', id)
+      .where('restaurant_dish_id', id)
       .returning('*');
   }
 }

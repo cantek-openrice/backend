@@ -10,6 +10,9 @@ export class PhotoCategoryService {
   }
 
   async getPhotoCategoryByID(id: string) {
-    return await this.knex.select('*').from('photo_category').where('id', id);
+    return await this.knex
+      .select('*')
+      .from('photo_category')
+      .where('photo_category_id', id);
   }
 }

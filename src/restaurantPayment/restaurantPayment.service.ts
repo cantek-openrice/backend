@@ -14,7 +14,7 @@ export class RestaurantPaymentService {
     return await this.knex
       .select('*')
       .from('restaurant_payment')
-      .where('id', id);
+      .where('restaurant_payment_id', id);
   }
 
   async createRestaurantPayment(restaurantPayment: CreateRestaurantPaymentDto) {
@@ -31,7 +31,7 @@ export class RestaurantPaymentService {
   async deleteRestaurantPayment(id: string) {
     return await this.knex('restaurant_payment')
       .update({ active: false, modified_at: new Date() })
-      .where('id', id)
+      .where('restaurant_payment_id', id)
       .returning('*');
   }
 }

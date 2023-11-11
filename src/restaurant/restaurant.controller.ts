@@ -34,8 +34,12 @@ export class RestaurantController {
   }
 
   @Get(':id')
-  async getRestaurantByID(@Param() id: string): Promise<Restaurant> {
-    const restaurant = (await this.restaurantService.getRestaurantByID(id))[0];
+  async getRestaurantByID(
+    @Param() params: { id: string },
+  ): Promise<Restaurant> {
+    const restaurant = (
+      await this.restaurantService.getRestaurantByID(params.id)
+    )[0];
     return {
       ...restaurant,
       averageRating: await this.restaurantService.getAverageRating(

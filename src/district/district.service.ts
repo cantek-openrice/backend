@@ -10,6 +10,9 @@ export class DistrictService {
   }
 
   async getDistrictByID(id: string) {
-    return await this.knex.select('*').from('district').where('id', id);
+    return await this.knex
+      .select('*')
+      .from('district')
+      .where('district_id', id);
   }
 }

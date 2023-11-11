@@ -1,9 +1,10 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { PhotoCategory } from './interfaces/photoCategory.interface';
+import { PhotoCategoryService } from './photoCategory.service';
 
 @Controller('api/photo/category')
 export class PhotoCategoryController {
-  constructor(private readonly photoCategoryService: PhotoCategoryController) {}
+  constructor(private readonly photoCategoryService: PhotoCategoryService) {}
 
   @Get()
   async getPhotoCategories(): Promise<PhotoCategory[]> {

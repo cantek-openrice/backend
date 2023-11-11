@@ -12,7 +12,7 @@ export class UserService {
   }
 
   async getUserByID(id: string) {
-    return await this.knex.select('*').from('user').where('id', id);
+    return await this.knex.select('*').from('user').where('user_id', id);
   }
 
   async createUser(user: CreateUserDto) {
@@ -30,14 +30,14 @@ export class UserService {
   async updateUser(id: string, user: UpdateUserDto) {
     return await this.knex('user')
       .update({ ...user, modified_at: new Date() })
-      .where('id', id)
+      .where('user_id', id)
       .returning('*');
   }
 
   async deleteUser(id: string) {
     return await this.knex('user')
       .update({ active: false, modified_at: new Date() })
-      .where('id', id)
+      .where('user_id', id)
       .returning('*');
   }
 }
