@@ -25,8 +25,10 @@ export class RestaurantOwnerController {
   }
 
   @Get(':id')
-  async getRestaurantOwnerByID(@Param() id: string) {
-    return (await this.restaurantOwnerService.getRestaurantOwnerByID(id))[0];
+  async getRestaurantOwnerByID(@Param() params: { id: string }) {
+    return (
+      await this.restaurantOwnerService.getRestaurantOwnerByID(params.id)
+    )[0];
   }
 
   @Post()
@@ -42,36 +44,38 @@ export class RestaurantOwnerController {
 
   @Put(':id')
   async updateRestaurantOwner(
-    @Param() id: string,
+    @Param() params: { id: string },
     @Body() updateRestaurantOwnerDto: UpdateRestaurantOwnerDto,
   ) {
     const restaurantOwnerFound =
-      await this.restaurantOwnerService.getRestaurantOwnerByID(id);
+      await this.restaurantOwnerService.getRestaurantOwnerByID(params.id);
     if (restaurantOwnerFound) {
       return (
         await this.restaurantOwnerService.updateRestaurantOwner(
-          id,
+          params.id,
           updateRestaurantOwnerDto,
         )
       )[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),
-        description: 'This restaurantOwner cannot be found',
+        description: 'This restaurant owner cannot be found',
       });
     }
   }
 
   @Delete(':id')
-  async deleteRestaurantOwner(@Param() id: string) {
+  async deleteRestaurantOwner(@Param() params: { id: string }) {
     const restaurantOwnerFound =
-      await this.restaurantOwnerService.getRestaurantOwnerByID(id);
+      await this.restaurantOwnerService.getRestaurantOwnerByID(params.id);
     if (restaurantOwnerFound) {
-      return (await this.restaurantOwnerService.deleteRestaurantOwner(id))[0];
+      return (
+        await this.restaurantOwnerService.deleteRestaurantOwner(params.id)
+      )[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),
-        description: 'This restaurantOwner cannot be found',
+        description: 'This restaurant owner cannot be found',
       });
     }
   }

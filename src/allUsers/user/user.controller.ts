@@ -23,8 +23,8 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUserByID(@Param() id: string) {
-    return (await this.userService.getUserByID(id))[0];
+  async getUserByID(@Param() params: { id: string }) {
+    return (await this.userService.getUserByID(params.id))[0];
   }
 
   @Post()
@@ -33,10 +33,13 @@ export class UserController {
   }
 
   @Put(':id')
-  async updateUser(@Param() id: string, @Body() updateUserDto: UpdateUserDto) {
-    const userFound = await this.userService.getUserByID(id);
+  async updateUser(
+    @Param() params: { id: string },
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const userFound = await this.userService.getUserByID(params.id);
     if (userFound) {
-      return (await this.userService.updateUser(id, updateUserDto))[0];
+      return (await this.userService.updateUser(params.id, updateUserDto))[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),
@@ -46,10 +49,10 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param() id: string) {
-    const userFound = await this.userService.getUserByID(id);
+  async deleteUser(@Param() params: { id: string }) {
+    const userFound = await this.userService.getUserByID(params.id);
     if (userFound) {
-      return (await this.userService.deleteUser(id))[0];
+      return (await this.userService.deleteUser(params.id))[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),

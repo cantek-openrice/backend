@@ -60,13 +60,18 @@ export class RestaurantController {
 
   @Put(':id')
   async updateRestaurant(
-    @Param() id: string,
+    @Param() params: { id: string },
     @Body() updateRestaurantDto: UpdateRestaurantDto,
   ) {
-    const restaurantFound = await this.restaurantService.getRestaurantByID(id);
+    const restaurantFound = await this.restaurantService.getRestaurantByID(
+      params.id,
+    );
     if (restaurantFound) {
       return (
-        await this.restaurantService.updateRestaurant(id, updateRestaurantDto)
+        await this.restaurantService.updateRestaurant(
+          params.id,
+          updateRestaurantDto,
+        )
       )[0];
     } else {
       throw new BadRequestException('Bad request', {
@@ -77,10 +82,12 @@ export class RestaurantController {
   }
 
   @Delete(':id')
-  async deleteRestaurant(@Param() id: string) {
-    const restaurantFound = await this.restaurantService.getRestaurantByID(id);
+  async deleteRestaurant(@Param() params: { id: string }) {
+    const restaurantFound = await this.restaurantService.getRestaurantByID(
+      params.id,
+    );
     if (restaurantFound) {
-      return (await this.restaurantService.deleteRestaurant(id))[0];
+      return (await this.restaurantService.deleteRestaurant(params.id))[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),
