@@ -12,7 +12,9 @@ export class PhotoCategoryController {
   }
 
   @Get(':id')
-  async getPhotoCategoryByID(@Param() id: string): Promise<PhotoCategory> {
-    return (await this.photoCategoryService.getPhotoCategoryByID(id))[0];
+  async getPhotoCategoryByID(
+    @Param() params: { id: string },
+  ): Promise<PhotoCategory> {
+    return (await this.photoCategoryService.getPhotoCategoryByID(params.id))[0];
   }
 }

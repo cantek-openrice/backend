@@ -33,8 +33,8 @@ export class ReviewController {
   }
 
   @Get(':id')
-  async getReviewByID(@Param() id: string): Promise<Review> {
-    const review = (await this.reviewService.getReviewByID(id))[0];
+  async getReviewByID(@Param() params: { id: string }): Promise<Review> {
+    const review = (await this.reviewService.getReviewByID(params.id))[0];
     return {
       ...review,
       username: (await this.reviewService.getReviewerName(review.user_id))[0]
@@ -52,12 +52,14 @@ export class ReviewController {
 
   @Put(':id')
   async updateReview(
-    @Param() id: string,
+    @Param() params: { id: string },
     @Body() updateReviewDto: UpdateReviewDto,
   ) {
-    const reviewFound = await this.reviewService.getReviewByID(id);
+    const reviewFound = await this.reviewService.getReviewByID(params.id);
     if (reviewFound) {
-      return (await this.reviewService.updateReview(id, updateReviewDto))[0];
+      return (
+        await this.reviewService.updateReview(params.id, updateReviewDto)
+      )[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),
@@ -67,10 +69,10 @@ export class ReviewController {
   }
 
   @Delete(':id')
-  async deleteReview(@Param() id: string) {
-    const reviewFound = await this.reviewService.getReviewByID(id);
+  async deleteReview(@Param() params: { id: string }) {
+    const reviewFound = await this.reviewService.getReviewByID(params.id);
     if (reviewFound) {
-      return (await this.reviewService.deleteReview(id))[0];
+      return (await this.reviewService.deleteReview(params.id))[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),

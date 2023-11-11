@@ -24,10 +24,10 @@ export class RestaurantPaymentController {
 
   @Get(':id')
   async getRestaurantPaymentByID(
-    @Param() id: string,
+    @Param() params: { id: string },
   ): Promise<RestaurantPayment> {
     return (
-      await this.restaurantPaymentService.getRestaurantPaymentByID(id)
+      await this.restaurantPaymentService.getRestaurantPaymentByID(params.id)
     )[0];
   }
 
@@ -43,12 +43,12 @@ export class RestaurantPaymentController {
   }
 
   @Delete(':id')
-  async deleteRestaurantPayment(@Param() id: string) {
+  async deleteRestaurantPayment(@Param() params: { id: string }) {
     const restaurantPaymentFound =
-      await this.restaurantPaymentService.getRestaurantPaymentByID(id);
+      await this.restaurantPaymentService.getRestaurantPaymentByID(params.id);
     if (restaurantPaymentFound) {
       return (
-        await this.restaurantPaymentService.deleteRestaurantPayment(id)
+        await this.restaurantPaymentService.deleteRestaurantPayment(params.id)
       )[0];
     } else {
       throw new BadRequestException('Bad request', {

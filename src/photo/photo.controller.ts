@@ -21,8 +21,8 @@ export class PhotoController {
   }
 
   @Get(':id')
-  async getPhotoByID(@Param() id: string) {
-    return (await this.photoService.getPhotoByID(id))[0];
+  async getPhotoByID(@Param() params: { id: string }) {
+    return (await this.photoService.getPhotoByID(params.id))[0];
   }
 
   @Post()
@@ -31,10 +31,10 @@ export class PhotoController {
   }
 
   @Delete(':id')
-  async deletePhoto(@Param() id: string) {
-    const photoFound = await this.photoService.getPhotoByID(id);
+  async deletePhoto(@Param() params: { id: string }) {
+    const photoFound = await this.photoService.getPhotoByID(params.id);
     if (photoFound) {
-      return (await this.photoService.deletePhoto(id))[0];
+      return (await this.photoService.deletePhoto(params.id))[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),

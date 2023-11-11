@@ -21,8 +21,8 @@ export class SubscribeController {
   }
 
   @Get(':id')
-  async getSubscribeByID(@Param() id: string) {
-    return (await this.subscribeService.getSubscribeByID(id))[0];
+  async getSubscribeByID(@Param() params: { id: string }) {
+    return (await this.subscribeService.getSubscribeByID(params.id))[0];
   }
 
   @Post()
@@ -31,14 +31,16 @@ export class SubscribeController {
   }
 
   @Delete(':id')
-  async deleteSubscribe(@Param() id: string) {
-    const subscribeFound = await this.subscribeService.getSubscribeByID(id);
+  async deleteSubscribe(@Param() params: { id: string }) {
+    const subscribeFound = await this.subscribeService.getSubscribeByID(
+      params.id,
+    );
     if (subscribeFound) {
-      return (await this.subscribeService.deleteSubscribe(id))[0];
+      return (await this.subscribeService.deleteSubscribe(params.id))[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),
-        description: 'This subscription cannot be found',
+        description: 'This restaurant subscription cannot be found',
       });
     }
   }

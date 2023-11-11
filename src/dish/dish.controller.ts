@@ -12,7 +12,7 @@ export class DishController {
   }
 
   @Get(':id')
-  async getDishByID(@Param() id: string): Promise<Dish> {
-    return (await this.dishService.getDishByID(id))[0];
+  async getDishByID(@Param() params: { id: string }): Promise<Dish> {
+    return (await this.dishService.getDishByID(params.id))[0];
   }
 }

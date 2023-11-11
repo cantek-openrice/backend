@@ -21,8 +21,12 @@ export class RestaurantDishController {
   }
 
   @Get(':id')
-  async getRestaurantDishByID(@Param() id: string): Promise<RestaurantDish> {
-    return (await this.restaurantDishService.getRestaurantDishByID(id))[0];
+  async getRestaurantDishByID(
+    @Param() params: { id: string },
+  ): Promise<RestaurantDish> {
+    return (
+      await this.restaurantDishService.getRestaurantDishByID(params.id)
+    )[0];
   }
 
   @Post()
@@ -37,11 +41,13 @@ export class RestaurantDishController {
   }
 
   @Delete(':id')
-  async deleteRestaurantDish(@Param() id: string) {
+  async deleteRestaurantDish(@Param() params: { id: string }) {
     const restaurantDishFound =
-      await this.restaurantDishService.getRestaurantDishByID(id);
+      await this.restaurantDishService.getRestaurantDishByID(params.id);
     if (restaurantDishFound) {
-      return (await this.restaurantDishService.deleteRestaurantDish(id))[0];
+      return (
+        await this.restaurantDishService.deleteRestaurantDish(params.id)
+      )[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),

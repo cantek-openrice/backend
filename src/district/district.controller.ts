@@ -12,7 +12,7 @@ export class DistrictController {
   }
 
   @Get(':id')
-  async getDistrictByID(@Param() id: string): Promise<District> {
-    return (await this.districtService.getDistrictByID(id))[0];
+  async getDistrictByID(@Param() params: { id: string }): Promise<District> {
+    return (await this.districtService.getDistrictByID(params.id))[0];
   }
 }
