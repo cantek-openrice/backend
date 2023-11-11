@@ -11,7 +11,10 @@ export class SubscribeService {
   }
 
   async getSubscribeByID(id: string) {
-    return await this.knex.select('*').from('subscribe').where('id', id);
+    return await this.knex
+      .select('*')
+      .from('subscribe')
+      .where('subscribe_id', id);
   }
 
   async createSubscribe(subscribe: CreateSubscribeDto) {
@@ -29,7 +32,7 @@ export class SubscribeService {
   async deleteSubscribe(id: string) {
     return await this.knex('subscribe')
       .update({ active: false, modified_at: new Date() })
-      .where('id', id)
+      .where('subscribe_id', id)
       .returning('*');
   }
 }

@@ -11,7 +11,7 @@ export class PhotoService {
   }
 
   async getPhotoByID(id: string) {
-    return await this.knex.select('*').from('photo').where('id', id);
+    return await this.knex.select('*').from('photo').where('photo_id', id);
   }
 
   async createPhoto(photo: CreatePhotoDto) {
@@ -29,7 +29,7 @@ export class PhotoService {
   async deletePhoto(id: string) {
     return await this.knex('photo')
       .update({ active: false, modified_at: new Date() })
-      .where('id', id)
+      .where('photo_id', id)
       .returning('*');
   }
 }

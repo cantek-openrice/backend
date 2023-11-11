@@ -23,10 +23,11 @@ export class ReviewController {
     return Promise.all(
       reviews.map(async (review) => ({
         ...review,
-        username: await this.reviewService.getReviewerName(review.user_id),
-        restaurantName: await this.reviewService.getReviewRestaurantName(
-          review.restaurant_id,
-        ),
+        username: (await this.reviewService.getReviewerName(review.user_id))[0]
+          .username,
+        restaurantName: (
+          await this.reviewService.getReviewRestaurantName(review.restaurant_id)
+        )[0].name,
       })),
     );
   }
@@ -36,10 +37,11 @@ export class ReviewController {
     const review = (await this.reviewService.getReviewByID(id))[0];
     return {
       ...review,
-      username: await this.reviewService.getReviewerName(review.user_id),
-      restaurantName: await this.reviewService.getReviewRestaurantName(
-        review.restaurant_id,
-      ),
+      username: (await this.reviewService.getReviewerName(review.user_id))[0]
+        .username,
+      restaurantName: (
+        await this.reviewService.getReviewRestaurantName(review.restaurant_id)
+      )[0].name,
     };
   }
 
