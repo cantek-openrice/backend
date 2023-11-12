@@ -13,11 +13,12 @@ async function bootstrap() {
     cors({
       origin: [
         'http://localhost:3865',
-        'https://openricecanadafrontend.vercel.app/',
+        'https://openricecanadafrontend.vercel.app',
       ],
       credentials: true,
     }),
   );
+
   app.use(helmet());
 
   const config = new DocumentBuilder()
@@ -29,6 +30,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
   await app.listen(8080);
 }
 bootstrap();
