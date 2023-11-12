@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
-import jwtSimple from 'jwt-simple';
+import * as jwtSimple from 'jwt-simple';
 import { UserService } from '../user/user.service';
 import { User } from '../user/interfaces/user.interface';
 import { CreateUserDto } from '../user/dto/create-user.dto';
@@ -21,13 +21,6 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly userService: UserService,
   ) {}
-
-  @Get('current-user')
-  @UseGuards(AuthGuard)
-  getCurrentUser() {
-    // 'user' is set by the AuthGuard
-    return { user: (this.authService as any).request.user };
-  }
 
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
@@ -88,5 +81,12 @@ export class AuthController {
         description: 'The password is incorrect',
       });
     }
+  }
+
+  @Get('current-user')
+  @UseGuards(AuthGuard)
+  getCurrentUser() {
+    // 'user' is set by the AuthGuard
+    return { user: (this.authService as any).request.user };
   }
 }
