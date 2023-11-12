@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as cors from 'cors';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
 
 dotenv.config();
 
@@ -13,8 +15,6 @@ async function bootstrap() {
       credentials: true,
     }),
   );
-<<<<<<< Updated upstream
-=======
   app.use(helmet());
 
   const config = new DocumentBuilder()
@@ -26,8 +26,6 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
->>>>>>> Stashed changes
   await app.listen(8080);
 }
 bootstrap();
