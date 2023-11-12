@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import jwtSimple from 'jwt-simple';
+import * as jwtSimple from 'jwt-simple';
 import { Knex } from 'knex';
 
 @Injectable()

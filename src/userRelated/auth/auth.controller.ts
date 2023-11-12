@@ -4,8 +4,7 @@ import {
   Post,
   Body,
   UseGuards,
-  BadRequestException,
-  NotFoundException,
+  Request,
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
@@ -26,17 +25,11 @@ export class AuthController {
   async register(@Body() createUserDto: CreateUserDto) {
     const users: User[] = await this.userService.getUsers();
     if (users.find((user) => user.username === createUserDto.username)) {
-      throw new BadRequestException('Bad request', {
-        cause: new Error(),
-        description: 'This username is already used',
-      });
+      return { message: 'This username is already used' };
     }
 
     if (users.find((user) => user.email === createUserDto.email)) {
-      throw new BadRequestException('Bad request', {
-        cause: new Error(),
-        description: 'This email is already used',
-      });
+      return { message: 'This email is already used' };
     }
 
     const newUser = (
@@ -47,7 +40,7 @@ export class AuthController {
     )[0];
 
     const token = jwtSimple.encode(newUser, process.env.JWT_SECRET as string);
-    return token;
+    return { token };
   }
 
   @Post('login')
@@ -58,10 +51,7 @@ export class AuthController {
         -1 &&
       users.findIndex((user) => user.email === credentials.username) === -1
     ) {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'The username is not found',
-      });
+      return { message: 'The username is not found' };
     }
 
     const user: User = (await this.authService.login(credentials.username))[0];
@@ -76,17 +66,14 @@ export class AuthController {
       };
       return { user: userFound, token };
     } else {
-      throw new BadRequestException('Bad request', {
-        cause: new Error(),
-        description: 'The password is incorrect',
-      });
+      return { message: 'The password is incorrect' };
     }
   }
 
   @Get('current-user')
   @UseGuards(AuthGuard)
-  getCurrentUser() {
+  getCurrentUser(@Request() req) {
     // 'user' is set by the AuthGuard
-    return { user: (this.authService as any).request.user };
+    return { user: req.user };
   }
 }

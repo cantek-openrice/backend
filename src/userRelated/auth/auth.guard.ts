@@ -28,7 +28,12 @@ export class AuthGuard implements CanActivate {
     if (token) {
       const payload = this.authService.validateToken(token);
       if (payload) {
-        request.user = payload;
+        request['user'] = {
+          user_id: payload.user_id,
+          username: payload.username,
+          email: payload.email,
+          role: payload.role,
+        };
         return true;
       }
     }
