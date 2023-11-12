@@ -11,7 +11,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(
     cors({
-      origin: 'http://localhost:3865',
+      origin: [
+        'http://localhost:3865',
+        'https://openricecanadafrontend.vercel.app/',
+      ],
       credentials: true,
     }),
   );
