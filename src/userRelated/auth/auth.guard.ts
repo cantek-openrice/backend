@@ -1,9 +1,8 @@
-// auth/auth.guard.ts
 import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -18,7 +17,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     if (request.headers.authorization?.split(' ')[0] !== 'Bearer') {
-      throw new BadRequestException('Bad request', {
+      throw new ForbiddenException('Forbidden request', {
         cause: new Error(),
         description: 'invalid token',
       });
@@ -29,10 +28,7 @@ export class AuthGuard implements CanActivate {
     if (token) {
       const payload = this.authService.validateToken(token);
       if (payload) {
-        request.user = {
-          id: 1,
-          username: 'admin',
-        };
+        request.user = payload;
         return true;
       }
     }
