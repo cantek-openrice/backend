@@ -19,6 +19,7 @@ export class UserService {
     return await this.knex
       .insert({
         ...user,
+        role: user.role ? user.role : 'User',
         created_at: new Date(),
         modified_at: new Date(),
         active: true,

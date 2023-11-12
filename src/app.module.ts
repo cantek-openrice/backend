@@ -14,6 +14,7 @@ import { SubscribeModule } from './subscribe/subscribe.module';
 import { DistrictModule } from './district/district.module';
 import { PhotoCategoryModule } from './photoCategory/photoCategory.module';
 import { AuthModule } from './userRelated/auth/auth.module';
+import { PaymentMethodModule } from './paymentMethod/paymentMethod.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AuthModule } from './userRelated/auth/auth.module';
     ReviewModule,
     SubscribeModule,
     AuthModule,
+    PaymentMethodModule,
   ],
   controllers: [AppController],
   providers: [AppService],
