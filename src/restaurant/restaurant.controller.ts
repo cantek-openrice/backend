@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   NotFoundException,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -13,16 +15,23 @@ import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { Restaurant } from './interfaces/restaurant.interface';
 import { RestaurantService } from './restaurant.service';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('api/restaurant')
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
 
   @Get()
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'offset', required: false })
+  @ApiQuery({ name: 'name', required: false })
   async getRestaurants(
-    @Query('limit') limit: string,
-    @Query('offset') offset: string,
-    @Query('name') name: string,
+    @Query('limit', new DefaultValuePipe('10'), ParseIntPipe)
+    limit: number,
+    @Query('offset', new DefaultValuePipe('0'), ParseIntPipe)
+    offset: number,
+    @Query('name', new DefaultValuePipe(''))
+    name: string,
   ): Promise<Restaurant[]> {
     let filterRestaurants;
     const restaurants = await this.restaurantService.getRestaurants(
