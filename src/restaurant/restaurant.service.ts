@@ -7,12 +7,12 @@ import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 export class RestaurantService {
   constructor(@Inject('KnexConnection') private readonly knex: Knex) {}
 
-  async getRestaurants(limit: string, offset: string) {
+  async getRestaurants(limit: number, offset: number) {
     return await this.knex
       .select('*')
       .from('restaurant')
-      .limit(parseInt(limit) ? parseInt(limit) : 10)
-      .offset(parseInt(offset) ? parseInt(offset) : 0);
+      .limit(limit)
+      .offset(offset);
   }
 
   async getRestaurantByID(id: string) {
