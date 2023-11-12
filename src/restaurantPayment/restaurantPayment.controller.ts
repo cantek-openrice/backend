@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
 } from '@nestjs/common';
@@ -51,7 +51,7 @@ export class RestaurantPaymentController {
         await this.restaurantPaymentService.deleteRestaurantPayment(params.id)
       )[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This restaurant payment method cannot be found',
       });

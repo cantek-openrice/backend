@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
 } from '@nestjs/common';
@@ -36,7 +36,7 @@ export class PhotoController {
     if (photoFound) {
       return (await this.photoService.deletePhoto(params.id))[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This photo cannot be found',
       });

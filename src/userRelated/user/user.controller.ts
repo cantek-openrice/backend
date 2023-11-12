@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -41,7 +41,7 @@ export class UserController {
     if (userFound) {
       return (await this.userService.updateUser(params.id, updateUserDto))[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This user cannot be found',
       });
@@ -54,7 +54,7 @@ export class UserController {
     if (userFound) {
       return (await this.userService.deleteUser(params.id))[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This user cannot be found',
       });
