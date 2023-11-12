@@ -13,6 +13,7 @@ import { ReviewModule } from './review/review.module';
 import { SubscribeModule } from './subscribe/subscribe.module';
 import { DistrictModule } from './district/district.module';
 import { PhotoCategoryModule } from './photoCategory/photoCategory.module';
+import { AuthModule } from './userRelated/auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PhotoCategoryModule } from './photoCategory/photoCategory.module';
     RestaurantPaymentModule,
     ReviewModule,
     SubscribeModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

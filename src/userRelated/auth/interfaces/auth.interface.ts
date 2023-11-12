@@ -1,12 +1,11 @@
 import { Role } from 'src/global/utils/enums/Role';
 
-export interface User {
+export interface Auth {
   user_id: string;
-  email: string;
   username: string;
   password: string;
+  active: boolean;
   created_at: Date;
   modified_at: Date;
-  active: boolean;
   role: Role;
 }

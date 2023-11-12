@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
 } from '@nestjs/common';
@@ -49,7 +49,7 @@ export class RestaurantDishController {
         await this.restaurantDishService.deleteRestaurantDish(params.id)
       )[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This restaurant dish cannot be found',
       });

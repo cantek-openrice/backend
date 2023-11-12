@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -61,7 +61,7 @@ export class ReviewController {
         await this.reviewService.updateReview(params.id, updateReviewDto)
       )[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This review cannot be found',
       });
@@ -74,7 +74,7 @@ export class ReviewController {
     if (reviewFound) {
       return (await this.reviewService.deleteReview(params.id))[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This review cannot be found',
       });

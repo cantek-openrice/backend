@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -57,7 +57,7 @@ export class RestaurantOwnerController {
         )
       )[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This restaurant owner cannot be found',
       });
@@ -73,7 +73,7 @@ export class RestaurantOwnerController {
         await this.restaurantOwnerService.deleteRestaurantOwner(params.id)
       )[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
         description: 'This restaurant owner cannot be found',
       });
