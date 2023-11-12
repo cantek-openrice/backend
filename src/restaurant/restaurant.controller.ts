@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
@@ -18,8 +19,35 @@ export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
 
   @Get()
-  async getRestaurants(): Promise<Restaurant[]> {
-    const restaurants = await this.restaurantService.getRestaurants();
+  async getRestaurants(
+    @Query('limit') limit: string,
+    @Query('offset') offset: string,
+    @Query('name') name: string,
+  ): Promise<Restaurant[]> {
+    let filterRestaurants;
+    const restaurants = await this.restaurantService.getRestaurants(
+      limit,
+      offset,
+    );
+
+    if (name) {
+      filterRestaurants = restaurants.filter((restaurant) =>
+        restaurant.name.toLowerCase().includes(name.toLowerCase()),
+      );
+
+      return Promise.all(
+        filterRestaurants.map(async (restaurant) => ({
+          ...restaurant,
+          averageRating: await this.restaurantService.getAverageRating(
+            restaurant.restaurant_id,
+          ),
+          reviewCount: await this.restaurantService.getReviewCount(
+            restaurant.restaurant_id,
+          ),
+        })),
+      );
+    }
+
     return Promise.all(
       restaurants.map(async (restaurant) => ({
         ...restaurant,
