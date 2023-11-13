@@ -73,7 +73,6 @@ export class AuthController {
   @Get('current-user')
   @UseGuards(AuthGuard)
   getCurrentUser(@Request() req) {
-    // 'user' is set by the AuthGuard
     return { user: req.user };
   }
 }
