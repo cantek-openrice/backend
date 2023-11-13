@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  eslint-and-build:
+  eslint-test-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
