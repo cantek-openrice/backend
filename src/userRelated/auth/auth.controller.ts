@@ -6,13 +6,13 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import * as jwtSimple from 'jwt-simple';
 import { UserService } from '../user/user.service';
 import { User } from '../user/interfaces/user.interface';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { checkPassword, hashPassword } from 'src/global/lib/hash';
+import { AuthGuard } from 'src/global/guards/auth.guard';
 
 @Controller('api/user/auth')
 export class AuthController {
