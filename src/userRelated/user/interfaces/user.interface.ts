@@ -2,8 +2,8 @@ import { UserRole } from '../../../global/utils/enums/UserRole';
 
 export interface User {
   user_id: string;
-  email: string;
   username: string;
+  email: string;
   password: string;
   created_at: Date;
   modified_at: Date;
