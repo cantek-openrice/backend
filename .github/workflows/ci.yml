@@ -22,13 +22,3 @@ jobs:
           npm run test:e2e:cov
           npm run test:cov
           npm run build
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          # directory: ./coverage/ # not be used
-          fail_ci_if_error: true
-          files: ./coverage/clover.xml
-          flags: unittests
-          name: codecov-umbrella
-          verbose: true
