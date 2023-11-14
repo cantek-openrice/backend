@@ -5,6 +5,7 @@
     "buildhelp",
     "cachefile",
     "checkin",
+    "cobertura",
     "codegen",
     "csdef",
     "dbmdl",
