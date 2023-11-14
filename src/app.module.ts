@@ -17,7 +17,7 @@ import { AuthModule } from './userRelated/auth/auth.module';
 import { PaymentMethodModule } from './paymentMethod/paymentMethod.module';
 
 import { KnexModule } from './global/modules/knex.module';
-import { CspModule } from './global/content/csp.module';
+import { CspModule } from './global/csp/csp.module';
 import { StaticModule } from './global/modules/static.module';
 
 @Module({
