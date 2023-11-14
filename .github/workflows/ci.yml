@@ -19,6 +19,6 @@ jobs:
         run: |
           npm ci --legacy-peer-deps
           npm run lint
-          npm run test:e2e:cov
+          npm run test:e2e
           npm run test:cov
           npm run build
