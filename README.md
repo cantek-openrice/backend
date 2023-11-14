@@ -1,6 +1,7 @@
 # Openrice Canada Backend
 
 [![ct](https://github.com/openrice-canada/openrice-canada-backend/actions/workflows/ci.yml/badge.svg)](https://github.com/openrice-canada/openrice-canada-backend/actions/workflows/ci.yml)
+[![coverage](https://github.com/openrice-canada/openrice-canada-backend/actions/workflows/coverage.yml/badge.svg)](https://github.com/openrice-canada/openrice-canada-backend/actions/workflows/coverage.yml)
 [![Coverage](https://codecov.io/gh/openrice-canada/openrice-canada-backend/branch/main/graph/badge.svg)](https://codecov.io/gh/openrice-canada/openrice-canada-backend)
 
 This is a backend built with `NestJS`
