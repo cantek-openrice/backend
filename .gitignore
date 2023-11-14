@@ -385,7 +385,7 @@ dist
 .webpack
 .serverless/**/*.zip
 coverage
-*/cache/
+/*/**/cache/
 static.express.module.ts
 
 # Supabase
