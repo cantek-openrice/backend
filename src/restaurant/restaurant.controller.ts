@@ -16,6 +16,7 @@ import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { Restaurant } from './interfaces/restaurant.interface';
 import { RestaurantService } from './restaurant.service';
 import { ApiQuery } from '@nestjs/swagger';
+import { UserRole } from '../global/utils/enums/UserRole';
 
 @Controller('api/restaurant')
 export class RestaurantController {
@@ -25,6 +26,7 @@ export class RestaurantController {
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'offset', required: false })
   @ApiQuery({ name: 'name', required: false })
+  @ApiQuery({ name: 'role', enum: UserRole, required: false })
   async getRestaurants(
     @Query('limit', new DefaultValuePipe('10'), ParseIntPipe)
     limit: number,

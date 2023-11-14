@@ -1,7 +1,7 @@
-import { Role } from '../../../global/utils/enums/Role';
+import { UserRole } from '../../../global/utils/enums/UserRole';
 
 export class UpdateUserDto {
   username?: string;
   password?: string;
-  role?: Role;
+  role?: UserRole;
 }
