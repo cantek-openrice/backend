@@ -62,9 +62,11 @@ const config: { [key: string]: Knex.Config } = {
   testing: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
+      host: process.env.TEST_DB_HOST,
+      port: parseInt(process.env.TEST_DB_PORT_NUMBER),
+      database: process.env.TEST_DB_NAME,
+      user: process.env.TEST_DB_USERNAME,
+      password: process.env.TEST_DB_PASSWORD,
     },
     pool: {
       min: 2,
@@ -76,4 +78,5 @@ const config: { [key: string]: Knex.Config } = {
   },
 };
 
-module.exports = config;
+// module.exports = config; // es5
+export default config; // es6

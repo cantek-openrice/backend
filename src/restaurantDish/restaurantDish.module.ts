@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { KnexModule } from 'src/global/modules/knex.module';
+import { KnexModule } from '../global/modules/knex.module';
 import { RestaurantDishController } from './restaurantDish.controller';
 import { RestaurantDishService } from './restaurantDish.service';
 

@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { CspService } from '../content/csp.service';
+import { CspService } from './csp.service';
 import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
