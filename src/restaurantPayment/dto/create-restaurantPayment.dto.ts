@@ -2,13 +2,14 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateRestaurantPaymentDto {
   @ApiProperty({
-    description: 'The foregin key (UUID) from restaurant table',
+    description: 'The foreign key (UUID, restaurant_id) from restaurant table',
     type: String,
   })
   restaurant_id: string;
 
   @ApiProperty({
-    description: 'The foregin key (UUID) from payment mathod table',
+    description:
+      'The foreign key (UUID, payment_method_id) from payment method table',
     type: String,
   })
   payment_method_id: string;

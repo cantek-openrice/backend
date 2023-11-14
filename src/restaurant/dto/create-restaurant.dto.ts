@@ -14,7 +14,7 @@ export class CreateRestaurantDto {
   address: string;
 
   @ApiProperty({
-    description: 'The foreign key (UUID) from district table',
+    description: 'The foreign key (UUID, district_id) from district table',
     type: String,
   })
   district_id: string;
