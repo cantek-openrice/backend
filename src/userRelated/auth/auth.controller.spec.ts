@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { UserRole } from '../../global/utils/enums/UserRole';
 import { hashPassword } from '../../global/lib/hash';
 import { UserService } from '../user/user.service';
+import { Request } from 'express';
 import * as jwtSimple from 'jwt-simple';
 import * as dotenv from 'dotenv';
 
@@ -17,6 +18,7 @@ describe('AuthController', () => {
   let authController: AuthController;
   let authService: AuthService;
   let userService: UserService;
+  let req: Request;
 
   beforeAll(async () => {
     auth = await Test.createTestingModule({
@@ -42,6 +44,19 @@ describe('AuthController', () => {
         modified_at: new Date('2023-11-14'),
       },
     ];
+
+    req = {
+      body: {},
+      query: {},
+      params: {},
+      session: {},
+      user: {
+        user_id: expectedUsers[0].user_id,
+        username: expectedUsers[0].username,
+        email: expectedUsers[0].email,
+        role: expectedUsers[0].role,
+      },
+    } as any as Request;
 
     jest
       .spyOn(userService, 'getUsers')
@@ -94,8 +109,6 @@ describe('AuthController', () => {
         },
       ];
 
-      jest.spyOn(userService, 'createUser').mockResolvedValue(expectedUsers);
-
       const result = await authController.register({
         username: expectedUsers[0].username,
         email: 'ttiimmothhylsff@gmail.com',
@@ -119,8 +132,6 @@ describe('AuthController', () => {
           modified_at: new Date('2023-11-14'),
         },
       ];
-
-      jest.spyOn(userService, 'createUser').mockResolvedValue(expectedUsers);
 
       const result = await authController.register({
         username: 'ttiimmothy',
@@ -151,7 +162,7 @@ describe('AuthController', () => {
       jest.spyOn(authService, 'login').mockResolvedValue(expectedUsers);
 
       const result = await authController.login({
-        username: 'Timothy',
+        username: expectedUsers[0].username,
         password: 'Timothy',
       });
 
@@ -168,6 +179,65 @@ describe('AuthController', () => {
           role: expectedUsers[0].role,
         },
         token,
+      });
+    });
+
+    it('cannot login when the username is not found', async () => {
+      const result = await authController.login({
+        username: 'ttiimmothy',
+        password: 'Timothy',
+      });
+
+      expect(result).toEqual({ message: 'The username is not found' });
+    });
+
+    it('cannot login when the password is incorrect', async () => {
+      const expectedUsers = [
+        {
+          user_id: '123',
+          username: 'Timothy',
+          email: 'dinosauli2006@mgmail.com',
+          password: await hashPassword('Timothy'),
+          role: 'Admin',
+          active: true,
+          created_at: new Date('2023-11-14'),
+          modified_at: new Date('2023-11-14'),
+        },
+      ];
+
+      const result = await authController.login({
+        username: expectedUsers[0].username,
+        password: 'ttiimmothy',
+      });
+
+      expect(result).toEqual({ message: 'The password is incorrect' });
+    });
+  });
+
+  describe('getCurrentUser', () => {
+    it('should return the current user', async () => {
+      const expectedUsers = [
+        {
+          user_id: '123',
+          username: 'Timothy',
+          email: 'dinosauli2006@mgmail.com',
+          password: await hashPassword('Timothy'),
+          role: 'Admin',
+          active: true,
+          created_at: new Date('2023-11-14'),
+          modified_at: new Date('2023-11-14'),
+        },
+      ];
+
+      const result = await authController.getCurrentUser(req);
+
+      expect(result).toEqual({
+        user: {
+          user_id: expectedUsers[0].user_id,
+          username: expectedUsers[0].username,
+          email: expectedUsers[0].email,
+          role: expectedUsers[0].role,
+        },
       });
     });
   });
