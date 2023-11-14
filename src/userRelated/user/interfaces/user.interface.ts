@@ -1,4 +1,4 @@
-import { Role } from 'src/global/utils/enums/Role';
+import { UserRole } from '../../../global/utils/enums/UserRole';
 
 export interface User {
   user_id: string;
@@ -8,5 +8,5 @@ export interface User {
   created_at: Date;
   modified_at: Date;
   active: boolean;
-  role: Role;
+  role: UserRole;
 }
