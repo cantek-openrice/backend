@@ -1,6 +1,6 @@
-import { Role } from 'src/global/utils/enums/Role';
+import { Role } from '../../../global/utils/enums/Role';
 
-export interface UpdateUserDto {
+export class UpdateUserDto {
   username?: string;
   password?: string;
   role?: Role;

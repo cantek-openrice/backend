@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { DishService } from './dish.service';
 import { Dish } from './interfaces/dish.interface';
 
-@Controller('dish')
+@Controller('api/dish')
 export class DishController {
   constructor(private readonly dishService: DishService) {}
 

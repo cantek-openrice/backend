@@ -384,7 +384,9 @@ Temporary Items
 dist
 .webpack
 .serverless/**/*.zip
-coverage/lcov-report/src
+coverage
+/*/**/cache/
+static.express.module.ts
 
 # Supabase
 ./supabase/branches
