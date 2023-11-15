@@ -1,4 +1,6 @@
-export interface Restaurant {
+import { Restaurant } from 'src/restaurant/interfaces/restaurant.interface';
+
+export class RestaurantEntity implements Restaurant {
   restaurant_id: string;
   name: string;
   address: string;

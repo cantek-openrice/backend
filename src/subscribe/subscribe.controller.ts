@@ -10,7 +10,9 @@ import {
 import { Subscribe } from './interfaces/subscribe.interface';
 import { SubscribeService } from './subscribe.service';
 import { CreateSubscribeDto } from './dto/create-subscribe.dto';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Subscribe')
 @Controller('api/subscribe')
 export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}
@@ -20,23 +22,35 @@ export class SubscribeController {
     return await this.subscribeService.getSubscribes();
   }
 
-  @Get(':id')
-  async getSubscribeByID(@Param() params: { id: string }) {
-    return (await this.subscribeService.getSubscribeByID(params.id))[0];
+  @Get(':subscribe_id')
+  @ApiParam({ name: 'subscribe_id', required: true, type: String })
+  async getSubscribeByID(
+    @Param() params: { subscribe_id: string },
+  ): Promise<Subscribe> {
+    return (
+      await this.subscribeService.getSubscribeByID(params.subscribe_id)
+    )[0];
   }
 
   @Post()
-  async createSubscribe(@Body() createSubscribeDto: CreateSubscribeDto) {
+  async createSubscribe(
+    @Body() createSubscribeDto: CreateSubscribeDto,
+  ): Promise<Subscribe> {
     return (await this.subscribeService.createSubscribe(createSubscribeDto))[0];
   }
 
-  @Delete(':id')
-  async deleteSubscribe(@Param() params: { id: string }) {
+  @Delete(':subscribe_id')
+  @ApiParam({ name: 'subscribe_id', required: true, type: String })
+  async deleteSubscribe(
+    @Param() params: { subscribe_id: string },
+  ): Promise<Subscribe> {
     const subscribeFound = await this.subscribeService.getSubscribeByID(
-      params.id,
+      params.subscribe_id,
     );
     if (subscribeFound) {
-      return (await this.subscribeService.deleteSubscribe(params.id))[0];
+      return (
+        await this.subscribeService.deleteSubscribe(params.subscribe_id)
+      )[0];
     } else {
       throw new BadRequestException('Bad request', {
         cause: new Error(),

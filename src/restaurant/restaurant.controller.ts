@@ -13,11 +13,12 @@ import {
 } from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import { Restaurant } from './interfaces/restaurant.interface';
 import { RestaurantService } from './restaurant.service';
-import { ApiQuery } from '@nestjs/swagger';
-import { UserRole } from '../global/utils/enums/UserRole';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { RestaurantEntity } from './dto/entity/restaurant.entity';
+// import { UserRole } from '../global/utils/enums/UserRole';
 
+@ApiTags('Restaurant')
 @Controller('api/restaurant')
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
@@ -26,7 +27,7 @@ export class RestaurantController {
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'offset', required: false })
   @ApiQuery({ name: 'name', required: false })
-  @ApiQuery({ name: 'role', enum: UserRole, required: false })
+  // @ApiQuery({ name: 'role', enum: UserRole, required: false })
   async getRestaurants(
     @Query('limit', new DefaultValuePipe('10'), ParseIntPipe)
     limit: number,
@@ -34,7 +35,7 @@ export class RestaurantController {
     offset: number,
     @Query('name', new DefaultValuePipe(''))
     name: string,
-  ): Promise<Restaurant[]> {
+  ): Promise<RestaurantEntity[]> {
     let filterRestaurants;
     const restaurants = await this.restaurantService.getRestaurants(
       limit,
@@ -72,12 +73,13 @@ export class RestaurantController {
     );
   }
 
-  @Get(':id')
+  @Get(':restaurant_id')
+  @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async getRestaurantByID(
-    @Param() params: { id: string },
-  ): Promise<Restaurant> {
+    @Param() params: { restaurant_id: string },
+  ): Promise<RestaurantEntity> {
     const restaurant = (
-      await this.restaurantService.getRestaurantByID(params.id)
+      await this.restaurantService.getRestaurantByID(params.restaurant_id)
     )[0];
     return {
       ...restaurant,
@@ -91,17 +93,20 @@ export class RestaurantController {
   }
 
   @Post()
-  async createRestaurant(@Body() createRestaurantDto: CreateRestaurantDto) {
+  async createRestaurant(
+    @Body() createRestaurantDto: CreateRestaurantDto,
+  ): Promise<RestaurantEntity> {
     return (
       await this.restaurantService.createRestaurant(createRestaurantDto)
     )[0];
   }
 
-  @Put(':id')
+  @Put(':restaurant_id')
+  @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async updateRestaurant(
     @Param() params: { id: string },
     @Body() updateRestaurantDto: UpdateRestaurantDto,
-  ) {
+  ): Promise<RestaurantEntity> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.id,
     );
@@ -120,8 +125,11 @@ export class RestaurantController {
     }
   }
 
-  @Delete(':id')
-  async deleteRestaurant(@Param() params: { id: string }) {
+  @Delete(':restaurant_id')
+  @ApiParam({ name: 'restaurant_id', required: true, type: String })
+  async deleteRestaurant(
+    @Param() params: { id: string },
+  ): Promise<RestaurantEntity> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.id,
     );

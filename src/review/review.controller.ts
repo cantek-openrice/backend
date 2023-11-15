@@ -8,17 +8,19 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Review } from './interfaces/review.interface';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ReviewEntity } from './dto/entity/review.entity';
 
+@ApiTags('Review')
 @Controller('api/review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Get()
-  async getReviews(): Promise<Review[]> {
+  async getReviews(): Promise<ReviewEntity[]> {
     const reviews = await this.reviewService.getReviews();
     return Promise.all(
       reviews.map(async (review) => ({
@@ -32,9 +34,14 @@ export class ReviewController {
     );
   }
 
-  @Get(':id')
-  async getReviewByID(@Param() params: { id: string }): Promise<Review> {
-    const review = (await this.reviewService.getReviewByID(params.id))[0];
+  @Get(':review_id')
+  @ApiParam({ name: 'review_id', required: true, type: String })
+  async getReviewByID(
+    @Param() params: { review_id: string },
+  ): Promise<ReviewEntity> {
+    const review = (
+      await this.reviewService.getReviewByID(params.review_id)
+    )[0];
     return {
       ...review,
       username: (await this.reviewService.getReviewerName(review.user_id))[0]
@@ -50,15 +57,18 @@ export class ReviewController {
     return (await this.reviewService.createReview(createReviewDto))[0];
   }
 
-  @Put(':id')
+  @Put(':review_id')
+  @ApiParam({ name: 'review_id', required: true, type: String })
   async updateReview(
-    @Param() params: { id: string },
+    @Param() params: { review_id: string },
     @Body() updateReviewDto: UpdateReviewDto,
-  ) {
-    const reviewFound = await this.reviewService.getReviewByID(params.id);
+  ): Promise<ReviewEntity> {
+    const reviewFound = await this.reviewService.getReviewByID(
+      params.review_id,
+    );
     if (reviewFound) {
       return (
-        await this.reviewService.updateReview(params.id, updateReviewDto)
+        await this.reviewService.updateReview(params.review_id, updateReviewDto)
       )[0];
     } else {
       throw new NotFoundException('Bad request', {
@@ -68,11 +78,16 @@ export class ReviewController {
     }
   }
 
-  @Delete(':id')
-  async deleteReview(@Param() params: { id: string }) {
-    const reviewFound = await this.reviewService.getReviewByID(params.id);
+  @Delete(':review_id')
+  @ApiParam({ name: 'review_id', required: true, type: String })
+  async deleteReview(
+    @Param() params: { review_id: string },
+  ): Promise<ReviewEntity> {
+    const reviewFound = await this.reviewService.getReviewByID(
+      params.review_id,
+    );
     if (reviewFound) {
-      return (await this.reviewService.deleteReview(params.id))[0];
+      return (await this.reviewService.deleteReview(params.review_id))[0];
     } else {
       throw new NotFoundException('Bad request', {
         cause: new Error(),

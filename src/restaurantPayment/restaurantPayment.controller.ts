@@ -8,33 +8,39 @@ import {
   Post,
 } from '@nestjs/common';
 import { RestaurantPaymentService } from './restaurantPayment.service';
-import { RestaurantPayment } from './interfaces/restaurantPayment.interface';
 import { CreateRestaurantPaymentDto } from './dto/create-restaurantPayment.dto';
+import { ApiTags, ApiParam } from '@nestjs/swagger';
+import { RestaurantPaymentEntity } from './dto/entity/restaurantPayment.entity';
 
-@Controller('api/restaurant/payment')
+@ApiTags('Restaurant')
+// @Controller('api/restaurant/payment') //We cannot use this, the api/restaurant/:id will take over the control
+@Controller('api/restaurant_payment')
 export class RestaurantPaymentController {
   constructor(
     private readonly restaurantPaymentService: RestaurantPaymentService,
   ) {}
 
   @Get()
-  async getRestaurantPayments(): Promise<RestaurantPayment[]> {
+  async getRestaurantPayments(): Promise<RestaurantPaymentEntity[]> {
     return await this.restaurantPaymentService.getRestaurantPayments();
   }
 
-  @Get(':id')
+  @Get(':restaurant_payment_id')
+  @ApiParam({ name: 'restaurant_payment_id', required: true, type: String })
   async getRestaurantPaymentByID(
-    @Param() params: { id: string },
-  ): Promise<RestaurantPayment> {
+    @Param() params: { restaurant_payment_id: string },
+  ): Promise<RestaurantPaymentEntity> {
     return (
-      await this.restaurantPaymentService.getRestaurantPaymentByID(params.id)
+      await this.restaurantPaymentService.getRestaurantPaymentByID(
+        params.restaurant_payment_id,
+      )
     )[0];
   }
 
   @Post()
   async createRestaurantPayment(
     @Body() createRestaurantPaymentDto: CreateRestaurantPaymentDto,
-  ) {
+  ): Promise<RestaurantPaymentEntity> {
     return (
       await this.restaurantPaymentService.createRestaurantPayment(
         createRestaurantPaymentDto,
@@ -42,13 +48,20 @@ export class RestaurantPaymentController {
     )[0];
   }
 
-  @Delete(':id')
-  async deleteRestaurantPayment(@Param() params: { id: string }) {
+  @Delete(':restaurant_payment_id')
+  @ApiParam({ name: 'restaurant_payment_id', required: true, type: String })
+  async deleteRestaurantPayment(
+    @Param() params: { restaurant_payment_id: string },
+  ): Promise<RestaurantPaymentEntity> {
     const restaurantPaymentFound =
-      await this.restaurantPaymentService.getRestaurantPaymentByID(params.id);
+      await this.restaurantPaymentService.getRestaurantPaymentByID(
+        params.restaurant_payment_id,
+      );
     if (restaurantPaymentFound) {
       return (
-        await this.restaurantPaymentService.deleteRestaurantPayment(params.id)
+        await this.restaurantPaymentService.deleteRestaurantPayment(
+          params.restaurant_payment_id,
+        )
       )[0];
     } else {
       throw new NotFoundException('Bad request', {
