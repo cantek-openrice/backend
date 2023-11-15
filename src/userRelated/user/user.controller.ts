@@ -5,11 +5,9 @@ import {
   Get,
   NotFoundException,
   Param,
-  Post,
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiExcludeController, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './dto/entity/user.entity';
@@ -28,11 +26,6 @@ export class UserController {
   @Get(':id')
   async getUserByID(@Param() params: { id: string }): Promise<UserEntity> {
     return (await this.userService.getUserByID(params.id))[0];
-  }
-
-  @Post()
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
-    return (await this.userService.createUser(createUserDto))[0];
   }
 
   @Put(':id')

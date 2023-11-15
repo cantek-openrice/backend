@@ -387,6 +387,8 @@ dist
 coverage
 /*/**/cache/
 static.express.module.ts
+junit.xml
+coverage.xml
 
 # Supabase
 ./supabase/branches
