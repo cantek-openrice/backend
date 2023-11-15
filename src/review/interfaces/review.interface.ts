@@ -1,4 +1,4 @@
-export interface Review {
+export class Review {
   review_id: string;
   user_id: string;
   restaurant_id: string;

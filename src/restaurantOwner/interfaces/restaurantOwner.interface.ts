@@ -1,4 +1,4 @@
-export interface RestaurantOwner {
+export class RestaurantOwner {
   restaurant_owner_id: string;
   user_id: string;
   restaurant_id: string;

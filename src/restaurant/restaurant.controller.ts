@@ -15,9 +15,10 @@ import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { Restaurant } from './interfaces/restaurant.interface';
 import { RestaurantService } from './restaurant.service';
-import { ApiQuery } from '@nestjs/swagger';
-import { UserRole } from '../global/utils/enums/UserRole';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+// import { UserRole } from '../global/utils/enums/UserRole';
 
+@ApiTags('Restaurant')
 @Controller('api/restaurant')
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
@@ -26,7 +27,7 @@ export class RestaurantController {
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'offset', required: false })
   @ApiQuery({ name: 'name', required: false })
-  @ApiQuery({ name: 'role', enum: UserRole, required: false })
+  // @ApiQuery({ name: 'role', enum: UserRole, required: false })
   async getRestaurants(
     @Query('limit', new DefaultValuePipe('10'), ParseIntPipe)
     limit: number,
@@ -72,12 +73,13 @@ export class RestaurantController {
     );
   }
 
-  @Get(':id')
+  @Get(':restaurant_id')
+  @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async getRestaurantByID(
-    @Param() params: { id: string },
+    @Param() params: { restaurant_id: string },
   ): Promise<Restaurant> {
     const restaurant = (
-      await this.restaurantService.getRestaurantByID(params.id)
+      await this.restaurantService.getRestaurantByID(params.restaurant_id)
     )[0];
     return {
       ...restaurant,
@@ -97,7 +99,8 @@ export class RestaurantController {
     )[0];
   }
 
-  @Put(':id')
+  @Put(':restaurant_id')
+  @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async updateRestaurant(
     @Param() params: { id: string },
     @Body() updateRestaurantDto: UpdateRestaurantDto,
@@ -120,7 +123,8 @@ export class RestaurantController {
     }
   }
 
-  @Delete(':id')
+  @Delete(':restaurant_id')
+  @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async deleteRestaurant(@Param() params: { id: string }) {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.id,

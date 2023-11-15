@@ -1,4 +1,4 @@
-export interface PaymentMethod {
+export class PaymentMethod {
   payment_method_id: string;
   name: string;
   active: boolean;

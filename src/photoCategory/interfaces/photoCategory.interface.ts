@@ -1,4 +1,4 @@
-export interface PhotoCategory {
+export class PhotoCategory {
   photo_category_id: string;
   name: string;
   active: boolean;

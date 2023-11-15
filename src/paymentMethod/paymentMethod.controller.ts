@@ -1,8 +1,10 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { PaymentMethod } from './interfaces/paymentMethod.interface';
 import { PaymentMethodService } from './paymentMethod.service';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
-@Controller('api/payment-method')
+@ApiTags('Payment Method')
+@Controller('api/payment_method')
 export class PaymentMethodController {
   constructor(private readonly paymentMethodService: PaymentMethodService) {}
 
@@ -11,10 +13,15 @@ export class PaymentMethodController {
     return await this.paymentMethodService.getPaymentMethods();
   }
 
-  @Get(':id')
+  @Get(':payment_method_id')
+  @ApiParam({ name: 'payment_method_id', required: true, type: String })
   async getPaymentMethodByID(
-    @Param() params: { id: string },
+    @Param() params: { payment_method_id: string },
   ): Promise<PaymentMethod> {
-    return (await this.paymentMethodService.getPaymentMethodByID(params.id))[0];
+    return (
+      await this.paymentMethodService.getPaymentMethodByID(
+        params.payment_method_id,
+      )
+    )[0];
   }
 }

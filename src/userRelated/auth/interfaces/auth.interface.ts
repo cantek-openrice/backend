@@ -1,6 +1,6 @@
 import { UserRole } from '../../../global/utils/enums/UserRole';
 
-export interface Auth {
+export class Auth {
   user_id: string;
   username: string;
   password: string;

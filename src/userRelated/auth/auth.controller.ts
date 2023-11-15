@@ -13,7 +13,9 @@ import { User } from '../user/interfaces/user.interface';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { checkPassword, hashPassword } from '../../global/lib/hash';
 import { AuthGuard } from '../../global/guards/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('api/user/auth')
 export class AuthController {
   constructor(

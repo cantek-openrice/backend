@@ -1,4 +1,4 @@
-export interface Photo {
+export class Photo {
   photo_id: string;
   review_id: string;
   photo_category_id: string;

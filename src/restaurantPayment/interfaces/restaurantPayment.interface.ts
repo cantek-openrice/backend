@@ -1,4 +1,4 @@
-export interface RestaurantPayment {
+export class RestaurantPayment {
   restaurant_payment_id: string;
   restaurant_id: string;
   payment_method_id: string;
