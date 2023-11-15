@@ -12,10 +12,11 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './interfaces/user.interface';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiExcludeController, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('User')
 @Controller('api/user')
+@ApiExcludeController()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -25,12 +26,12 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUserByID(@Param() params: { id: string }) {
+  async getUserByID(@Param() params: { id: string }): Promise<User> {
     return (await this.userService.getUserByID(params.id))[0];
   }
 
   @Post()
-  async createUser(@Body() createUserDto: CreateUserDto) {
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
     return (await this.userService.createUser(createUserDto))[0];
   }
 

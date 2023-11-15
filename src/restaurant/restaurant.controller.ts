@@ -93,7 +93,9 @@ export class RestaurantController {
   }
 
   @Post()
-  async createRestaurant(@Body() createRestaurantDto: CreateRestaurantDto) {
+  async createRestaurant(
+    @Body() createRestaurantDto: CreateRestaurantDto,
+  ): Promise<Restaurant> {
     return (
       await this.restaurantService.createRestaurant(createRestaurantDto)
     )[0];
@@ -104,7 +106,7 @@ export class RestaurantController {
   async updateRestaurant(
     @Param() params: { id: string },
     @Body() updateRestaurantDto: UpdateRestaurantDto,
-  ) {
+  ): Promise<Restaurant> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.id,
     );
@@ -125,7 +127,7 @@ export class RestaurantController {
 
   @Delete(':restaurant_id')
   @ApiParam({ name: 'restaurant_id', required: true, type: String })
-  async deleteRestaurant(@Param() params: { id: string }) {
+  async deleteRestaurant(@Param() params: { id: string }): Promise<Restaurant> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.id,
     );

@@ -1,4 +1,4 @@
-export class Restaurant {
+export interface Restaurant {
   restaurant_id: string;
   name: string;
   address: string;
@@ -8,8 +8,8 @@ export class Restaurant {
   postal_code: string;
   phone: string;
   intro: string;
-  opening_hour: string;
-  cover_image: string;
+  opening_hours: string;
+  cover_image?: string;
   active: boolean;
   averageRating: number;
   reviewCount: number;

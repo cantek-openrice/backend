@@ -1,4 +1,4 @@
-export class Dish {
+export interface Dish {
   dish_id: string;
   name: string;
   active: boolean;

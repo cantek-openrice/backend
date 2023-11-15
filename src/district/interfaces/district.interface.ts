@@ -1,4 +1,4 @@
-export class District {
+export interface District {
   district_id: string;
   name: string;
   active: boolean;

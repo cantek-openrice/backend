@@ -14,6 +14,8 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { checkPassword, hashPassword } from '../../global/lib/hash';
 import { AuthGuard } from '../../global/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { LoginResponse, RegisterResponse } from './interfaces/auth.interface';
+import { LoginUserDto } from '../user/dto/login-user.dto';
 
 @ApiTags('Auth')
 @Controller('api/user/auth')
@@ -24,7 +26,9 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
+  async register(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<RegisterResponse> {
     const users: User[] = await this.userService.getUsers();
     if (users.find((user) => user.username === createUserDto.username)) {
       return { message: 'This username is already used' };
@@ -46,7 +50,7 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() credentials: { username: string; password: string }) {
+  async login(@Body() credentials: LoginUserDto): Promise<LoginResponse> {
     const users: User[] = await this.userService.getUsers();
     if (
       users.findIndex((user) => user.username === credentials.username) ===
