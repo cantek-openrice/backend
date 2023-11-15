@@ -8,11 +8,11 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Review } from './interfaces/review.interface';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ReviewEntity } from './dto/entity/review.entity';
 
 @ApiTags('Review')
 @Controller('api/review')
@@ -20,7 +20,7 @@ export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Get()
-  async getReviews(): Promise<Review[]> {
+  async getReviews(): Promise<ReviewEntity[]> {
     const reviews = await this.reviewService.getReviews();
     return Promise.all(
       reviews.map(async (review) => ({
@@ -36,7 +36,9 @@ export class ReviewController {
 
   @Get(':review_id')
   @ApiParam({ name: 'review_id', required: true, type: String })
-  async getReviewByID(@Param() params: { review_id: string }): Promise<Review> {
+  async getReviewByID(
+    @Param() params: { review_id: string },
+  ): Promise<ReviewEntity> {
     const review = (
       await this.reviewService.getReviewByID(params.review_id)
     )[0];
@@ -60,7 +62,7 @@ export class ReviewController {
   async updateReview(
     @Param() params: { review_id: string },
     @Body() updateReviewDto: UpdateReviewDto,
-  ) {
+  ): Promise<ReviewEntity> {
     const reviewFound = await this.reviewService.getReviewByID(
       params.review_id,
     );
@@ -78,7 +80,9 @@ export class ReviewController {
 
   @Delete(':review_id')
   @ApiParam({ name: 'review_id', required: true, type: String })
-  async deleteReview(@Param() params: { review_id: string }) {
+  async deleteReview(
+    @Param() params: { review_id: string },
+  ): Promise<ReviewEntity> {
     const reviewFound = await this.reviewService.getReviewByID(
       params.review_id,
     );

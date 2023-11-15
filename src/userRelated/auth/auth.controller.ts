@@ -14,7 +14,7 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { checkPassword, hashPassword } from '../../global/lib/hash';
 import { AuthGuard } from '../../global/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
-import { LoginResponse, RegisterResponse } from './interfaces/auth.interface';
+import { LoginResponse, RegisterResponse } from './dto/entity/auth.entity';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 
 @ApiTags('Auth')

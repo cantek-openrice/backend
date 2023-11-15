@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { PhotoCategory } from './interfaces/photoCategory.interface';
 import { PhotoCategoryService } from './photoCategory.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { PhotoCategoryEntity } from './dto/entity/photoCategory.entity';
 
 @ApiTags('Photo')
 // @Controller('api/photo/category') // We cannot use this, api/photo/:id with take over the control
@@ -10,7 +10,7 @@ export class PhotoCategoryController {
   constructor(private readonly photoCategoryService: PhotoCategoryService) {}
 
   @Get()
-  async getPhotoCategories(): Promise<PhotoCategory[]> {
+  async getPhotoCategories(): Promise<PhotoCategoryEntity[]> {
     return await this.photoCategoryService.getPhotoCategories();
   }
 
@@ -18,7 +18,7 @@ export class PhotoCategoryController {
   @ApiParam({ name: 'photo_category_id', required: true, type: String })
   async getPhotoCategoryByID(
     @Param() params: { photo_category_id: string },
-  ): Promise<PhotoCategory> {
+  ): Promise<PhotoCategoryEntity> {
     return (
       await this.photoCategoryService.getPhotoCategoryByID(
         params.photo_category_id,

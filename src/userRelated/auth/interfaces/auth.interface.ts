@@ -9,19 +9,3 @@ export interface Auth {
   created_at: Date;
   modified_at: Date;
 }
-
-export interface RegisterResponse {
-  message?: string;
-  token?: string;
-}
-
-export interface LoginResponse {
-  user?: {
-    user_id: string;
-    email: string;
-    username: string;
-    role: string;
-  };
-  message?: string;
-  token?: string;
-}

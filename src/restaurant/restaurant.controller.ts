@@ -13,9 +13,9 @@ import {
 } from '@nestjs/common';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import { Restaurant } from './interfaces/restaurant.interface';
 import { RestaurantService } from './restaurant.service';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { RestaurantEntity } from './dto/entity/restaurant.entity';
 // import { UserRole } from '../global/utils/enums/UserRole';
 
 @ApiTags('Restaurant')
@@ -35,7 +35,7 @@ export class RestaurantController {
     offset: number,
     @Query('name', new DefaultValuePipe(''))
     name: string,
-  ): Promise<Restaurant[]> {
+  ): Promise<RestaurantEntity[]> {
     let filterRestaurants;
     const restaurants = await this.restaurantService.getRestaurants(
       limit,
@@ -77,7 +77,7 @@ export class RestaurantController {
   @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async getRestaurantByID(
     @Param() params: { restaurant_id: string },
-  ): Promise<Restaurant> {
+  ): Promise<RestaurantEntity> {
     const restaurant = (
       await this.restaurantService.getRestaurantByID(params.restaurant_id)
     )[0];
@@ -95,7 +95,7 @@ export class RestaurantController {
   @Post()
   async createRestaurant(
     @Body() createRestaurantDto: CreateRestaurantDto,
-  ): Promise<Restaurant> {
+  ): Promise<RestaurantEntity> {
     return (
       await this.restaurantService.createRestaurant(createRestaurantDto)
     )[0];
@@ -106,7 +106,7 @@ export class RestaurantController {
   async updateRestaurant(
     @Param() params: { id: string },
     @Body() updateRestaurantDto: UpdateRestaurantDto,
-  ): Promise<Restaurant> {
+  ): Promise<RestaurantEntity> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.id,
     );
@@ -127,7 +127,9 @@ export class RestaurantController {
 
   @Delete(':restaurant_id')
   @ApiParam({ name: 'restaurant_id', required: true, type: String })
-  async deleteRestaurant(@Param() params: { id: string }): Promise<Restaurant> {
+  async deleteRestaurant(
+    @Param() params: { id: string },
+  ): Promise<RestaurantEntity> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.id,
     );

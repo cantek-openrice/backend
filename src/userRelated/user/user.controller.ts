@@ -11,8 +11,8 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './interfaces/user.interface';
 import { ApiExcludeController, ApiTags } from '@nestjs/swagger';
+import { UserEntity } from './dto/entity/user.entity';
 
 @ApiTags('User')
 @Controller('api/user')
@@ -21,17 +21,17 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getUsers(): Promise<User[]> {
+  async getUsers(): Promise<UserEntity[]> {
     return await this.userService.getUsers();
   }
 
   @Get(':id')
-  async getUserByID(@Param() params: { id: string }): Promise<User> {
+  async getUserByID(@Param() params: { id: string }): Promise<UserEntity> {
     return (await this.userService.getUserByID(params.id))[0];
   }
 
   @Post()
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     return (await this.userService.createUser(createUserDto))[0];
   }
 
@@ -39,7 +39,7 @@ export class UserController {
   async updateUser(
     @Param() params: { id: string },
     @Body() updateUserDto: UpdateUserDto,
-  ) {
+  ): Promise<UserEntity> {
     const userFound = await this.userService.getUserByID(params.id);
     if (userFound) {
       return (await this.userService.updateUser(params.id, updateUserDto))[0];
@@ -52,7 +52,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param() params: { id: string }) {
+  async deleteUser(@Param() params: { id: string }): Promise<UserEntity> {
     const userFound = await this.userService.getUserByID(params.id);
     if (userFound) {
       return (await this.userService.deleteUser(params.id))[0];

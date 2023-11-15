@@ -8,9 +8,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { RestaurantPaymentService } from './restaurantPayment.service';
-import { RestaurantPayment } from './interfaces/restaurantPayment.interface';
 import { CreateRestaurantPaymentDto } from './dto/create-restaurantPayment.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
+import { RestaurantPaymentEntity } from './dto/entity/restaurantPayment.entity';
 
 @ApiTags('Restaurant')
 // @Controller('api/restaurant/payment') //We cannot use this, the api/restaurant/:id will take over the control
@@ -21,7 +21,7 @@ export class RestaurantPaymentController {
   ) {}
 
   @Get()
-  async getRestaurantPayments(): Promise<RestaurantPayment[]> {
+  async getRestaurantPayments(): Promise<RestaurantPaymentEntity[]> {
     return await this.restaurantPaymentService.getRestaurantPayments();
   }
 
@@ -29,7 +29,7 @@ export class RestaurantPaymentController {
   @ApiParam({ name: 'restaurant_payment_id', required: true, type: String })
   async getRestaurantPaymentByID(
     @Param() params: { restaurant_payment_id: string },
-  ): Promise<RestaurantPayment> {
+  ): Promise<RestaurantPaymentEntity> {
     return (
       await this.restaurantPaymentService.getRestaurantPaymentByID(
         params.restaurant_payment_id,
@@ -40,7 +40,7 @@ export class RestaurantPaymentController {
   @Post()
   async createRestaurantPayment(
     @Body() createRestaurantPaymentDto: CreateRestaurantPaymentDto,
-  ) {
+  ): Promise<RestaurantPaymentEntity> {
     return (
       await this.restaurantPaymentService.createRestaurantPayment(
         createRestaurantPaymentDto,
@@ -52,7 +52,7 @@ export class RestaurantPaymentController {
   @ApiParam({ name: 'restaurant_payment_id', required: true, type: String })
   async deleteRestaurantPayment(
     @Param() params: { restaurant_payment_id: string },
-  ) {
+  ): Promise<RestaurantPaymentEntity> {
     const restaurantPaymentFound =
       await this.restaurantPaymentService.getRestaurantPaymentByID(
         params.restaurant_payment_id,

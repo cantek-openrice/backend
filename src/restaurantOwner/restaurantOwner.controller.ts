@@ -11,8 +11,8 @@ import {
 import { CreateRestaurantOwnerDto } from './dto/create-restaurantOwner.dto';
 import { UpdateRestaurantOwnerDto } from './dto/update-restaurantOwner.dto';
 import { RestaurantOwnerService } from './restaurantOwner.service';
-import { RestaurantOwner } from './interfaces/restaurantOwner.interface';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
+import { RestaurantOwnerEntity } from './dto/entity/restaurantOwner.enttiy';
 
 @ApiTags('Restaurant')
 // @Controller('api/restaurant/owner') // We cannot use this, the api/restaurant/:id will take over the controll
@@ -23,7 +23,7 @@ export class RestaurantOwnerController {
   ) {}
 
   @Get()
-  async getRestaurantOwners(): Promise<RestaurantOwner[]> {
+  async getRestaurantOwners(): Promise<RestaurantOwnerEntity[]> {
     return await this.restaurantOwnerService.getRestaurantOwners();
   }
 
@@ -31,7 +31,7 @@ export class RestaurantOwnerController {
   @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
   async getRestaurantOwnerByID(
     @Param() params: { restaurant_owner_id: string },
-  ): Promise<RestaurantOwner> {
+  ): Promise<RestaurantOwnerEntity> {
     return (
       await this.restaurantOwnerService.getRestaurantOwnerByID(
         params.restaurant_owner_id,
@@ -42,7 +42,7 @@ export class RestaurantOwnerController {
   @Post()
   async createRestaurantOwner(
     @Body() createRestaurantOwnerDto: CreateRestaurantOwnerDto,
-  ) {
+  ): Promise<RestaurantOwnerEntity> {
     return (
       await this.restaurantOwnerService.createRestaurantOwner(
         createRestaurantOwnerDto,
@@ -55,7 +55,7 @@ export class RestaurantOwnerController {
   async updateRestaurantOwner(
     @Param() params: { restaurant_owner_id: string },
     @Body() updateRestaurantOwnerDto: UpdateRestaurantOwnerDto,
-  ) {
+  ): Promise<RestaurantOwnerEntity> {
     const restaurantOwnerFound =
       await this.restaurantOwnerService.getRestaurantOwnerByID(
         params.restaurant_owner_id,
@@ -79,7 +79,7 @@ export class RestaurantOwnerController {
   @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
   async deleteRestaurantOwner(
     @Param() params: { restaurant_owner_id: string },
-  ) {
+  ): Promise<RestaurantOwnerEntity> {
     const restaurantOwnerFound =
       await this.restaurantOwnerService.getRestaurantOwnerByID(
         params.restaurant_owner_id,

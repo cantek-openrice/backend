@@ -8,9 +8,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { RestaurantDishService } from './restaurantDish.service';
-import { RestaurantDish } from './interfaces/restaurantDish.interface';
 import { CreateRestaurantDishDto } from './dto/create-restaurantDish.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
+import { RestaurantDishEntity } from './dto/entity/restaurantDish.entity';
 
 @ApiTags('Restaurant')
 // @Controller('api/restaurant/dish') //We cannot use this api since by default of nestjs the api/restaurant/:id will take over the control
@@ -19,7 +19,7 @@ export class RestaurantDishController {
   constructor(private readonly restaurantDishService: RestaurantDishService) {}
 
   @Get()
-  async getRestaurantDishes(): Promise<RestaurantDish[]> {
+  async getRestaurantDishes(): Promise<RestaurantDishEntity[]> {
     return await this.restaurantDishService.getRestaurantDishes();
   }
 
@@ -27,7 +27,7 @@ export class RestaurantDishController {
   @ApiParam({ name: 'restaurant_dish_id', required: true, type: String })
   async getRestaurantDishByID(
     @Param() params: { restaurant_dish_id: string },
-  ): Promise<RestaurantDish> {
+  ): Promise<RestaurantDishEntity> {
     return (
       await this.restaurantDishService.getRestaurantDishByID(
         params.restaurant_dish_id,
@@ -38,7 +38,7 @@ export class RestaurantDishController {
   @Post()
   async createRestaurantDish(
     @Body() createRestaurantDishDto: CreateRestaurantDishDto,
-  ) {
+  ): Promise<RestaurantDishEntity> {
     return (
       await this.restaurantDishService.createRestaurantDish(
         createRestaurantDishDto,
@@ -48,7 +48,9 @@ export class RestaurantDishController {
 
   @Delete(':restaurant_dish_id')
   @ApiParam({ name: 'restaurant_dish_id', required: true, type: String })
-  async deleteRestaurantDish(@Param() params: { restaurant_dish_id: string }) {
+  async deleteRestaurantDish(
+    @Param() params: { restaurant_dish_id: string },
+  ): Promise<RestaurantDishEntity> {
     const restaurantDishFound =
       await this.restaurantDishService.getRestaurantDishByID(
         params.restaurant_dish_id,

@@ -33,13 +33,17 @@ export class SubscribeController {
   }
 
   @Post()
-  async createSubscribe(@Body() createSubscribeDto: CreateSubscribeDto) {
+  async createSubscribe(
+    @Body() createSubscribeDto: CreateSubscribeDto,
+  ): Promise<Subscribe> {
     return (await this.subscribeService.createSubscribe(createSubscribeDto))[0];
   }
 
   @Delete(':subscribe_id')
   @ApiParam({ name: 'subscribe_id', required: true, type: String })
-  async deleteSubscribe(@Param() params: { subscribe_id: string }) {
+  async deleteSubscribe(
+    @Param() params: { subscribe_id: string },
+  ): Promise<Subscribe> {
     const subscribeFound = await this.subscribeService.getSubscribeByID(
       params.subscribe_id,
     );
