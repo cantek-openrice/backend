@@ -6,14 +6,15 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { ApiTags } from '@nestjs/swagger';
 import * as jwtSimple from 'jwt-simple';
+
+import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/interfaces/user.interface';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { checkPassword, hashPassword } from '../../global/lib/hash';
 import { AuthGuard } from '../../global/guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
 import { LoginResponse, RegisterResponse } from './dto/entity/auth.entity';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 
@@ -53,9 +54,7 @@ export class AuthController {
   async login(@Body() credentials: LoginUserDto): Promise<LoginResponse> {
     const users: User[] = await this.userService.getUsers();
     if (
-      users.findIndex((user) => user.username === credentials.username) ===
-        -1 &&
-      users.findIndex((user) => user.email === credentials.username) === -1
+      users.findIndex((user) => user.username === credentials.username) === -1
     ) {
       return { message: 'The username is not found' };
     }

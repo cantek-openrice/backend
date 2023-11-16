@@ -7,14 +7,7 @@ export class AuthService {
   constructor(@Inject('KnexConnection') private readonly knex: Knex) {}
 
   async login(username: string) {
-    if (await this.knex.select('*').from('user').where('username', username)) {
-      return await this.knex
-        .select('*')
-        .from('user')
-        .where('username', username);
-    } else {
-      return await this.knex.select('*').where('email', username);
-    }
+    return await this.knex.select('*').from('user').where('username', username);
   }
 
   validateToken(token: string) {
