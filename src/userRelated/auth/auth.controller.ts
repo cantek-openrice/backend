@@ -57,7 +57,7 @@ export class AuthController {
         -1 &&
       users.findIndex((user) => user.email === credentials.username) === -1
     ) {
-      return { message: 'The username is not found' };
+      return { message: 'The username or email is not found' };
     }
 
     const user: User = (await this.authService.login(credentials.username))[0];
