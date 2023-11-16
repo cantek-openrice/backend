@@ -3,7 +3,7 @@ import { DistrictService } from './district.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { DistrictEntity } from './dto/entity/district.entity';
 
-@ApiTags('District')
+@ApiTags('district')
 @Controller('api/district')
 export class DistrictController {
   constructor(private readonly districtService: DistrictService) {}

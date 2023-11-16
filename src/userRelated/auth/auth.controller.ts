@@ -18,8 +18,8 @@ import { AuthGuard } from '../../global/guards/auth.guard';
 import { LoginResponse, RegisterResponse } from './dto/entity/auth.entity';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 
-@ApiTags('Auth')
-@Controller('api/user/auth')
+@ApiTags('auth')
+@Controller('api/auth/user')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,

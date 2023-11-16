@@ -14,7 +14,7 @@ import { ReviewService } from './review.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ReviewEntity } from './dto/entity/review.entity';
 
-@ApiTags('Review')
+@ApiTags('review')
 @Controller('api/review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}

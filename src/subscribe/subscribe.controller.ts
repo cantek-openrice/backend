@@ -12,7 +12,7 @@ import { SubscribeService } from './subscribe.service';
 import { CreateSubscribeDto } from './dto/create-subscribe.dto';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Subscribe')
+@ApiTags('subscribe')
 @Controller('api/subscribe')
 export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}

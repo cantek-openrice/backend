@@ -3,7 +3,7 @@ import { DishService } from './dish.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { DishEntity } from './dto/entity/dish.entity';
 
-@ApiTags('Dish')
+@ApiTags('dish')
 @Controller('api/dish')
 export class DishController {
   constructor(private readonly dishService: DishService) {}

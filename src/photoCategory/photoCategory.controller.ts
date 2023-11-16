@@ -3,9 +3,9 @@ import { PhotoCategoryService } from './photoCategory.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { PhotoCategoryEntity } from './dto/entity/photoCategory.entity';
 
-@ApiTags('Photo')
+@ApiTags('photo category')
 // @Controller('api/photo/category') // We cannot use this, api/photo/:id with take over the control
-@Controller('api/photo_category')
+@Controller('api/photo-category')
 export class PhotoCategoryController {
   constructor(private readonly photoCategoryService: PhotoCategoryService) {}
 
