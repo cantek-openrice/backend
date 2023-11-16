@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { Module, Global } from '@nestjs/common';
-import Knex from 'knex';
 
-const knexConfigs = require('../../../knexfile'); // must use require instead of import
+import Knex from 'knex';
+import knexConfigs from '../../../knexfile';
+
 const configMode = process.env.NODE_ENV || 'development';
 const knexConfig = knexConfigs[configMode];
 

@@ -1,4 +1,4 @@
-export interface CreateRestaurantDto {
+export class CreateRestaurantDto {
   name: string;
   address: string;
   district_id: string;
@@ -7,6 +7,6 @@ export interface CreateRestaurantDto {
   postal_code: string;
   phone: string;
   intro: string;
-  opening_hour: string;
-  cover_image: string;
+  opening_hours: string;
+  cover_image?: string;
 }

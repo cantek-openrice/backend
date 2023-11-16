@@ -1,17 +1,27 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { PaymentMethod } from './interfaces/paymentMethod.interface';
+import { PaymentMethodService } from './paymentMethod.service';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { PaymentMethodEntity } from './dto/entity/paymentMethod.entity';
 
-@Controller('api/payment-method')
+@ApiTags('Payment Method')
+@Controller('api/payment_method')
 export class PaymentMethodController {
-  constructor(private readonly paymentMethodService: PaymentMethodController) {}
+  constructor(private readonly paymentMethodService: PaymentMethodService) {}
 
   @Get()
-  async getPaymentMethods(): Promise<PaymentMethod[]> {
+  async getPaymentMethods(): Promise<PaymentMethodEntity[]> {
     return await this.paymentMethodService.getPaymentMethods();
   }
 
-  @Get(':id')
-  async getPaymentMethodByID(@Param() id: string): Promise<PaymentMethod> {
-    return (await this.paymentMethodService.getPaymentMethodByID(id))[0];
+  @Get(':payment_method_id')
+  @ApiParam({ name: 'payment_method_id', required: true, type: String })
+  async getPaymentMethodByID(
+    @Param() params: { payment_method_id: string },
+  ): Promise<PaymentMethodEntity> {
+    return (
+      await this.paymentMethodService.getPaymentMethodByID(
+        params.payment_method_id,
+      )
+    )[0];
   }
 }

@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -11,28 +11,38 @@ import {
 import { CreateRestaurantOwnerDto } from './dto/create-restaurantOwner.dto';
 import { UpdateRestaurantOwnerDto } from './dto/update-restaurantOwner.dto';
 import { RestaurantOwnerService } from './restaurantOwner.service';
-import { RestaurantOwner } from './interfaces/restaurantOwner.interface';
+import { ApiTags, ApiParam } from '@nestjs/swagger';
+import { RestaurantOwnerEntity } from './dto/entity/restaurantOwner.enttiy';
 
-@Controller('api/restaurant/owner')
+@ApiTags('Restaurant')
+// @Controller('api/restaurant/owner') // We cannot use this, the api/restaurant/:id will take over the controll
+@Controller('api/restaurant_owner')
 export class RestaurantOwnerController {
   constructor(
     private readonly restaurantOwnerService: RestaurantOwnerService,
   ) {}
 
   @Get()
-  async getRestaurantOwners(): Promise<RestaurantOwner[]> {
+  async getRestaurantOwners(): Promise<RestaurantOwnerEntity[]> {
     return await this.restaurantOwnerService.getRestaurantOwners();
   }
 
-  @Get(':id')
-  async getRestaurantOwnerByID(@Param() id: string) {
-    return (await this.restaurantOwnerService.getRestaurantOwnerByID(id))[0];
+  @Get(':restaurant_owner_id')
+  @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
+  async getRestaurantOwnerByID(
+    @Param() params: { restaurant_owner_id: string },
+  ): Promise<RestaurantOwnerEntity> {
+    return (
+      await this.restaurantOwnerService.getRestaurantOwnerByID(
+        params.restaurant_owner_id,
+      )
+    )[0];
   }
 
   @Post()
   async createRestaurantOwner(
     @Body() createRestaurantOwnerDto: CreateRestaurantOwnerDto,
-  ) {
+  ): Promise<RestaurantOwnerEntity> {
     return (
       await this.restaurantOwnerService.createRestaurantOwner(
         createRestaurantOwnerDto,
@@ -40,38 +50,50 @@ export class RestaurantOwnerController {
     )[0];
   }
 
-  @Put(':id')
+  @Put(':restaurant_owner_id')
+  @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
   async updateRestaurantOwner(
-    @Param() id: string,
+    @Param() params: { restaurant_owner_id: string },
     @Body() updateRestaurantOwnerDto: UpdateRestaurantOwnerDto,
-  ) {
+  ): Promise<RestaurantOwnerEntity> {
     const restaurantOwnerFound =
-      await this.restaurantOwnerService.getRestaurantOwnerByID(id);
+      await this.restaurantOwnerService.getRestaurantOwnerByID(
+        params.restaurant_owner_id,
+      );
     if (restaurantOwnerFound) {
       return (
         await this.restaurantOwnerService.updateRestaurantOwner(
-          id,
+          params.restaurant_owner_id,
           updateRestaurantOwnerDto,
         )
       )[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
-        description: 'This restaurantOwner cannot be found',
+        description: 'This restaurant owner cannot be found',
       });
     }
   }
 
-  @Delete(':id')
-  async deleteRestaurantOwner(@Param() id: string) {
+  @Delete(':restaurant_owner_id')
+  @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
+  async deleteRestaurantOwner(
+    @Param() params: { restaurant_owner_id: string },
+  ): Promise<RestaurantOwnerEntity> {
     const restaurantOwnerFound =
-      await this.restaurantOwnerService.getRestaurantOwnerByID(id);
+      await this.restaurantOwnerService.getRestaurantOwnerByID(
+        params.restaurant_owner_id,
+      );
     if (restaurantOwnerFound) {
-      return (await this.restaurantOwnerService.deleteRestaurantOwner(id))[0];
+      return (
+        await this.restaurantOwnerService.deleteRestaurantOwner(
+          params.restaurant_owner_id,
+        )
+      )[0];
     } else {
-      throw new BadRequestException('Bad request', {
+      throw new NotFoundException('Bad request', {
         cause: new Error(),
-        description: 'This restaurantOwner cannot be found',
+        description: 'This restaurant owner cannot be found',
       });
     }
   }

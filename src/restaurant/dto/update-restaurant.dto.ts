@@ -1,4 +1,4 @@
-export interface UpdateRestaurantDto {
+export class UpdateRestaurantDto {
   name?: string;
   address?: string;
   district_id?: string;

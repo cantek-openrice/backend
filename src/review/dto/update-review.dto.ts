@@ -1,4 +1,4 @@
-export interface UpdateReviewDto {
+export class UpdateReviewDto {
   user_id?: string;
   restaurant_id?: string;
   rating?: number;
