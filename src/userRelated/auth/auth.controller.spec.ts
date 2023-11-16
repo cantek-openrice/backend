@@ -182,13 +182,13 @@ describe('AuthController', () => {
       });
     });
 
-    it('cannot login when the username is not found', async () => {
+    it('cannot login when the username or email is not found', async () => {
       const result = await authController.login({
         username: 'ttiimmothy',
         password: 'Timothy',
       });
 
-      expect(result).toEqual({ message: 'The username is not found' });
+      expect(result).toEqual({ message: 'The username or email is not found' });
     });
 
     it('cannot login when the password is incorrect', async () => {
