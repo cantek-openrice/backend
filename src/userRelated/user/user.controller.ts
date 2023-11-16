@@ -9,12 +9,11 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiExcludeController, ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { UserEntity } from './dto/entity/user.entity';
 
-@ApiTags('User')
+@ApiTags('user')
 @Controller('api/user')
-@ApiExcludeController()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -23,19 +22,23 @@ export class UserController {
     return await this.userService.getUsers();
   }
 
-  @Get(':id')
-  async getUserByID(@Param() params: { id: string }): Promise<UserEntity> {
-    return (await this.userService.getUserByID(params.id))[0];
+  @Get(':user_id')
+  @ApiParam({ name: 'user_id', required: true, type: String })
+  async getUserByID(@Param() params: { user_id: string }): Promise<UserEntity> {
+    return (await this.userService.getUserByID(params.user_id))[0];
   }
 
-  @Put(':id')
+  @Put(':user_id')
+  @ApiParam({ name: 'user_id', required: true, type: String })
   async updateUser(
-    @Param() params: { id: string },
+    @Param() params: { user_id: string },
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<UserEntity> {
-    const userFound = await this.userService.getUserByID(params.id);
+    const userFound = await this.userService.getUserByID(params.user_id);
     if (userFound) {
-      return (await this.userService.updateUser(params.id, updateUserDto))[0];
+      return (
+        await this.userService.updateUser(params.user_id, updateUserDto)
+      )[0];
     } else {
       throw new NotFoundException('Bad request', {
         cause: new Error(),
@@ -44,11 +47,12 @@ export class UserController {
     }
   }
 
-  @Delete(':id')
-  async deleteUser(@Param() params: { id: string }): Promise<UserEntity> {
-    const userFound = await this.userService.getUserByID(params.id);
+  @Delete(':user_id')
+  @ApiParam({ name: 'user_id', required: true, type: String })
+  async deleteUser(@Param() params: { user_id: string }): Promise<UserEntity> {
+    const userFound = await this.userService.getUserByID(params.user_id);
     if (userFound) {
-      return (await this.userService.deleteUser(params.id))[0];
+      return (await this.userService.deleteUser(params.user_id))[0];
     } else {
       throw new NotFoundException('Bad request', {
         cause: new Error(),

@@ -12,9 +12,8 @@ import { CreateRestaurantDishDto } from './dto/create-restaurantDish.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantDishEntity } from './dto/entity/restaurantDish.entity';
 
-@ApiTags('Restaurant')
-// @Controller('api/restaurant/dish') //We cannot use this api since by default of nestjs the api/restaurant/:id will take over the control
-@Controller('api/restaurant_dish')
+@ApiTags('restaurant dish')
+@Controller('api/restaurant-dish')
 export class RestaurantDishController {
   constructor(private readonly restaurantDishService: RestaurantDishService) {}
 

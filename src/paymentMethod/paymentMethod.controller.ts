@@ -3,8 +3,8 @@ import { PaymentMethodService } from './paymentMethod.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { PaymentMethodEntity } from './dto/entity/paymentMethod.entity';
 
-@ApiTags('Payment Method')
-@Controller('api/payment_method')
+@ApiTags('payment method')
+@Controller('api/payment-method')
 export class PaymentMethodController {
   constructor(private readonly paymentMethodService: PaymentMethodService) {}
 

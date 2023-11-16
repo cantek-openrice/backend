@@ -12,9 +12,8 @@ import { CreateRestaurantPaymentDto } from './dto/create-restaurantPayment.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantPaymentEntity } from './dto/entity/restaurantPayment.entity';
 
-@ApiTags('Restaurant')
-// @Controller('api/restaurant/payment') //We cannot use this, the api/restaurant/:id will take over the control
-@Controller('api/restaurant_payment')
+@ApiTags('restaurant payment')
+@Controller('api/restaurant-payment')
 export class RestaurantPaymentController {
   constructor(
     private readonly restaurantPaymentService: RestaurantPaymentService,

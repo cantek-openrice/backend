@@ -12,7 +12,7 @@ import { CreatePhotoDto } from './dto/create-photo.dto';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { PhotoEntity } from './dto/entity/photo.entity';
 
-@ApiTags('Photo')
+@ApiTags('photo')
 @Controller('api/photo')
 export class PhotoController {
   constructor(private readonly photoService: PhotoService) {}
