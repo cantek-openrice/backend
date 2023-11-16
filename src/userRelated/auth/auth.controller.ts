@@ -52,7 +52,6 @@ export class AuthController {
   @Post('login')
   async login(@Body() credentials: LoginUserDto): Promise<LoginResponse> {
     const users: User[] = await this.userService.getUsers();
-    console.log(credentials);
     if (
       users.findIndex((user) => user.username === credentials.username) ===
         -1 &&
@@ -62,7 +61,6 @@ export class AuthController {
     }
 
     const user: User = (await this.authService.login(credentials.username))[0];
-    console.log(users);
     const match = await checkPassword(credentials.password, user.password);
     if (match) {
       const token = jwtSimple.encode(user, process.env.JWT_SECRET as string);
