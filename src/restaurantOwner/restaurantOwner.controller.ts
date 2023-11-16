@@ -14,9 +14,8 @@ import { RestaurantOwnerService } from './restaurantOwner.service';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantOwnerEntity } from './dto/entity/restaurantOwner.enttiy';
 
-@ApiTags('Restaurant')
-// @Controller('api/restaurant/owner') // We cannot use this, the api/restaurant/:id will take over the controll
-@Controller('api/restaurant_owner')
+@ApiTags('restaurant owner')
+@Controller('api/restaurant-owner')
 export class RestaurantOwnerController {
   constructor(
     private readonly restaurantOwnerService: RestaurantOwnerService,

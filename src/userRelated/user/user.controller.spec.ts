@@ -60,7 +60,7 @@ describe('UserController', () => {
 
   describe('getUserByID', () => {
     it('should return user of that user id', async () => {
-      const result = await userController.getUserByID({ id: '123' });
+      const result = await userController.getUserByID({ user_id: '123' });
 
       expect(result).toEqual({
         user_id: '123',
@@ -78,7 +78,7 @@ describe('UserController', () => {
   describe('updateUser', () => {
     it('should return that user after updating a user', async () => {
       const result = await userController.updateUser(
-        { id: '123' },
+        { user_id: '123' },
         {
           username: 'ttiimmothy',
         },
@@ -99,7 +99,7 @@ describe('UserController', () => {
 
   describe('delete', () => {
     it('should return that user after changing the active state of a user', async () => {
-      const result = await userController.deleteUser({ id: '123' });
+      const result = await userController.deleteUser({ user_id: '123' });
 
       expect(result).toEqual({
         user_id: '123',
