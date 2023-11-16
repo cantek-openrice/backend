@@ -1,13 +1,13 @@
 {
   "name": "openrice_canada_backend",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Openrice Canada Backend",
   "license": "GPL-3.0",
   "homepage": "https://openricecanadabackend.up.railway.app",
   "repository": {
     "type": "git",
-    "url": "https://openrice-canada.github.com/openrice-canada-backend"
+    "url": "https://github.com/openrice-canada/openrice-canada-backend"
   },
   "scripts": {
     "start": "nest start",
