@@ -53,11 +53,11 @@ export class AuthController {
   async login(@Body() credentials: LoginUserDto): Promise<LoginResponse> {
     const users: User[] = await this.userService.getUsers();
     if (
-      users.findIndex((user) => user.username === credentials.username) ===
-        -1 &&
-      users.findIndex((user) => user.email === credentials.username) === -1
+      users.findIndex((user) => user.username === credentials.username) === -1
+      //   &&
+      // users.findIndex((user) => user.email === credentials.username) === -1
     ) {
-      return { message: 'The username or email is not found' };
+      return { message: 'The username is not found' };
     }
 
     const user: User = (await this.authService.login(credentials.username))[0];

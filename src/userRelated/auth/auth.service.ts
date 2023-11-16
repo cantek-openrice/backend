@@ -14,7 +14,8 @@ export class AuthService {
     if (foundUser.length === 1) {
       return foundUser;
     } else {
-      return await this.knex.select('*').from('user').where('email', username);
+      // return await this.knex.select('*').from('user').where('email', username);
+      return undefined;
     }
   }
 
