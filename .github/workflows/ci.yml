@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v3.6.0
       - name: CI, Linter, Test with Coverage and Build
         env:
-          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           npm ci --legacy-peer-deps
           npm run lint
