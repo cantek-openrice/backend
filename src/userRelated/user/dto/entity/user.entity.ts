@@ -1,4 +1,4 @@
-import { UserRole } from 'src/global/utils/enums/UserRole';
+import { UserRole } from '../../../../global/utils/enums/UserRole';
 import { User } from '../../interfaces/user.interface';
 
 export class UserEntity implements User {

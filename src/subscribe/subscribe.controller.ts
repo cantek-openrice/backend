@@ -7,9 +7,9 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { Subscribe } from './interfaces/subscribe.interface';
 import { SubscribeService } from './subscribe.service';
 import { CreateSubscribeDto } from './dto/create-subscribe.dto';
+import { SubscribeEntity } from './dto/entity/subscribe.entity';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('subscribe')
@@ -18,7 +18,7 @@ export class SubscribeController {
   constructor(private readonly subscribeService: SubscribeService) {}
 
   @Get()
-  async getSubscribes(): Promise<Subscribe[]> {
+  async getSubscribes(): Promise<SubscribeEntity[]> {
     return await this.subscribeService.getSubscribes();
   }
 
@@ -26,7 +26,7 @@ export class SubscribeController {
   @ApiParam({ name: 'subscribe_id', required: true, type: String })
   async getSubscribeByID(
     @Param() params: { subscribe_id: string },
-  ): Promise<Subscribe> {
+  ): Promise<SubscribeEntity> {
     return (
       await this.subscribeService.getSubscribeByID(params.subscribe_id)
     )[0];
@@ -35,7 +35,7 @@ export class SubscribeController {
   @Post()
   async createSubscribe(
     @Body() createSubscribeDto: CreateSubscribeDto,
-  ): Promise<Subscribe> {
+  ): Promise<SubscribeEntity> {
     return (await this.subscribeService.createSubscribe(createSubscribeDto))[0];
   }
 
@@ -43,7 +43,7 @@ export class SubscribeController {
   @ApiParam({ name: 'subscribe_id', required: true, type: String })
   async deleteSubscribe(
     @Param() params: { subscribe_id: string },
-  ): Promise<Subscribe> {
+  ): Promise<SubscribeEntity> {
     const subscribeFound = await this.subscribeService.getSubscribeByID(
       params.subscribe_id,
     );
