@@ -21,9 +21,8 @@ export class SubscribeService {
     return await this.knex
       .insert({
         ...subscribe,
-        created_at: new Date(),
-        modified_at: new Date(),
         active: true,
+        created_at: new Date(),
       })
       .into('subscribe')
       .returning('*');
@@ -31,7 +30,7 @@ export class SubscribeService {
 
   async deleteSubscribe(id: string) {
     return await this.knex('subscribe')
-      .update({ active: false, modified_at: new Date() })
+      .update({ active: false })
       .where('subscribe_id', id)
       .returning('*');
   }

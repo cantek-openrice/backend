@@ -5,7 +5,7 @@ import { expectedDistricts } from './expectedDistricts';
 
 jest.mock('../district.service');
 
-describe('districtController', () => {
+describe('DistrictController', () => {
   let district: TestingModule;
   let districtController: DistrictController;
   let districtService: DistrictService;

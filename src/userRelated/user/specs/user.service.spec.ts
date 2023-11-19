@@ -10,7 +10,7 @@ const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];
 const knex = Knex(knexConfig);
 
-describe('UserController', () => {
+describe('UserService', () => {
   let userService: UserService;
   let userIDs: { user_id: string }[];
 
@@ -25,20 +25,19 @@ describe('UserController', () => {
         email: expectedUsers[0].email,
         password: expectedUsers[0].password,
         role: expectedUsers[0].role,
-        active: expectedUsers[0].active,
-        created_at: expectedUsers[0].created_at,
-        modified_at: expectedUsers[0].modified_at,
       })
       .into('user')
       .returning('user_id');
-
-    userService = new UserService(knex);
   });
 
   describe('getUsers', () => {
     it('should return users', async () => {
       const result = await userService.getUsers();
-      expect(result).toMatchObject([
+      const userFiltered = result.filter(
+        (user) => user.user_id === userIDs[0].user_id,
+      );
+
+      expect(userFiltered).toMatchObject([
         {
           username: expectedUsers[0].username,
           email: expectedUsers[0].email,

@@ -5,7 +5,7 @@ import { expectedRestaurantDishes } from './expectedRestaurantDishes';
 
 jest.mock('../restaurantDish.service');
 
-describe('restaurantDishController', () => {
+describe('RestaurantDishController', () => {
   let restaurantDish: TestingModule;
   let restaurantDishController: RestaurantDishController;
   let restaurantDishService: RestaurantDishService;

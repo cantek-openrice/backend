@@ -36,7 +36,9 @@ describe('UserController', () => {
 
   describe('getUserByID', () => {
     it('should return user of that user id', async () => {
-      const result = await userController.getUserByID({ user_id: '123' });
+      const result = await userController.getUserByID({
+        user_id: expectedUsers[0].user_id,
+      });
       expect(result).toEqual(expectedUsers[0]);
     });
   });
@@ -44,7 +46,7 @@ describe('UserController', () => {
   describe('updateUser', () => {
     it('should return that user after updating a user', async () => {
       const result = await userController.updateUser(
-        { user_id: '123' },
+        { user_id: expectedUsers[0].user_id },
         {
           username: 'ttiimmothy',
         },
@@ -55,7 +57,9 @@ describe('UserController', () => {
 
   describe('deleteUser', () => {
     it('should return that user after changing the active state of a user', async () => {
-      const result = await userController.deleteUser({ user_id: '123' });
+      const result = await userController.deleteUser({
+        user_id: expectedUsers[0].user_id,
+      });
       expect(result).toEqual(expectedUsers[0]);
     });
   });
