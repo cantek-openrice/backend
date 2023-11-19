@@ -121,6 +121,7 @@ describe('UserController', () => {
       )
       .del();
     await knex('user').where('username', expectedUsers[0].username).del();
+    await knex('user').where('username', 'ttiimmothy').del();
   });
 
   afterAll(async () => {
