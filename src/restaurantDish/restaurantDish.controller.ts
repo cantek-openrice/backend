@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { RestaurantDishService } from './restaurantDish.service';
-import { CreateRestaurantDishDto } from './dto/create-restaurantDish.dto';
+import { CreateRestaurantDishDto } from './dto/create_restaurant_dish.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantDishEntity } from './dto/entity/restaurantDish.entity';
 

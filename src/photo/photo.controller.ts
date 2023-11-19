@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { PhotoService } from './photo.service';
-import { CreatePhotoDto } from './dto/create-photo.dto';
+import { CreatePhotoDto } from './dto/create_photo.dto';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { PhotoEntity } from './dto/entity/photo.entity';
 

@@ -11,8 +11,8 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { CreateRestaurantDto } from './dto/create_restaurant.dto';
+import { UpdateRestaurantDto } from './dto/update_restaurant.dto';
 import { RestaurantService } from './restaurant.service';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RestaurantEntity } from './dto/entity/restaurant.entity';
