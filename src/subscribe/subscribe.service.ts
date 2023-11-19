@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Knex } from 'knex';
-import { CreateSubscribeDto } from './dto/create-subscribe.dto';
+import { CreateSubscribeDto } from './dto/create_subscribe.dto';
 
 @Injectable()
 export class SubscribeService {

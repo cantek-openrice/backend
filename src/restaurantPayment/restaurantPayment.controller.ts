@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { RestaurantPaymentService } from './restaurantPayment.service';
-import { CreateRestaurantPaymentDto } from './dto/create-restaurantPayment.dto';
+import { CreateRestaurantPaymentDto } from './dto/create_restaurant_payment.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantPaymentEntity } from './dto/entity/restaurantPayment.entity';
 

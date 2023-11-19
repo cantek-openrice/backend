@@ -8,8 +8,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { UpdateReviewDto } from './dto/update-review.dto';
-import { CreateReviewDto } from './dto/create-review.dto';
+import { UpdateReviewDto } from './dto/update_review.dto';
+import { CreateReviewDto } from './dto/create_review.dto';
 import { ReviewService } from './review.service';
 import { ReviewEntity } from './dto/entity/review.entity';
 import { ApiParam, ApiTags } from '@nestjs/swagger';

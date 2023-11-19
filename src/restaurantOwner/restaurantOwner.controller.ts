@@ -8,8 +8,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateRestaurantOwnerDto } from './dto/create-restaurantOwner.dto';
-import { UpdateRestaurantOwnerDto } from './dto/update-restaurantOwner.dto';
+import { CreateRestaurantOwnerDto } from './dto/create_restaurant_owner.dto';
+import { UpdateRestaurantOwnerDto } from './dto/update_restaurant_owner.dto';
 import { RestaurantOwnerService } from './restaurantOwner.service';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantOwnerEntity } from './dto/entity/restaurantOwner.enttiy';
