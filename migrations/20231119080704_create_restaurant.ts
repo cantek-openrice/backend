@@ -20,7 +20,8 @@ export async function up(knex: Knex): Promise<void> {
       table.text('opening_hours').notNullable();
       table.text('cover_image_url');
       table.boolean('active').notNullable().defaultTo(true);
-      table.timestamps(false, true);
+      table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+      table.timestamp('modified_at').notNullable();
     });
   }
 }

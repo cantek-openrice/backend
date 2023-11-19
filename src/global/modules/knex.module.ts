@@ -1,5 +1,4 @@
 import { Module, Global } from '@nestjs/common';
-
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
 

@@ -14,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('role');
       table.boolean('active').notNullable().defaultTo(true);
       table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
-      table.timestamp('updated_at');
+      table.timestamp('modified_at');
     });
   }
 }

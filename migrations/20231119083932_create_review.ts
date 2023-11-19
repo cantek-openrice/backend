@@ -18,7 +18,8 @@ export async function up(knex: Knex): Promise<void> {
       table.bigInteger('spending').notNullable();
       table.timestamp('visited_at').notNullable();
       table.boolean('active').notNullable().defaultTo(true);
-      table.timestamps(false, true);
+      table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+      table.timestamp('modified_at').notNullable();
     });
   }
 }
