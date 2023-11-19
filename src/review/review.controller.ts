@@ -11,10 +11,10 @@ import {
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ReviewEntity } from './dto/entity/review.entity';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Review')
+@ApiTags('review')
 @Controller('api/review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}

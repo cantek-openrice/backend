@@ -7,6 +7,7 @@ export class UpdateRestaurantDto {
   postal_code?: string;
   phone?: string;
   intro?: string;
-  opening_hour?: string;
+  opening_hours?: string;
   cover_image?: string;
+  active?: boolean;
 }
