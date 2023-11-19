@@ -6,4 +6,5 @@ export class UpdateReviewDto {
   rating?: number;
   spending?: number;
   visited_date?: Date;
+  active?: boolean;
 }

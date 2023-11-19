@@ -48,7 +48,6 @@ describe('SubscribeController', () => {
       const result = await subscribeController.getSubscribeByID({
         subscribe_id: '123',
       });
-
       expect(result).toEqual(expectedSubscribes[0]);
     });
   });

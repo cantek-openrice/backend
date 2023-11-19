@@ -4,7 +4,7 @@ export const expectedReviews = [
     user_id: '123',
     restaurant_id: '123',
     username: 'Timothy',
-    restaurantName: 'Timothy',
+    restaurantName: 'restaurant',
     rating: 1,
     title: 'title',
     visited_date: new Date('2023-11-17'),

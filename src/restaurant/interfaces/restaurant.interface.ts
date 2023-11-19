@@ -10,9 +10,9 @@ export interface Restaurant {
   intro: string;
   opening_hours: string;
   cover_image?: string;
-  active: boolean;
   averageRating: number;
   reviewCount: number;
+  active: boolean;
   created_at: Date;
   modified_at: Date;
 }

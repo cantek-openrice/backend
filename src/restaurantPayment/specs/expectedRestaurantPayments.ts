@@ -4,6 +4,6 @@ export const expectedRestaurantPayments = [
     restaurant_id: '123',
     payment_method_id: '123',
     active: true,
-    created_at: new Date('2023-11-28'),
+    created_at: new Date('2023-11-18'),
   },
 ];
