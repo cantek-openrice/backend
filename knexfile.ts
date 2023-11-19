@@ -10,7 +10,6 @@ const config: { [key: string]: Knex.Config } = {
     //   filename: './dev.sqlite3',
     // },
     client: 'postgresql',
-    // debug: true,
     connection: {
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT_NUMBER),

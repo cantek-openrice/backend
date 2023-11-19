@@ -20,9 +20,9 @@ export class UserService {
       .insert({
         ...user,
         role: user.role ? user.role : 'User',
+        active: true,
         created_at: new Date(),
         modified_at: new Date(),
-        active: true,
       })
       .into('user')
       .returning('*');
