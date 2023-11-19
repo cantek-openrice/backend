@@ -3,7 +3,7 @@ import { DishController } from '../dish.controller';
 import { DishService } from '../dish.service';
 import { expectedDishes } from './expectedDishes';
 
-jest.mock('../Dish.service');
+jest.mock('../dish.service');
 
 describe('dishController', () => {
   let dish: TestingModule;
