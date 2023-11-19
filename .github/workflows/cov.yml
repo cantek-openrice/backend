@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  send-coverage-report:
+  upload-coverage-report:
     runs-on: ${{ matrix.os }}
     permissions:
       actions: read
@@ -23,13 +23,13 @@ jobs:
         uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Jest Test
+      - name: Test with Coverage
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           npm ci --legacy-peer-deps
           npm run test:cov
-      - name: Upload coverage to Codecov
+      - name: Upload Coverage Report to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
