@@ -104,16 +104,16 @@ export class RestaurantController {
   @Put(':restaurant_id')
   @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async updateRestaurant(
-    @Param() params: { id: string },
+    @Param() params: { restaurant_id: string },
     @Body() updateRestaurantDto: UpdateRestaurantDto,
   ): Promise<RestaurantEntity> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
-      params.id,
+      params.restaurant_id,
     );
     if (restaurantFound) {
       return (
         await this.restaurantService.updateRestaurant(
-          params.id,
+          params.restaurant_id,
           updateRestaurantDto,
         )
       )[0];
@@ -128,13 +128,15 @@ export class RestaurantController {
   @Delete(':restaurant_id')
   @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async deleteRestaurant(
-    @Param() params: { id: string },
+    @Param() params: { restaurant_id: string },
   ): Promise<RestaurantEntity> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
-      params.id,
+      params.restaurant_id,
     );
     if (restaurantFound) {
-      return (await this.restaurantService.deleteRestaurant(params.id))[0];
+      return (
+        await this.restaurantService.deleteRestaurant(params.restaurant_id)
+      )[0];
     } else {
       throw new NotFoundException('Bad request', {
         cause: new Error(),

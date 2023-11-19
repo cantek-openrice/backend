@@ -54,13 +54,12 @@ describe('restaurantPaymentController', () => {
           restaurant_payment_id: '123',
         },
       );
-
       expect(result).toEqual(expectedRestaurantPayments[0]);
     });
   });
 
   describe('createRestaurantPayment', () => {
-    it('should return that restaurantPayment after creating a restaurantPayment', async () => {
+    it('should return that restaurant payment after creating a restaurant payment', async () => {
       const result = await restaurantPaymentController.createRestaurantPayment({
         restaurant_id: '123',
         payment_method_id: '123',

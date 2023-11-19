@@ -39,7 +39,7 @@ describe('ReviewController', () => {
       .mockResolvedValue([{ username: 'Timothy' }]);
     jest
       .spyOn(reviewService, 'getReviewRestaurantName')
-      .mockResolvedValue([{ name: 'Timothy' }]);
+      .mockResolvedValue([{ name: 'restaurant' }]);
   });
 
   describe('getReviews', () => {
@@ -54,7 +54,6 @@ describe('ReviewController', () => {
       const result = await reviewController.getReviewByID({
         review_id: '123',
       });
-
       expect(result).toEqual(expectedReviews[0]);
     });
   });
@@ -70,6 +69,7 @@ describe('ReviewController', () => {
         spending: 10,
         visited_date: new Date('2023-11-17'),
       });
+
       expect(result).toEqual(expectedReviews[0]);
     });
   });
@@ -86,8 +86,10 @@ describe('ReviewController', () => {
           rating: 1,
           spending: 10,
           visited_date: new Date('2023-11-17'),
+          active: false,
         },
       );
+
       expect(result).toEqual(expectedReviews[0]);
     });
   });
