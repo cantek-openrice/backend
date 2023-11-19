@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Knex } from 'knex';
-import { CreateRestaurantPaymentDto } from './dto/create-restaurantPayment.dto';
+import { CreateRestaurantPaymentDto } from './dto/create_restaurant_payment.dto';
 
 @Injectable()
 export class RestaurantPaymentService {

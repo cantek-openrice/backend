@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { SubscribeService } from './subscribe.service';
-import { CreateSubscribeDto } from './dto/create-subscribe.dto';
+import { CreateSubscribeDto } from './dto/create_subscribe.dto';
 import { SubscribeEntity } from './dto/entity/subscribe.entity';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 

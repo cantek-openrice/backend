@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Knex } from 'knex';
-import { CreatePhotoDto } from './dto/create-photo.dto';
+import { CreatePhotoDto } from './dto/create_photo.dto';
 
 @Injectable()
 export class PhotoService {
