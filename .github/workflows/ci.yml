@@ -16,6 +16,12 @@ jobs:
       - name: CI, Linter, Test with Coverage and Build
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          TESTING_NODE_ENV: ${{ secrets.TESTING_NODE_ENV }}
+          TESTING_DB_HOST: ${{ secrets.TESTING_DB_HOST }}
+          TESTING_DB_PORT_NUMBER: ${{ secrets.TESTING_DB_PORT_NUMBER }}
+          TESTING_DB_NAME: ${{ secrets.TESTING_DB_NAME }}
+          TESTING_DB_USERNAME: ${{ secrets.TESTING_DB_USERNAME }}
+          TESTING_DB_PASSWORD: ${{ secrets.TESTING_DB_PASSWORD }}
         run: |
           npm ci --legacy-peer-deps
           npm run lint
