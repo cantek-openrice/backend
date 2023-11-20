@@ -1,10 +1,8 @@
-import * as dotenv from 'dotenv';
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
 import { DishService } from '../dish.service';
 import { expectedDishes } from './expectedDishes';
-
-dotenv.config();
+// dotenv.config() is called in knexfile already, don't need to call again
 
 const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];

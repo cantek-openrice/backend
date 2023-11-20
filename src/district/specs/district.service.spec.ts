@@ -1,10 +1,7 @@
-import * as dotenv from 'dotenv';
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
 import { DistrictService } from '../district.service';
 import { expectedDistricts } from './expectedDistricts';
-
-dotenv.config();
 
 const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];
