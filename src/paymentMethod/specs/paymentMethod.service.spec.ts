@@ -1,10 +1,7 @@
-import * as dotenv from 'dotenv';
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
 import { PaymentMethodService } from '../paymentMethod.service';
 import { expectedPaymentMethods } from './expectedPaymentMethods';
-
-dotenv.config();
 
 const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];
