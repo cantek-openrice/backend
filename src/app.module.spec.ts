@@ -1,7 +1,9 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from './app.module';
+import { CspModule } from './global/csp/csp.module';
 
 jest.mock('./global/modules/knex.module.ts');
+jest.mock('./global/csp/csp.service.ts');
 jest.mock('./dish/dish.service.ts');
 jest.mock('./district/district.service.ts');
 jest.mock('./paymentMethod/paymentMethod.service.ts');
@@ -17,12 +19,18 @@ jest.mock('./userRelated/auth/auth.service.ts');
 jest.mock('./userRelated/user/user.service.ts');
 
 describe('AppModule', () => {
+  let app: TestingModule;
+
+  beforeAll(async () => {
+    app = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+  });
+
   describe('initializeTheModule', () => {
     it('should compile the appModule', async () => {
-      const module = await Test.createTestingModule({
-        imports: [AppModule],
-      }).compile();
-      expect(module).toBeDefined();
+      expect(app).toBeDefined();
+      expect(app.get(CspModule)).toBeInstanceOf(CspModule);
     });
   });
 });
