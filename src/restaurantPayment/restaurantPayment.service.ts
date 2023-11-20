@@ -30,7 +30,7 @@ export class RestaurantPaymentService {
 
   async deleteRestaurantPayment(id: string) {
     return await this.knex('restaurant_payment')
-      .update({ active: false, modified_at: new Date() })
+      .update({ active: false })
       .where('restaurant_payment_id', id)
       .returning('*');
   }

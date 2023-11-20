@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
-import { SubscribeService } from '../subscribe.service';
-import { expectedUsers } from '../../userRelated/user/specs/expectedUsers';
+import { RestaurantPaymentService } from '../restaurantPayment.service';
 import { expectedRestaurants } from '../../restaurant/specs/expectedRestaurants';
 import { expectedDistricts } from '../../district/specs/expectedDistricts';
+import { expectedPaymentMethods } from '../../paymentMethod/specs/expectedPaymentMethods';
 
 dotenv.config();
 
@@ -12,15 +12,15 @@ const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];
 const knex = Knex(knexConfig);
 
-describe('SubscribeService', () => {
-  let subscribeService: SubscribeService;
-  let subscribeIDs: { subscribe_id: string }[];
-  let userIDs: { user_id: string }[];
+describe('RestaurantPaymentService', () => {
+  let restaurantPaymentService: RestaurantPaymentService;
+  let restaurantPaymentIDs: { restaurant_payment_id: string }[];
+  let paymentMethodIDs: { payment_method_id: string }[];
   let districtIDs: { district_id: string }[];
   let restaurantIDs: { restaurant_id: string }[];
 
   beforeAll(async () => {
-    subscribeService = new SubscribeService(knex);
+    restaurantPaymentService = new RestaurantPaymentService(knex);
   });
 
   beforeEach(async () => {
@@ -31,15 +31,12 @@ describe('SubscribeService', () => {
       .into('district')
       .returning('district_id');
 
-    userIDs = await knex
+    paymentMethodIDs = await knex
       .insert({
-        username: expectedUsers[0].username,
-        email: expectedUsers[0].email,
-        password: expectedUsers[0].password,
-        role: expectedUsers[0].role,
+        name: expectedPaymentMethods[0].name,
       })
-      .into('user')
-      .returning('user_id');
+      .into('payment_method')
+      .returning('payment_method_id');
 
     restaurantIDs = await knex
       .insert({
@@ -56,75 +53,77 @@ describe('SubscribeService', () => {
       .into('restaurant')
       .returning('restaurant_id');
 
-    subscribeIDs = await knex
+    restaurantPaymentIDs = await knex
       .insert({
-        user_id: userIDs[0].user_id,
         restaurant_id: restaurantIDs[0].restaurant_id,
+        payment_method_id: paymentMethodIDs[0].payment_method_id,
       })
-      .into('subscribe')
-      .returning('subscribe_id');
+      .into('restaurant_payment')
+      .returning('restaurant_payment_id');
   });
 
-  describe('getSubscribes', () => {
-    it('should return subscribes', async () => {
-      const result = await subscribeService.getSubscribes();
+  describe('getRestaurantPayments', () => {
+    it('should return restaurant payments', async () => {
+      const result = await restaurantPaymentService.getRestaurantPayments();
       expect(result).toMatchObject([
         {
-          user_id: userIDs[0].user_id,
           restaurant_id: restaurantIDs[0].restaurant_id,
+          payment_method_id: paymentMethodIDs[0].payment_method_id,
         },
       ]);
     });
   });
 
-  describe('getSubscribeByID', () => {
-    it('should return subscribe of that subscribe id', async () => {
-      const result = await subscribeService.getSubscribeByID(
-        subscribeIDs[0].subscribe_id,
+  describe('getRestaurantPaymentByID', () => {
+    it('should return restaurant payment of that restaurant payment id', async () => {
+      const result = await restaurantPaymentService.getRestaurantPaymentByID(
+        restaurantPaymentIDs[0].restaurant_payment_id,
       );
       expect(result).toMatchObject([
         {
-          user_id: userIDs[0].user_id,
           restaurant_id: restaurantIDs[0].restaurant_id,
+          payment_method_id: paymentMethodIDs[0].payment_method_id,
         },
       ]);
     });
   });
 
-  describe('createSubscribe', () => {
-    it('should return that subscribe after creating a subscribe', async () => {
-      const result = await subscribeService.createSubscribe({
-        user_id: userIDs[0].user_id,
+  describe('createRestaurantPayment', () => {
+    it('should return that restaurant payment after creating a restaurant payment', async () => {
+      const result = await restaurantPaymentService.createRestaurantPayment({
         restaurant_id: restaurantIDs[0].restaurant_id,
+        payment_method_id: paymentMethodIDs[0].payment_method_id,
       });
 
-      subscribeIDs.push({ subscribe_id: result[0].subscribe_id });
+      restaurantPaymentIDs.push({
+        restaurant_payment_id: result[0].restaurant_payment_id,
+      });
 
       expect(result).toMatchObject([
         {
-          user_id: userIDs[0].user_id,
           restaurant_id: restaurantIDs[0].restaurant_id,
+          payment_method_id: paymentMethodIDs[0].payment_method_id,
         },
       ]);
     });
   });
 
-  describe('deleteSubscribe', () => {
-    it('should return that subscribe after changing the active state of a subscribe', async () => {
-      const result = await subscribeService.deleteSubscribe(
-        subscribeIDs[0].subscribe_id,
+  describe('deleteRestaurantPayment', () => {
+    it('should return that restaurant payment after changing the active state of a restaurant payment', async () => {
+      const result = await restaurantPaymentService.deleteRestaurantPayment(
+        restaurantPaymentIDs[0].restaurant_payment_id,
       );
       expect(result).toMatchObject([
         {
-          user_id: userIDs[0].user_id,
           restaurant_id: restaurantIDs[0].restaurant_id,
+          payment_method_id: paymentMethodIDs[0].payment_method_id,
         },
       ]);
     });
   });
 
   afterEach(async () => {
-    await knex('subscribe').del();
+    await knex('restaurant_payment').del();
 
     await knex('restaurant')
       .whereIn(
@@ -133,10 +132,10 @@ describe('SubscribeService', () => {
       )
       .del();
 
-    await knex('user')
+    await knex('payment_method')
       .whereIn(
-        'user_id',
-        userIDs.map((userID) => userID.user_id),
+        'payment_method_id',
+        paymentMethodIDs.map((userID) => userID.payment_method_id),
       )
       .del();
 

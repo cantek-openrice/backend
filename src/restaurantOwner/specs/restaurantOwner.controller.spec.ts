@@ -52,7 +52,7 @@ describe('RestaurantOwnerController', () => {
   describe('getRestaurantOwnerByID', () => {
     it('should return restaurant Owner of that restaurant owner id', async () => {
       const result = await restaurantOwnerController.getRestaurantOwnerByID({
-        restaurant_owner_id: '123',
+        restaurant_owner_id: expectedRestaurantOwners[0].restaurant_owner_id,
       });
       expect(result).toEqual(expectedRestaurantOwners[0]);
     });
@@ -61,8 +61,8 @@ describe('RestaurantOwnerController', () => {
   describe('createRestaurantOwner', () => {
     it('should return that restaurant owner after creating a restaurant owner', async () => {
       const result = await restaurantOwnerController.createRestaurantOwner({
-        user_id: '123',
-        restaurant_id: '123',
+        user_id: expectedRestaurantOwners[0].user_id,
+        restaurant_id: expectedRestaurantOwners[0].restaurant_id,
       });
       expect(result).toEqual(expectedRestaurantOwners[0]);
     });
@@ -72,24 +72,57 @@ describe('RestaurantOwnerController', () => {
     it('should return that restaurant owner after updating a restaurant owner', async () => {
       const result = await restaurantOwnerController.updateRestaurantOwner(
         {
-          restaurant_owner_id: '123',
+          restaurant_owner_id: expectedRestaurantOwners[0].restaurant_owner_id,
         },
         {
-          user_id: '123',
-          restaurant_id: '123',
+          user_id: expectedRestaurantOwners[0].user_id,
+          restaurant_id: expectedRestaurantOwners[0].restaurant_id,
           active: false,
         },
       );
       expect(result).toEqual(expectedRestaurantOwners[0]);
+    });
+
+    it('should return restaurant owner cannot found message if the restaurant owner cannot be found', async () => {
+      jest
+        .spyOn(restaurantOwnerService, 'getRestaurantOwnerByID')
+        .mockResolvedValue(null);
+
+      const result = await restaurantOwnerController.updateRestaurantOwner(
+        {
+          restaurant_owner_id: expectedRestaurantOwners[0].restaurant_owner_id,
+        },
+        {
+          user_id: expectedRestaurantOwners[0].user_id,
+          restaurant_id: expectedRestaurantOwners[0].restaurant_id,
+          active: false,
+        },
+      );
+
+      expect(result).toEqual({
+        message: 'This restaurant owner cannot be found',
+      });
     });
   });
 
   describe('deleteRestaurantOwner', () => {
     it('should return that restaurant owner after changing the active state of a restaurant owner', async () => {
       const result = await restaurantOwnerController.deleteRestaurantOwner({
-        restaurant_owner_id: '123',
+        restaurant_owner_id: expectedRestaurantOwners[0].restaurant_owner_id,
       });
       expect(result).toEqual(expectedRestaurantOwners[0]);
+    });
+
+    it('should return restaurant owner cannot be found message if the restaurant owner cannot be found', async () => {
+      jest
+        .spyOn(restaurantOwnerService, 'getRestaurantOwnerByID')
+        .mockResolvedValue(null);
+      const result = await restaurantOwnerController.deleteRestaurantOwner({
+        restaurant_owner_id: expectedRestaurantOwners[0].restaurant_owner_id,
+      });
+      expect(result).toEqual({
+        message: 'This restaurant owner cannot be found',
+      });
     });
   });
 });

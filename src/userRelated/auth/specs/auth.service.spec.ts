@@ -64,9 +64,25 @@ describe('AuthService', () => {
         role: expectedUsers[0].role,
       });
     });
+
+    it('should print the error if the token cannot be validated', async () => {
+      console.log = jest.fn();
+      const token = '123';
+
+      const result = await authService.validateToken(token);
+      expect(console.log).toBeCalledTimes(1);
+      expect(result).toBeNull();
+    });
   });
 
   afterEach(async () => {
+    const reviews = await knex
+      .select('*')
+      .from('review')
+      .whereIn(
+        'user_id',
+        userIDs.map((userID) => userID.user_id),
+      );
     const subscribes = await knex
       .select('*')
       .from('subscribe')
@@ -75,7 +91,7 @@ describe('AuthService', () => {
         userIDs.map((userID) => userID.user_id),
       );
 
-    if (subscribes.length === 0) {
+    if (reviews.length === 0 && subscribes.length === 0) {
       await knex('user')
         .whereIn(
           'user_id',

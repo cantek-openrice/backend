@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
-import { SubscribeService } from '../subscribe.service';
-import { expectedUsers } from '../../userRelated/user/specs/expectedUsers';
+import { RestaurantOwnerService } from '../restaurantOwner.service';
 import { expectedRestaurants } from '../../restaurant/specs/expectedRestaurants';
 import { expectedDistricts } from '../../district/specs/expectedDistricts';
+import { expectedUsers } from '../../userRelated/user/specs/expectedUsers';
 
 dotenv.config();
 
@@ -12,15 +12,15 @@ const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];
 const knex = Knex(knexConfig);
 
-describe('SubscribeService', () => {
-  let subscribeService: SubscribeService;
-  let subscribeIDs: { subscribe_id: string }[];
+describe('RestaurantOwnerService', () => {
+  let restaurantOwnerService: RestaurantOwnerService;
+  let restaurantOwnerIDs: { restaurant_owner_id: string }[];
   let userIDs: { user_id: string }[];
   let districtIDs: { district_id: string }[];
   let restaurantIDs: { restaurant_id: string }[];
 
   beforeAll(async () => {
-    subscribeService = new SubscribeService(knex);
+    restaurantOwnerService = new RestaurantOwnerService(knex);
   });
 
   beforeEach(async () => {
@@ -56,18 +56,18 @@ describe('SubscribeService', () => {
       .into('restaurant')
       .returning('restaurant_id');
 
-    subscribeIDs = await knex
+    restaurantOwnerIDs = await knex
       .insert({
         user_id: userIDs[0].user_id,
         restaurant_id: restaurantIDs[0].restaurant_id,
       })
-      .into('subscribe')
-      .returning('subscribe_id');
+      .into('restaurant_owner')
+      .returning('restaurant_owner_id');
   });
 
-  describe('getSubscribes', () => {
-    it('should return subscribes', async () => {
-      const result = await subscribeService.getSubscribes();
+  describe('getRestaurantOwners', () => {
+    it('should return restaurant owners', async () => {
+      const result = await restaurantOwnerService.getRestaurantOwners();
       expect(result).toMatchObject([
         {
           user_id: userIDs[0].user_id,
@@ -77,10 +77,10 @@ describe('SubscribeService', () => {
     });
   });
 
-  describe('getSubscribeByID', () => {
-    it('should return subscribe of that subscribe id', async () => {
-      const result = await subscribeService.getSubscribeByID(
-        subscribeIDs[0].subscribe_id,
+  describe('getRestaurantOwnerByID', () => {
+    it('should return restaurant owner of that restaurant owner id', async () => {
+      const result = await restaurantOwnerService.getRestaurantOwnerByID(
+        restaurantOwnerIDs[0].restaurant_owner_id,
       );
       expect(result).toMatchObject([
         {
@@ -91,14 +91,16 @@ describe('SubscribeService', () => {
     });
   });
 
-  describe('createSubscribe', () => {
-    it('should return that subscribe after creating a subscribe', async () => {
-      const result = await subscribeService.createSubscribe({
+  describe('createRestaurantOwner', () => {
+    it('should return that restaurant owner after creating a restaurant owner', async () => {
+      const result = await restaurantOwnerService.createRestaurantOwner({
         user_id: userIDs[0].user_id,
         restaurant_id: restaurantIDs[0].restaurant_id,
       });
 
-      subscribeIDs.push({ subscribe_id: result[0].subscribe_id });
+      restaurantOwnerIDs.push({
+        restaurant_owner_id: result[0].restaurant_owner_id,
+      });
 
       expect(result).toMatchObject([
         {
@@ -109,10 +111,29 @@ describe('SubscribeService', () => {
     });
   });
 
-  describe('deleteSubscribe', () => {
-    it('should return that subscribe after changing the active state of a subscribe', async () => {
-      const result = await subscribeService.deleteSubscribe(
-        subscribeIDs[0].subscribe_id,
+  describe('updateRestaurantOwner', () => {
+    it('should return that restaurant owner after updating a restaurant owner', async () => {
+      const result = await restaurantOwnerService.updateRestaurantOwner(
+        restaurantOwnerIDs[0].restaurant_owner_id,
+        {
+          user_id: userIDs[0].user_id,
+          restaurant_id: restaurantIDs[0].restaurant_id,
+        },
+      );
+
+      expect(result).toMatchObject([
+        {
+          user_id: userIDs[0].user_id,
+          restaurant_id: restaurantIDs[0].restaurant_id,
+        },
+      ]);
+    });
+  });
+
+  describe('deleteRestaurantOwner', () => {
+    it('should return that restaurant owner after changing the active state of a restaurant owner', async () => {
+      const result = await restaurantOwnerService.deleteRestaurantOwner(
+        restaurantOwnerIDs[0].restaurant_owner_id,
       );
       expect(result).toMatchObject([
         {
@@ -124,7 +145,7 @@ describe('SubscribeService', () => {
   });
 
   afterEach(async () => {
-    await knex('subscribe').del();
+    await knex('restaurant_owner').del();
 
     await knex('restaurant')
       .whereIn(

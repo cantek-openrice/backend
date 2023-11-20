@@ -49,7 +49,7 @@ describe('RestaurantDishController', () => {
   describe('getRestaurantDishByID', () => {
     it('should return restaurant dish of that restaurant dish id', async () => {
       const result = await restaurantDishController.getRestaurantDishByID({
-        restaurant_dish_id: '123',
+        restaurant_dish_id: expectedRestaurantDishes[0].restaurant_dish_id,
       });
       expect(result).toEqual(expectedRestaurantDishes[0]);
     });
@@ -58,8 +58,8 @@ describe('RestaurantDishController', () => {
   describe('createRestaurantDish', () => {
     it('should return that restaurant dish after creating a restaurant dish', async () => {
       const result = await restaurantDishController.createRestaurantDish({
-        restaurant_id: '123',
-        dish_id: '123',
+        restaurant_id: expectedRestaurantDishes[0].restaurant_id,
+        dish_id: expectedRestaurantDishes[0].dish_id,
       });
       expect(result).toEqual(expectedRestaurantDishes[0]);
     });
@@ -68,9 +68,21 @@ describe('RestaurantDishController', () => {
   describe('deleteRestaurantDish', () => {
     it('should return that restaurant dish after changing the active state of a restaurant dish', async () => {
       const result = await restaurantDishController.deleteRestaurantDish({
-        restaurant_dish_id: '123',
+        restaurant_dish_id: expectedRestaurantDishes[0].restaurant_dish_id,
       });
       expect(result).toEqual(expectedRestaurantDishes[0]);
+    });
+  });
+
+  it('should return restaurant dish cannot be found message if the restaurant dish cannot be found', async () => {
+    jest
+      .spyOn(restaurantDishService, 'getRestaurantDishByID')
+      .mockResolvedValue(null);
+    const result = await restaurantDishController.deleteRestaurantDish({
+      restaurant_dish_id: expectedRestaurantDishes[0].restaurant_dish_id,
+    });
+    expect(result).toEqual({
+      message: 'This restaurant dish cannot be found',
     });
   });
 });

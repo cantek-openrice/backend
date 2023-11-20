@@ -52,7 +52,7 @@ describe('ReviewController', () => {
   describe('getReviewByID', () => {
     it('should return review of that review id', async () => {
       const result = await reviewController.getReviewByID({
-        review_id: '123',
+        review_id: expectedReviews[0].review_id,
       });
       expect(result).toEqual(expectedReviews[0]);
     });
@@ -61,13 +61,13 @@ describe('ReviewController', () => {
   describe('createReview', () => {
     it('should return that review after creating a review', async () => {
       const result = await reviewController.createReview({
-        user_id: '123',
-        restaurant_id: '123',
-        title: 'title',
-        content: 'content',
-        rating: 1,
-        spending: 10,
-        visited_date: new Date('2023-11-17'),
+        user_id: expectedReviews[0].review_id,
+        restaurant_id: expectedReviews[0].restaurant_id,
+        title: expectedReviews[0].title,
+        content: expectedReviews[0].content,
+        rating: expectedReviews[0].rating,
+        spending: expectedReviews[0].spending,
+        visited_date: expectedReviews[0].visited_date,
       });
 
       expect(result).toEqual(expectedReviews[0]);
@@ -77,29 +77,55 @@ describe('ReviewController', () => {
   describe('updateReview', () => {
     it('should return that review after updating a review', async () => {
       const result = await reviewController.updateReview(
-        { review_id: '123' },
+        { review_id: expectedReviews[0].review_id },
         {
-          user_id: '123',
-          restaurant_id: '123',
-          title: 'title',
-          content: 'content',
-          rating: 1,
-          spending: 10,
-          visited_date: new Date('2023-11-17'),
+          user_id: expectedReviews[0].user_id,
+          restaurant_id: expectedReviews[0].restaurant_id,
+          title: expectedReviews[0].title,
+          content: expectedReviews[0].content,
+          rating: expectedReviews[0].rating,
+          spending: expectedReviews[0].spending,
+          visited_date: expectedReviews[0].visited_date,
           active: false,
         },
       );
 
       expect(result).toEqual(expectedReviews[0]);
     });
+
+    it('should return review cannot be found message if the review cannot be found', async () => {
+      jest.spyOn(reviewService, 'getReviewByID').mockResolvedValue(null);
+      const result = await reviewController.updateReview(
+        { review_id: expectedReviews[0].review_id },
+        {
+          user_id: expectedReviews[0].user_id,
+          restaurant_id: expectedReviews[0].restaurant_id,
+          title: expectedReviews[0].title,
+          content: expectedReviews[0].content,
+          rating: expectedReviews[0].rating,
+          spending: expectedReviews[0].spending,
+          visited_date: expectedReviews[0].visited_date,
+          active: false,
+        },
+      );
+      expect(result).toEqual({ message: 'This review cannot be found' });
+    });
   });
 
   describe('deleteReview', () => {
     it('should return that review after changing the active state of a review', async () => {
       const result = await reviewController.deleteReview({
-        review_id: '123',
+        review_id: expectedReviews[0].review_id,
       });
       expect(result).toEqual(expectedReviews[0]);
+    });
+
+    it('should return review cannot be found message if the review cannot be found', async () => {
+      jest.spyOn(reviewService, 'getReviewByID').mockResolvedValue(null);
+      const result = await reviewController.deleteReview({
+        review_id: expectedReviews[0].review_id,
+      });
+      expect(result).toEqual({ message: 'This review cannot be found' });
     });
   });
 });

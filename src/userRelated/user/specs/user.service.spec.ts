@@ -115,6 +115,13 @@ describe('UserService', () => {
   });
 
   afterEach(async () => {
+    const reviews = await knex
+      .select('*')
+      .from('review')
+      .whereIn(
+        'user_id',
+        userIDs.map((userID) => userID.user_id),
+      );
     const subscribes = await knex
       .select('*')
       .from('subscribe')
@@ -123,7 +130,7 @@ describe('UserService', () => {
         userIDs.map((userID) => userID.user_id),
       );
 
-    if (subscribes.length === 0) {
+    if (reviews.length === 0 && subscribes.length === 0) {
       await knex('user')
         .whereIn(
           'user_id',

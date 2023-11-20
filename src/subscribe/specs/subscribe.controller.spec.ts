@@ -46,7 +46,7 @@ describe('SubscribeController', () => {
   describe('getSubscribeByID', () => {
     it('should return subscribe of that subscribe id', async () => {
       const result = await subscribeController.getSubscribeByID({
-        subscribe_id: '123',
+        subscribe_id: expectedSubscribes[0].subscribe_id,
       });
       expect(result).toEqual(expectedSubscribes[0]);
     });
@@ -55,8 +55,8 @@ describe('SubscribeController', () => {
   describe('createSubscribe', () => {
     it('should return that subscribe after creating a subscribe', async () => {
       const result = await subscribeController.createSubscribe({
-        user_id: '123',
-        restaurant_id: '123',
+        user_id: expectedSubscribes[0].user_id,
+        restaurant_id: expectedSubscribes[0].restaurant_id,
       });
       expect(result).toEqual(expectedSubscribes[0]);
     });
@@ -65,9 +65,19 @@ describe('SubscribeController', () => {
   describe('deleteSubscribe', () => {
     it('should return that subscribe after changing the active state of a subscribe', async () => {
       const result = await subscribeController.deleteSubscribe({
-        subscribe_id: '123',
+        subscribe_id: expectedSubscribes[0].subscribe_id,
       });
       expect(result).toEqual(expectedSubscribes[0]);
+    });
+
+    it('should return restaurant subscription cannot be found message if the restaurant subscription cannot be found', async () => {
+      jest.spyOn(subscribeService, 'getSubscribeByID').mockResolvedValue(null);
+      const result = await subscribeController.deleteSubscribe({
+        subscribe_id: expectedSubscribes[0].subscribe_id,
+      });
+      expect(result).toEqual({
+        message: 'This restaurant subscription cannot be found',
+      });
     });
   });
 });
