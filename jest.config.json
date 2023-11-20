@@ -1,13 +1,6 @@
 {
-  "collectCoverage": true,
-  "collectCoverageFrom": ["src/**/*.ts"],
-  "coveragePathIgnorePatterns": [
-    "node_modules",
-    "dto/entity",
-    "cache",
-    "static.express.module.ts",
-    "<rootDir>/src/main.ts"
-  ],
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   }

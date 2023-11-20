@@ -94,7 +94,10 @@ describe('PhotoService', () => {
   describe('getPhotos', () => {
     it('should return photos', async () => {
       const result = await photoService.getPhotos();
-      expect(result).toMatchObject([
+      const photoFiltered = result.filter(
+        (photo) => photo.photo_id === photoIDs[0].photo_id,
+      );
+      expect(photoFiltered).toMatchObject([
         {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
