@@ -1,11 +1,8 @@
-import * as dotenv from 'dotenv';
 import * as jwtSimple from 'jwt-simple';
 import Knex from 'knex';
 import knexConfigs from '../../../../knexfile';
 import { AuthService } from '../auth.service';
 import { expectedUsers } from './expectedUsers';
-
-dotenv.config();
 
 const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];

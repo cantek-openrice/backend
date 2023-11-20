@@ -1,4 +1,3 @@
-import * as dotenv from 'dotenv';
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
 import { PhotoService } from '../photo.service';
@@ -8,8 +7,6 @@ import { expectedDistricts } from '../../district/specs/expectedDistricts';
 import { expectedReviews } from '../../review/specs/expectedReviews';
 import { expectedPhotoCategories } from '../../photoCategory/specs/expectedPhotoCategories';
 import { expectedPhotos } from './expectedPhotos';
-
-dotenv.config();
 
 const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];

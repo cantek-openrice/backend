@@ -1,4 +1,3 @@
-import * as dotenv from 'dotenv';
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
 import { ReviewService } from '../review.service';
@@ -6,8 +5,6 @@ import { expectedUsers } from '../../userRelated/user/specs/expectedUsers';
 import { expectedRestaurants } from '../../restaurant/specs/expectedRestaurants';
 import { expectedDistricts } from '../../district/specs/expectedDistricts';
 import { expectedReviews } from './expectedReviews';
-
-dotenv.config();
 
 const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];
