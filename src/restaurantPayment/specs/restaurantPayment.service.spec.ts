@@ -65,7 +65,12 @@ describe('RestaurantPaymentService', () => {
   describe('getRestaurantPayments', () => {
     it('should return restaurant payments', async () => {
       const result = await restaurantPaymentService.getRestaurantPayments();
-      expect(result).toMatchObject([
+      const restaurantPaymentFiltered = result.filter(
+        (restaurantPayment) =>
+          restaurantPayment.restaurant_payment_id ===
+          restaurantPaymentIDs[0].restaurant_payment_id,
+      );
+      expect(restaurantPaymentFiltered).toMatchObject([
         {
           restaurant_id: restaurantIDs[0].restaurant_id,
           payment_method_id: paymentMethodIDs[0].payment_method_id,
@@ -123,7 +128,14 @@ describe('RestaurantPaymentService', () => {
   });
 
   afterEach(async () => {
-    await knex('restaurant_payment').del();
+    await knex('restaurant_payment')
+      .whereIn(
+        'restaurant_payment_id',
+        restaurantPaymentIDs.map(
+          (restaurantPaymentID) => restaurantPaymentID.restaurant_payment_id,
+        ),
+      )
+      .del();
 
     await knex('restaurant')
       .whereIn(
