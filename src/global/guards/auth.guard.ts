@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../userRelated/auth/auth.service';
 
@@ -17,10 +12,8 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     if (request.headers.authorization?.split(' ')[0] !== 'Bearer') {
-      throw new ForbiddenException('Forbidden request', {
-        cause: new Error(),
-        description: 'invalid token',
-      });
+      console.log({ message: 'invalid token' });
+      return false;
     }
 
     const token = request.headers.authorization?.split(' ')[1];
