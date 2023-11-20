@@ -52,12 +52,19 @@ describe('RestaurantController', () => {
         { ...expectedRestaurants[0], averageRating: 1, reviewCount: 1 },
       ]);
     });
+
+    it('should return restaurants', async () => {
+      const result = await restaurantController.getRestaurants(10, 0, '');
+      expect(result).toEqual([
+        { ...expectedRestaurants[0], averageRating: 1, reviewCount: 1 },
+      ]);
+    });
   });
 
   describe('getRestaurantByID', () => {
     it('should return restaurant of that restaurant id', async () => {
       const result = await restaurantController.getRestaurantByID({
-        restaurant_id: '123',
+        restaurant_id: expectedRestaurants[0].restaurant_id,
       });
       expect(result).toEqual({
         ...expectedRestaurants[0],
@@ -70,16 +77,16 @@ describe('RestaurantController', () => {
   describe('createRestaurant', () => {
     it('should return that restaurant after creating a restaurant ', async () => {
       const result = await restaurantController.createRestaurant({
-        name: 'restaurant',
-        address: 'address',
-        district_id: '123',
-        latitude: 1,
-        longitude: 1,
-        postal_code: 'M2M 0A5',
-        phone: '6471231234',
-        intro: 'intro',
-        opening_hours: 'hour',
-        cover_image: 'image.png',
+        name: expectedRestaurants[0].name,
+        address: expectedRestaurants[0].address,
+        district_id: expectedRestaurants[0].district_id,
+        latitude: expectedRestaurants[0].latitude,
+        longitude: expectedRestaurants[0].longitude,
+        postal_code: expectedRestaurants[0].postal_code,
+        phone: expectedRestaurants[0].phone,
+        intro: expectedRestaurants[0].intro,
+        opening_hours: expectedRestaurants[0].opening_hours,
+        cover_image: expectedRestaurants[0].cover_image,
       });
 
       expect(result).toEqual(expectedRestaurants[0]);
@@ -90,33 +97,74 @@ describe('RestaurantController', () => {
     it('should return that restaurant  after updating a restaurant ', async () => {
       const result = await restaurantController.updateRestaurant(
         {
-          restaurant_id: '123',
+          restaurant_id: expectedRestaurants[0].restaurant_id,
         },
         {
-          name: 'restaurant',
-          address: 'address',
-          district_id: '123',
-          latitude: 1,
-          longitude: 1,
-          postal_code: 'M2M 0A5',
-          phone: '6471231234',
-          intro: 'intro',
-          opening_hours: 'hour',
-          cover_image: 'image.png',
+          name: expectedRestaurants[0].name,
+          address: expectedRestaurants[0].address,
+          district_id: expectedRestaurants[0].district_id,
+          latitude: expectedRestaurants[0].latitude,
+          longitude: expectedRestaurants[0].longitude,
+          postal_code: expectedRestaurants[0].postal_code,
+          phone: expectedRestaurants[0].phone,
+          intro: expectedRestaurants[0].intro,
+          opening_hours: expectedRestaurants[0].opening_hours,
+          cover_image: expectedRestaurants[0].cover_image,
           active: false,
         },
       );
 
       expect(result).toEqual(expectedRestaurants[0]);
     });
+
+    it('should return restaurant cannot be found message if the restaurant cannot be found', async () => {
+      jest
+        .spyOn(restaurantService, 'getRestaurantByID')
+        .mockResolvedValue(null);
+
+      const result = await restaurantController.updateRestaurant(
+        {
+          restaurant_id: expectedRestaurants[0].restaurant_id,
+        },
+        {
+          name: expectedRestaurants[0].name,
+          address: expectedRestaurants[0].address,
+          district_id: expectedRestaurants[0].district_id,
+          latitude: expectedRestaurants[0].latitude,
+          longitude: expectedRestaurants[0].longitude,
+          postal_code: expectedRestaurants[0].postal_code,
+          phone: expectedRestaurants[0].phone,
+          intro: expectedRestaurants[0].intro,
+          opening_hours: expectedRestaurants[0].opening_hours,
+          cover_image: expectedRestaurants[0].cover_image,
+          active: false,
+        },
+      );
+
+      expect(result).toEqual({
+        message: 'This restaurant cannot be found',
+      });
+    });
   });
 
   describe('deleteRestaurant', () => {
-    it('should return that restaurant  after changing the active state of a restaurant ', async () => {
+    it('should return that restaurant after changing the active state of a restaurant', async () => {
       const result = await restaurantController.deleteRestaurant({
-        restaurant_id: '123',
+        restaurant_id: expectedRestaurants[0].restaurant_id,
       });
       expect(result).toEqual(expectedRestaurants[0]);
+    });
+
+    it('should return restaurant cannot be found message if the restaurant cannot be found', async () => {
+      jest
+        .spyOn(restaurantService, 'getRestaurantByID')
+        .mockResolvedValue(null);
+      const result = await restaurantController.deleteRestaurant({
+        restaurant_id: expectedRestaurants[0].restaurant_id,
+      });
+      expect(result).toEqual({
+        message: 'This restaurant cannot be found',
+      });
     });
   });
 });

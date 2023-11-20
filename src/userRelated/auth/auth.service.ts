@@ -14,7 +14,7 @@ export class AuthService {
     try {
       return jwtSimple.decode(token, process.env.JWT_SECRET as string);
     } catch (e) {
-      console.error(e);
+      console.log(e);
       return null;
     }
   }

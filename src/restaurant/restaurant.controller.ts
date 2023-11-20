@@ -4,7 +4,6 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -106,7 +105,7 @@ export class RestaurantController {
   async updateRestaurant(
     @Param() params: { restaurant_id: string },
     @Body() updateRestaurantDto: UpdateRestaurantDto,
-  ): Promise<RestaurantEntity> {
+  ): Promise<RestaurantEntity | { message: string }> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.restaurant_id,
     );
@@ -118,10 +117,7 @@ export class RestaurantController {
         )
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant cannot be found',
-      });
+      return { message: 'This restaurant cannot be found' };
     }
   }
 
@@ -129,7 +125,7 @@ export class RestaurantController {
   @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async deleteRestaurant(
     @Param() params: { restaurant_id: string },
-  ): Promise<RestaurantEntity> {
+  ): Promise<RestaurantEntity | { message: string }> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
       params.restaurant_id,
     );
@@ -138,10 +134,7 @@ export class RestaurantController {
         await this.restaurantService.deleteRestaurant(params.restaurant_id)
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant cannot be found',
-      });
+      return { message: 'This restaurant cannot be found' };
     }
   }
 }

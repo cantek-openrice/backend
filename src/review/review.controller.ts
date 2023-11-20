@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -62,7 +61,7 @@ export class ReviewController {
   async updateReview(
     @Param() params: { review_id: string },
     @Body() updateReviewDto: UpdateReviewDto,
-  ): Promise<ReviewEntity> {
+  ): Promise<ReviewEntity | { message: string }> {
     const reviewFound = await this.reviewService.getReviewByID(
       params.review_id,
     );
@@ -71,10 +70,7 @@ export class ReviewController {
         await this.reviewService.updateReview(params.review_id, updateReviewDto)
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This review cannot be found',
-      });
+      return { message: 'This review cannot be found' };
     }
   }
 
@@ -82,17 +78,14 @@ export class ReviewController {
   @ApiParam({ name: 'review_id', required: true, type: String })
   async deleteReview(
     @Param() params: { review_id: string },
-  ): Promise<ReviewEntity> {
+  ): Promise<ReviewEntity | { message: string }> {
     const reviewFound = await this.reviewService.getReviewByID(
       params.review_id,
     );
     if (reviewFound) {
       return (await this.reviewService.deleteReview(params.review_id))[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This review cannot be found',
-      });
+      return { message: 'This review cannot be found' };
     }
   }
 }

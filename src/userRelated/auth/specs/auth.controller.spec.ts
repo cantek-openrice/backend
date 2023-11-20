@@ -6,7 +6,6 @@ import { Request } from 'express';
 import { AuthController } from '../auth.controller';
 import { AuthService } from '../auth.service';
 import { UserService } from '../../user/user.service';
-import { UserRole } from '../../../global/utils/enums/UserRole';
 import { expectedUsersHashPassword } from './expectedUsersHashPassword';
 import { expectedUsers } from './expectedUsers';
 
@@ -59,7 +58,7 @@ describe('AuthController', () => {
         username: 'ttiimmothy',
         email: 'ttiimmothhylsff@gmail.com',
         password: expectedUsers[0].password,
-        role: UserRole.Admin,
+        role: expectedUsers[0].role,
       });
 
       const token = jwtSimple.encode(
@@ -75,7 +74,7 @@ describe('AuthController', () => {
         username: expectedUsers[0].username,
         email: 'ttiimmothhylsff@gmail.com',
         password: expectedUsers[0].password,
-        role: UserRole.Admin,
+        role: expectedUsers[0].role,
       });
 
       expect(result).toEqual({ message: 'This username is already used' });
@@ -86,7 +85,7 @@ describe('AuthController', () => {
         username: 'ttiimmothy',
         email: expectedUsers[0].email,
         password: expectedUsers[0].password,
-        role: UserRole.Admin,
+        role: expectedUsers[0].role,
       });
 
       expect(result).toEqual({ message: 'This email is already used' });
@@ -124,7 +123,7 @@ describe('AuthController', () => {
     it('cannot login when the username is not found', async () => {
       const result = await authController.login({
         username: 'ttiimmothy',
-        password: 'Timothy',
+        password: expectedUsers[0].password,
       });
 
       expect(result).toEqual({ message: 'The username is not found' });

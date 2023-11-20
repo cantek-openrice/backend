@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { RestaurantPaymentService } from './restaurantPayment.service';
 import { CreateRestaurantPaymentDto } from './dto/create_restaurant_payment.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
@@ -51,7 +43,7 @@ export class RestaurantPaymentController {
   @ApiParam({ name: 'restaurant_payment_id', required: true, type: String })
   async deleteRestaurantPayment(
     @Param() params: { restaurant_payment_id: string },
-  ): Promise<RestaurantPaymentEntity> {
+  ): Promise<RestaurantPaymentEntity | { message: string }> {
     const restaurantPaymentFound =
       await this.restaurantPaymentService.getRestaurantPaymentByID(
         params.restaurant_payment_id,
@@ -63,10 +55,7 @@ export class RestaurantPaymentController {
         )
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant payment method cannot be found',
-      });
+      return { message: 'This restaurant payment method cannot be found' };
     }
   }
 }

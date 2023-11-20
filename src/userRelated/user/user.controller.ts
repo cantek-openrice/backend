@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update_user.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
@@ -33,31 +25,27 @@ export class UserController {
   async updateUser(
     @Param() params: { user_id: string },
     @Body() updateUserDto: UpdateUserDto,
-  ): Promise<UserEntity> {
+  ): Promise<UserEntity | { message: string }> {
     const userFound = await this.userService.getUserByID(params.user_id);
     if (userFound) {
       return (
         await this.userService.updateUser(params.user_id, updateUserDto)
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This user cannot be found',
-      });
+      return { message: 'This user cannot be found' };
     }
   }
 
   @Delete(':user_id')
   @ApiParam({ name: 'user_id', required: true, type: String })
-  async deleteUser(@Param() params: { user_id: string }): Promise<UserEntity> {
+  async deleteUser(
+    @Param() params: { user_id: string },
+  ): Promise<UserEntity | { message: string }> {
     const userFound = await this.userService.getUserByID(params.user_id);
     if (userFound) {
       return (await this.userService.deleteUser(params.user_id))[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This user cannot be found',
-      });
+      return { message: 'This user cannot be found' };
     }
   }
 }

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { RestaurantDishService } from './restaurantDish.service';
 import { CreateRestaurantDishDto } from './dto/create_restaurant_dish.dto';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
@@ -49,7 +41,7 @@ export class RestaurantDishController {
   @ApiParam({ name: 'restaurant_dish_id', required: true, type: String })
   async deleteRestaurantDish(
     @Param() params: { restaurant_dish_id: string },
-  ): Promise<RestaurantDishEntity> {
+  ): Promise<RestaurantDishEntity | { message: string }> {
     const restaurantDishFound =
       await this.restaurantDishService.getRestaurantDishByID(
         params.restaurant_dish_id,
@@ -61,10 +53,7 @@ export class RestaurantDishController {
         )
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant dish cannot be found',
-      });
+      return { message: 'This restaurant dish cannot be found' };
     }
   }
 }

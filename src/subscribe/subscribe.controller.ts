@@ -1,12 +1,4 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { SubscribeService } from './subscribe.service';
 import { CreateSubscribeDto } from './dto/create_subscribe.dto';
 import { SubscribeEntity } from './dto/entity/subscribe.entity';
@@ -43,7 +35,7 @@ export class SubscribeController {
   @ApiParam({ name: 'subscribe_id', required: true, type: String })
   async deleteSubscribe(
     @Param() params: { subscribe_id: string },
-  ): Promise<SubscribeEntity> {
+  ): Promise<SubscribeEntity | { message: string }> {
     const subscribeFound = await this.subscribeService.getSubscribeByID(
       params.subscribe_id,
     );
@@ -52,10 +44,7 @@ export class SubscribeController {
         await this.subscribeService.deleteSubscribe(params.subscribe_id)
       )[0];
     } else {
-      throw new BadRequestException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant subscription cannot be found',
-      });
+      return { message: 'This restaurant subscription cannot be found' };
     }
   }
 }

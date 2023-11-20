@@ -48,10 +48,23 @@ describe('UserController', () => {
       const result = await userController.updateUser(
         { user_id: expectedUsers[0].user_id },
         {
-          username: 'ttiimmothy',
+          username: expectedUsers[0].username,
         },
       );
       expect(result).toEqual(expectedUsers[0]);
+    });
+
+    it('should return user cannot be found message if the user cannot be found', async () => {
+      jest.spyOn(userService, 'getUserByID').mockResolvedValue(null);
+      const result = await userController.updateUser(
+        {
+          user_id: expectedUsers[0].user_id,
+        },
+        {
+          username: expectedUsers[0].username,
+        },
+      );
+      expect(result).toEqual({ message: 'This user cannot be found' });
     });
   });
 
@@ -61,6 +74,14 @@ describe('UserController', () => {
         user_id: expectedUsers[0].user_id,
       });
       expect(result).toEqual(expectedUsers[0]);
+    });
+
+    it('should return user cannot be found message if the user cannot be found', async () => {
+      jest.spyOn(userService, 'getUserByID').mockResolvedValue(null);
+      const result = await userController.deleteUser({
+        user_id: expectedUsers[0].user_id,
+      });
+      expect(result).toEqual({ message: 'This user cannot be found' });
     });
   });
 });

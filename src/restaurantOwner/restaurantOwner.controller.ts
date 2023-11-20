@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -54,7 +53,7 @@ export class RestaurantOwnerController {
   async updateRestaurantOwner(
     @Param() params: { restaurant_owner_id: string },
     @Body() updateRestaurantOwnerDto: UpdateRestaurantOwnerDto,
-  ): Promise<RestaurantOwnerEntity> {
+  ): Promise<RestaurantOwnerEntity | { message: string }> {
     const restaurantOwnerFound =
       await this.restaurantOwnerService.getRestaurantOwnerByID(
         params.restaurant_owner_id,
@@ -67,10 +66,7 @@ export class RestaurantOwnerController {
         )
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant owner cannot be found',
-      });
+      return { message: 'This restaurant owner cannot be found' };
     }
   }
 
@@ -78,7 +74,7 @@ export class RestaurantOwnerController {
   @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
   async deleteRestaurantOwner(
     @Param() params: { restaurant_owner_id: string },
-  ): Promise<RestaurantOwnerEntity> {
+  ): Promise<RestaurantOwnerEntity | { message: string }> {
     const restaurantOwnerFound =
       await this.restaurantOwnerService.getRestaurantOwnerByID(
         params.restaurant_owner_id,
@@ -90,10 +86,7 @@ export class RestaurantOwnerController {
         )
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant owner cannot be found',
-      });
+      return { message: 'This restaurant owner cannot be found' };
     }
   }
 }
