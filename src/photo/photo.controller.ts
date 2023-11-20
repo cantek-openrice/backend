@@ -1,14 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { PhotoService } from './photo.service';
-import { CreatePhotoDto } from './dto/create-photo.dto';
+import { CreatePhotoDto } from './dto/create_photo.dto';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { PhotoEntity } from './dto/entity/photo.entity';
 
@@ -41,15 +33,12 @@ export class PhotoController {
   @ApiParam({ name: 'photo_id', required: true, type: String })
   async deletePhoto(
     @Param() params: { photo_id: string },
-  ): Promise<PhotoEntity> {
+  ): Promise<PhotoEntity | { message: string }> {
     const photoFound = await this.photoService.getPhotoByID(params.photo_id);
     if (photoFound) {
       return (await this.photoService.deletePhoto(params.photo_id))[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This photo cannot be found',
-      });
+      return { message: 'This photo cannot be found' };
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Knex } from 'knex';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { CreateRestaurantDto } from './dto/create_restaurant.dto';
+import { UpdateRestaurantDto } from './dto/update_restaurant.dto';
 
 @Injectable()
 export class RestaurantService {

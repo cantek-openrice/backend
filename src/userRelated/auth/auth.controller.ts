@@ -12,11 +12,11 @@ import * as jwtSimple from 'jwt-simple';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/interfaces/user.interface';
-import { CreateUserDto } from '../user/dto/create-user.dto';
+import { CreateUserDto } from '../user/dto/create_user.dto';
 import { checkPassword, hashPassword } from '../../global/lib/hash';
 import { AuthGuard } from '../../global/guards/auth.guard';
 import { LoginResponse, RegisterResponse } from './dto/entity/auth.entity';
-import { LoginUserDto } from '../user/dto/login-user.dto';
+import { CreateAuthDto } from './dto/create_auth.dto';
 
 @ApiTags('auth')
 @Controller('api/auth/user')
@@ -51,7 +51,7 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() credentials: LoginUserDto): Promise<LoginResponse> {
+  async login(@Body() credentials: CreateAuthDto): Promise<LoginResponse> {
     const users: User[] = await this.userService.getUsers();
     if (
       users.findIndex((user) => user.username === credentials.username) === -1

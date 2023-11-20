@@ -4,15 +4,14 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
   Put,
   Query,
 } from '@nestjs/common';
-import { CreateRestaurantDto } from './dto/create-restaurant.dto';
-import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { CreateRestaurantDto } from './dto/create_restaurant.dto';
+import { UpdateRestaurantDto } from './dto/update_restaurant.dto';
 import { RestaurantService } from './restaurant.service';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RestaurantEntity } from './dto/entity/restaurant.entity';
@@ -104,42 +103,38 @@ export class RestaurantController {
   @Put(':restaurant_id')
   @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async updateRestaurant(
-    @Param() params: { id: string },
+    @Param() params: { restaurant_id: string },
     @Body() updateRestaurantDto: UpdateRestaurantDto,
-  ): Promise<RestaurantEntity> {
+  ): Promise<RestaurantEntity | { message: string }> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
-      params.id,
+      params.restaurant_id,
     );
     if (restaurantFound) {
       return (
         await this.restaurantService.updateRestaurant(
-          params.id,
+          params.restaurant_id,
           updateRestaurantDto,
         )
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant cannot be found',
-      });
+      return { message: 'This restaurant cannot be found' };
     }
   }
 
   @Delete(':restaurant_id')
   @ApiParam({ name: 'restaurant_id', required: true, type: String })
   async deleteRestaurant(
-    @Param() params: { id: string },
-  ): Promise<RestaurantEntity> {
+    @Param() params: { restaurant_id: string },
+  ): Promise<RestaurantEntity | { message: string }> {
     const restaurantFound = await this.restaurantService.getRestaurantByID(
-      params.id,
+      params.restaurant_id,
     );
     if (restaurantFound) {
-      return (await this.restaurantService.deleteRestaurant(params.id))[0];
+      return (
+        await this.restaurantService.deleteRestaurant(params.restaurant_id)
+      )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant cannot be found',
-      });
+      return { message: 'This restaurant cannot be found' };
     }
   }
 }

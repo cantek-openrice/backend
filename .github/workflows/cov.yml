@@ -6,15 +6,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  send-coverage-report:
-    runs-on: ${{ matrix.os }}
+  upload-coverage-report:
+    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: write
       security-events: write
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
         node-version: [16.x, 17.x, 18.x, 19.x, 20.x]
     steps:
       - name: Checkout
@@ -23,16 +22,23 @@ jobs:
         uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Jest Test
+      - name: Test with Coverage
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          TESTING_NODE_ENV: ${{ secrets.TESTING_NODE_ENV }}
+          TESTING_DB_HOST: ${{ secrets.TESTING_DB_HOST }}
+          TESTING_DB_PORT_NUMBER: ${{ secrets.TESTING_DB_PORT_NUMBER }}
+          TESTING_DB_NAME: ${{ secrets.TESTING_DB_NAME }}
+          TESTING_DB_USERNAME: ${{ secrets.TESTING_DB_USERNAME }}
+          TESTING_DB_PASSWORD: ${{ secrets.TESTING_DB_PASSWORD }}
         run: |
           npm ci --legacy-peer-deps
           npm run test:cov
-      - name: Upload coverage to Codecov
+      - name: Upload Coverage Report to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/clover.xml,coverage/coverage-final.json,coverage/lcov.info,!test/coverage/clover.xml,!test/coverage/coverage-final.json,!test/coverage/lcov.info
           fail_ci_if_error: true
           flags: unit_test
           name: OpenriceCanadaBackend

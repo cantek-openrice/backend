@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Knex } from 'knex';
-import { CreateRestaurantOwnerDto } from './dto/create-restaurantOwner.dto';
-import { UpdateRestaurantOwnerDto } from './dto/update-restaurantOwner.dto';
+import { CreateRestaurantOwnerDto } from './dto/create_restaurant_owner.dto';
+import { UpdateRestaurantOwnerDto } from './dto/update_restaurant_owner.dto';
 
 @Injectable()
 export class RestaurantOwnerService {
@@ -23,7 +23,6 @@ export class RestaurantOwnerService {
       .insert({
         ...restaurantOwner,
         created_at: new Date(),
-        modified_at: new Date(),
         active: true,
       })
       .into('restaurant_owner')
@@ -35,14 +34,14 @@ export class RestaurantOwnerService {
     restaurantOwner: UpdateRestaurantOwnerDto,
   ) {
     return await this.knex('restaurant_owner')
-      .update({ ...restaurantOwner, modified_at: new Date() })
+      .update(restaurantOwner)
       .where('restaurant_owner_id', id)
       .returning('*');
   }
 
   async deleteRestaurantOwner(id: string) {
     return await this.knex('restaurant_owner')
-      .update({ active: false, modified_at: new Date() })
+      .update({ active: false })
       .where('restaurant_owner_id', id)
       .returning('*');
   }

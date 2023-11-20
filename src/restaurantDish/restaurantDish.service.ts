@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Knex } from 'knex';
-import { CreateRestaurantDishDto } from './dto/create-restaurantDish.dto';
+import { CreateRestaurantDishDto } from './dto/create_restaurant_dish.dto';
 
 @Injectable()
 export class RestaurantDishService {
@@ -30,7 +30,7 @@ export class RestaurantDishService {
 
   async deleteRestaurantDish(id: string) {
     return await this.knex('restaurant_dish')
-      .update({ active: false, modified_at: new Date() })
+      .update({ active: false })
       .where('restaurant_dish_id', id)
       .returning('*');
   }

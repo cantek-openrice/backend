@@ -3,13 +3,12 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateRestaurantOwnerDto } from './dto/create-restaurantOwner.dto';
-import { UpdateRestaurantOwnerDto } from './dto/update-restaurantOwner.dto';
+import { CreateRestaurantOwnerDto } from './dto/create_restaurant_owner.dto';
+import { UpdateRestaurantOwnerDto } from './dto/update_restaurant_owner.dto';
 import { RestaurantOwnerService } from './restaurantOwner.service';
 import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantOwnerEntity } from './dto/entity/restaurantOwner.enttiy';
@@ -54,7 +53,7 @@ export class RestaurantOwnerController {
   async updateRestaurantOwner(
     @Param() params: { restaurant_owner_id: string },
     @Body() updateRestaurantOwnerDto: UpdateRestaurantOwnerDto,
-  ): Promise<RestaurantOwnerEntity> {
+  ): Promise<RestaurantOwnerEntity | { message: string }> {
     const restaurantOwnerFound =
       await this.restaurantOwnerService.getRestaurantOwnerByID(
         params.restaurant_owner_id,
@@ -67,10 +66,7 @@ export class RestaurantOwnerController {
         )
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant owner cannot be found',
-      });
+      return { message: 'This restaurant owner cannot be found' };
     }
   }
 
@@ -78,7 +74,7 @@ export class RestaurantOwnerController {
   @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
   async deleteRestaurantOwner(
     @Param() params: { restaurant_owner_id: string },
-  ): Promise<RestaurantOwnerEntity> {
+  ): Promise<RestaurantOwnerEntity | { message: string }> {
     const restaurantOwnerFound =
       await this.restaurantOwnerService.getRestaurantOwnerByID(
         params.restaurant_owner_id,
@@ -90,10 +86,7 @@ export class RestaurantOwnerController {
         )
       )[0];
     } else {
-      throw new NotFoundException('Bad request', {
-        cause: new Error(),
-        description: 'This restaurant owner cannot be found',
-      });
+      return { message: 'This restaurant owner cannot be found' };
     }
   }
 }
