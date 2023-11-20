@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('visited_at').notNullable();
       table.boolean('active').notNullable().defaultTo(true);
       table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
-      table.timestamp('modified_at').notNullable();
+      table.timestamp('modified_at').notNullable().defaultTo(knex.fn.now());
     });
   }
 }

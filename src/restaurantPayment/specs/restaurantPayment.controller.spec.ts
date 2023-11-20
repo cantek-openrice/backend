@@ -5,7 +5,7 @@ import { expectedRestaurantPayments } from './expectedRestaurantPayments';
 
 jest.mock('../restaurantPayment.service');
 
-describe('restaurantPaymentController', () => {
+describe('RestaurantPaymentController', () => {
   let restaurantPayment: TestingModule;
   let restaurantPaymentController: RestaurantPaymentController;
   let restaurantPaymentService: RestaurantPaymentService;

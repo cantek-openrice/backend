@@ -49,7 +49,7 @@ describe('AuthController', () => {
   });
 
   describe('register', () => {
-    it('should return the user after registration of a new user', async () => {
+    it('should return that user after registration of a new user', async () => {
       const expectedUsersHashPasswordSync = await expectedUsersHashPassword();
       jest
         .spyOn(userService, 'createUser')

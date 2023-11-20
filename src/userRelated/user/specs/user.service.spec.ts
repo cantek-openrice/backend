@@ -10,7 +10,7 @@ const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];
 const knex = Knex(knexConfig);
 
-describe('UserController', () => {
+describe('UserService', () => {
   let userService: UserService;
   let userIDs: { user_id: string }[];
 
@@ -25,20 +25,19 @@ describe('UserController', () => {
         email: expectedUsers[0].email,
         password: expectedUsers[0].password,
         role: expectedUsers[0].role,
-        active: expectedUsers[0].active,
-        created_at: expectedUsers[0].created_at,
-        modified_at: expectedUsers[0].modified_at,
       })
       .into('user')
       .returning('user_id');
-
-    userService = new UserService(knex);
   });
 
   describe('getUsers', () => {
     it('should return users', async () => {
       const result = await userService.getUsers();
-      expect(result).toMatchObject([
+      const userFiltered = result.filter(
+        (user) => user.user_id === userIDs[0].user_id,
+      );
+
+      expect(userFiltered).toMatchObject([
         {
           username: expectedUsers[0].username,
           email: expectedUsers[0].email,
@@ -71,6 +70,8 @@ describe('UserController', () => {
         password: expectedUsers[0].password,
         role: expectedUsers[0].role,
       });
+
+      userIDs.push({ user_id: result[0].user_id });
 
       expect(result).toMatchObject([
         {
@@ -114,14 +115,22 @@ describe('UserController', () => {
   });
 
   afterEach(async () => {
-    await knex('user')
+    const subscribes = await knex
+      .select('*')
+      .from('subscribe')
       .whereIn(
         'user_id',
         userIDs.map((userID) => userID.user_id),
-      )
-      .del();
-    await knex('user').where('username', expectedUsers[0].username).del();
-    await knex('user').where('username', 'ttiimmothy').del();
+      );
+
+    if (subscribes.length === 0) {
+      await knex('user')
+        .whereIn(
+          'user_id',
+          userIDs.map((userID) => userID.user_id),
+        )
+        .del();
+    }
   });
 
   afterAll(async () => {

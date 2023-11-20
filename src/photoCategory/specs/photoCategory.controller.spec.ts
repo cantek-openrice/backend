@@ -5,7 +5,7 @@ import { expectedPhotoCategories } from './expectedPhotoCategories';
 
 jest.mock('../photoCategory.service');
 
-describe('photoCategoryController', () => {
+describe('PhotoCategoryController', () => {
   let photoCategory: TestingModule;
   let photoCategoryController: PhotoCategoryController;
   let photoCategoryService: PhotoCategoryService;
