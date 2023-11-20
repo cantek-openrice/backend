@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MiddlewareConsumer } from '@nestjs/common';
 import { createMock } from '@golevelup/ts-jest';
-import { CspModule } from './csp.module';
-import { CspMiddleware } from './csp.middleware';
+import { CspModule } from '../csp.module';
+import { CspMiddleware } from '../csp.middleware';
 
 describe('CspModule', () => {
   let csp: TestingModule;

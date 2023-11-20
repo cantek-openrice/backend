@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from './app.module';
-import { CspModule } from './global/csp/csp.module';
 
 jest.mock('./global/modules/knex.module.ts');
 jest.mock('./global/csp/csp.service.ts');
@@ -30,7 +29,6 @@ describe('AppModule', () => {
   describe('initializeTheModule', () => {
     it('should compile the appModule', async () => {
       expect(app).toBeDefined();
-      expect(app.get(CspModule)).toBeInstanceOf(CspModule);
     });
   });
 });
