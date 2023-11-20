@@ -68,7 +68,10 @@ describe('SubscribeService', () => {
   describe('getSubscribes', () => {
     it('should return subscribes', async () => {
       const result = await subscribeService.getSubscribes();
-      expect(result).toMatchObject([
+      const subscribeFiltered = result.filter(
+        (subscribe) => subscribe.subscribe_id === subscribeIDs[0].subscribe_id,
+      );
+      expect(subscribeFiltered).toMatchObject([
         {
           user_id: userIDs[0].user_id,
           restaurant_id: restaurantIDs[0].restaurant_id,
@@ -124,7 +127,12 @@ describe('SubscribeService', () => {
   });
 
   afterEach(async () => {
-    await knex('subscribe').del();
+    await knex('subscribe')
+      .whereIn(
+        'subscribe_id',
+        subscribeIDs.map((subscribeID) => subscribeID.subscribe_id),
+      )
+      .del();
 
     await knex('restaurant')
       .whereIn(

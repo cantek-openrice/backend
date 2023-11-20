@@ -68,7 +68,12 @@ describe('RestaurantOwnerService', () => {
   describe('getRestaurantOwners', () => {
     it('should return restaurant owners', async () => {
       const result = await restaurantOwnerService.getRestaurantOwners();
-      expect(result).toMatchObject([
+      const restaurantOwnerFiltered = result.filter(
+        (restaurantOwner) =>
+          restaurantOwner.restaurant_owner_id ===
+          restaurantOwnerIDs[0].restaurant_owner_id,
+      );
+      expect(restaurantOwnerFiltered).toMatchObject([
         {
           user_id: userIDs[0].user_id,
           restaurant_id: restaurantIDs[0].restaurant_id,
@@ -145,7 +150,14 @@ describe('RestaurantOwnerService', () => {
   });
 
   afterEach(async () => {
-    await knex('restaurant_owner').del();
+    await knex('restaurant_owner')
+      .whereIn(
+        'restaurant_owner_id',
+        restaurantOwnerIDs.map(
+          (restaurantOwnerID) => restaurantOwnerID.restaurant_owner_id,
+        ),
+      )
+      .del();
 
     await knex('restaurant')
       .whereIn(
