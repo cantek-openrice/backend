@@ -67,14 +67,22 @@ describe('AuthService', () => {
   });
 
   afterEach(async () => {
-    await knex('user')
+    const subscribes = await knex
+      .select('*')
+      .from('subscribe')
       .whereIn(
         'user_id',
         userIDs.map((userID) => userID.user_id),
-      )
-      .del();
-    await knex('user').where('username', expectedUsers[0].username).del();
-    await knex('user').where('username', 'ttiimmothy').del();
+      );
+
+    if (subscribes.length === 0) {
+      await knex('user')
+        .whereIn(
+          'user_id',
+          userIDs.map((userID) => userID.user_id),
+        )
+        .del();
+    }
   });
 
   afterAll(async () => {

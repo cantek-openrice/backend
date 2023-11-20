@@ -71,6 +71,8 @@ describe('UserService', () => {
         role: expectedUsers[0].role,
       });
 
+      userIDs.push({ user_id: result[0].user_id });
+
       expect(result).toMatchObject([
         {
           username: expectedUsers[0].username,
@@ -113,14 +115,22 @@ describe('UserService', () => {
   });
 
   afterEach(async () => {
-    await knex('user')
+    const subscribes = await knex
+      .select('*')
+      .from('subscribe')
       .whereIn(
         'user_id',
         userIDs.map((userID) => userID.user_id),
-      )
-      .del();
-    await knex('user').where('username', expectedUsers[0].username).del();
-    await knex('user').where('username', 'ttiimmothy').del();
+      );
+
+    if (subscribes.length === 0) {
+      await knex('user')
+        .whereIn(
+          'user_id',
+          userIDs.map((userID) => userID.user_id),
+        )
+        .del();
+    }
   });
 
   afterAll(async () => {
