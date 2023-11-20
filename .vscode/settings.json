@@ -6,6 +6,7 @@
     "cachefile",
     "checkin",
     "cobertura",
+    "codecov",
     "codegen",
     "csdef",
     "dbmdl",
