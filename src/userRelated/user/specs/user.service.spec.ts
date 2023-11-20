@@ -115,6 +115,14 @@ describe('UserService', () => {
   });
 
   afterEach(async () => {
+    const restaurantOwners = await knex
+      .select('*')
+      .from('restaurant_owner')
+      .whereIn(
+        'user_id',
+        userIDs.map((userID) => userID.user_id),
+      );
+
     const reviews = await knex
       .select('*')
       .from('review')
@@ -122,6 +130,7 @@ describe('UserService', () => {
         'user_id',
         userIDs.map((userID) => userID.user_id),
       );
+
     const subscribes = await knex
       .select('*')
       .from('subscribe')
@@ -130,7 +139,11 @@ describe('UserService', () => {
         userIDs.map((userID) => userID.user_id),
       );
 
-    if (reviews.length === 0 && subscribes.length === 0) {
+    if (
+      restaurantOwners.length === 0 &&
+      reviews.length === 0 &&
+      subscribes.length === 0
+    ) {
       await knex('user')
         .whereIn(
           'user_id',

@@ -389,6 +389,7 @@ coverage
 static.express.module.ts
 junit.xml
 coverage.xml
+pipes
 
 # Supabase
 ./supabase/branches

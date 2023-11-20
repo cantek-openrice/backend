@@ -245,6 +245,30 @@ describe('RestaurantService', () => {
         .del();
     }
 
+    const restaurantDishes = await knex
+      .select('*')
+      .from('restaurant_dish')
+      .whereIn(
+        'restaurant_id',
+        restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
+      );
+
+    const restaurantOwners = await knex
+      .select('*')
+      .from('restaurant_owner')
+      .whereIn(
+        'restaurant_id',
+        restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
+      );
+
+    const restaurantPayments = await knex
+      .select('*')
+      .from('restaurant_payment')
+      .whereIn(
+        'restaurant_id',
+        restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
+      );
+
     const reviews = await knex
       .select('*')
       .from('review')
@@ -252,6 +276,7 @@ describe('RestaurantService', () => {
         'restaurant_id',
         restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
       );
+
     const subscribes = await knex
       .select('*')
       .from('subscribe')
@@ -260,7 +285,13 @@ describe('RestaurantService', () => {
         restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
       );
 
-    if (reviews.length === 0 && subscribes.length === 0) {
+    if (
+      restaurantDishes.length === 0 &&
+      restaurantOwners.length === 0 &&
+      restaurantPayments.length === 0 &&
+      reviews.length === 0 &&
+      subscribes.length === 0
+    ) {
       await knex('restaurant')
         .whereIn(
           'restaurant_id',
