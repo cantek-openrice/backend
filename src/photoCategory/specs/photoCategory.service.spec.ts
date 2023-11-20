@@ -57,14 +57,26 @@ describe('PhotoCategoryService', () => {
   });
 
   afterEach(async () => {
-    await knex('photo_category')
+    const photos = await knex
+      .select('*')
+      .from('photo')
       .whereIn(
         'photo_category_id',
         photoCategoryIDs.map(
           (photoCategoryID) => photoCategoryID.photo_category_id,
         ),
-      )
-      .del();
+      );
+
+    if (photos.length === 0) {
+      await knex('photo_category')
+        .whereIn(
+          'photo_category_id',
+          photoCategoryIDs.map(
+            (photoCategoryID) => photoCategoryID.photo_category_id,
+          ),
+        )
+        .del();
+    }
   });
 
   afterAll(async () => {

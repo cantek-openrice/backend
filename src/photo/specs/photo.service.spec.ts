@@ -154,7 +154,12 @@ describe('PhotoService', () => {
   });
 
   afterEach(async () => {
-    await knex('photo').del();
+    await knex('photo')
+      .whereIn(
+        'photo_id',
+        photoIDs.map((photoID) => photoID.photo_id),
+      )
+      .del();
 
     await knex('photo_category')
       .whereIn(
