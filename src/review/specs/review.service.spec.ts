@@ -19,6 +19,7 @@ describe('ReviewService', () => {
   let districtIDs: { district_id: string }[];
   let restaurantIDs: { restaurant_id: string }[];
   let photoCategoryIDs: { photo_category_id: string }[];
+  let photoIDs: { photo_id: string }[];
 
   beforeAll(async () => {
     reviewService = new ReviewService(knex);
@@ -211,7 +212,7 @@ describe('ReviewService', () => {
         .into('photo_category')
         .returning('photo_category_id');
 
-      await knex
+      photoIDs = await knex
         .insert({
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
@@ -230,32 +231,30 @@ describe('ReviewService', () => {
   });
 
   afterEach(async () => {
-    let photos;
+    if (
+      photoIDs &&
+      photoIDs.length > 0 &&
+      photoCategoryIDs &&
+      photoCategoryIDs.length > 0
+    ) {
+      await knex('photo')
+        .whereIn(
+          'photo_id',
+          photoIDs.map((photoID) => photoID.photo_id),
+        )
+        .del();
 
-    if (photoCategoryIDs && photoCategoryIDs.length > 0) {
-      photos = await knex
-        .select('*')
-        .from('photo')
+      await knex('photo_category')
         .whereIn(
           'photo_category_id',
           photoCategoryIDs.map(
             (photoCategoryID) => photoCategoryID.photo_category_id,
           ),
-        );
-
-      if (photos && photos.length === 0) {
-        await knex('photo_category')
-          .whereIn(
-            'photo_category_id',
-            photoCategoryIDs.map(
-              (photoCategoryID) => photoCategoryID.photo_category_id,
-            ),
-          )
-          .del();
-      }
+        )
+        .del();
     }
 
-    photos = await knex
+    const photos = await knex
       .select('*')
       .from('photo')
       .whereIn(
