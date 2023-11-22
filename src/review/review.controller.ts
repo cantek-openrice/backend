@@ -29,9 +29,9 @@ export class ReviewController {
     const reviews = await this.reviewService.getReviews();
 
     if (restaurantID) {
-      reviewsFiltered = reviews.filter((review) => {
-        review.restaurant_id === restaurantID;
-      });
+      reviewsFiltered = reviews.filter(
+        (review) => review.restaurant_id === restaurantID,
+      );
 
       return Promise.all(
         reviewsFiltered.map(async (review) => ({

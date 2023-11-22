@@ -43,6 +43,13 @@ describe('ReviewController', () => {
   });
 
   describe('getReviews', () => {
+    it('should return reviews with restaurant id starts with 123', async () => {
+      const result = await reviewController.getReviews(
+        expectedReviews[0].restaurant_id,
+      );
+      expect(result).toEqual(expectedReviews);
+    });
+
     it('should return reviews', async () => {
       const result = await reviewController.getReviews('');
       expect(result).toEqual(expectedReviews);

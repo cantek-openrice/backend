@@ -42,11 +42,11 @@ describe('RestaurantController', () => {
   });
 
   describe('getRestaurants', () => {
-    it('should return restaurants', async () => {
+    it('should return restaurants with name starts with restaurant', async () => {
       const result = await restaurantController.getRestaurants(
         10,
         0,
-        'restaurant',
+        expectedRestaurants[0].name,
       );
       expect(result).toEqual([
         { ...expectedRestaurants[0], averageRating: 1, reviewCount: 1 },
