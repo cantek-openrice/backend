@@ -11,6 +11,7 @@ export class ReviewEntity implements Review {
   rating: number;
   spending: number;
   visited_date: Date;
+  photo?: string;
   active: boolean;
   created_at: Date;
   modified_at: Date;

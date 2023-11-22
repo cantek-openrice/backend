@@ -4,6 +4,8 @@ import { ReviewService } from '../review.service';
 import { expectedUsers } from '../../userRelated/user/specs/expectedUsers';
 import { expectedRestaurants } from '../../restaurant/specs/expectedRestaurants';
 import { expectedDistricts } from '../../district/specs/expectedDistricts';
+import { expectedPhotoCategories } from '../../photoCategory/specs/expectedPhotoCategories';
+import { expectedPhotos } from '../../photo/specs/expectedPhotos';
 import { expectedReviews } from './expectedReviews';
 
 const configMode = process.env.TESTING_NODE_ENV || 'testing';
@@ -16,6 +18,8 @@ describe('ReviewService', () => {
   let userIDs: { user_id: string }[];
   let districtIDs: { district_id: string }[];
   let restaurantIDs: { restaurant_id: string }[];
+  let photoCategoryIDs: { photo_category_id: string }[];
+  let photoIDs: { photo_id: string }[];
 
   beforeAll(async () => {
     reviewService = new ReviewService(knex);
@@ -199,7 +203,57 @@ describe('ReviewService', () => {
     });
   });
 
+  describe('getReviewPhoto', () => {
+    it('should get the photo of a specific review id', async () => {
+      photoCategoryIDs = await knex
+        .insert({
+          name: expectedPhotoCategories[0].name,
+        })
+        .into('photo_category')
+        .returning('photo_category_id');
+
+      photoIDs = await knex
+        .insert({
+          photo_category_id: photoCategoryIDs[0].photo_category_id,
+          review_id: reviewIDs[0].review_id,
+          photo_url: expectedPhotos[0].photo_url,
+        })
+        .into('photo')
+        .returning('photo_id');
+
+      const result = await reviewService.getReviewPhoto(reviewIDs[0].review_id);
+      expect(result).toEqual([
+        {
+          photo_url: expectedPhotos[0].photo_url,
+        },
+      ]);
+    });
+  });
+
   afterEach(async () => {
+    if (
+      photoIDs &&
+      photoIDs.length > 0 &&
+      photoCategoryIDs &&
+      photoCategoryIDs.length > 0
+    ) {
+      await knex('photo')
+        .whereIn(
+          'photo_id',
+          photoIDs.map((photoID) => photoID.photo_id),
+        )
+        .del();
+
+      await knex('photo_category')
+        .whereIn(
+          'photo_category_id',
+          photoCategoryIDs.map(
+            (photoCategoryID) => photoCategoryID.photo_category_id,
+          ),
+        )
+        .del();
+    }
+
     const photos = await knex
       .select('*')
       .from('photo')
@@ -208,7 +262,7 @@ describe('ReviewService', () => {
         reviewIDs.map((reviewID) => reviewID.review_id),
       );
 
-    if (photos.length === 0) {
+    if (photos && photos.length === 0) {
       await knex('review')
         .whereIn(
           'review_id',

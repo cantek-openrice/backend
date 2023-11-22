@@ -54,4 +54,11 @@ export class ReviewService {
       .from('restaurant')
       .where('restaurant_id', restaurantID);
   }
+
+  async getReviewPhoto(reviewID: string) {
+    return await this.knex
+      .select('photo_url')
+      .from('photo')
+      .where('review_id', reviewID);
+  }
 }
