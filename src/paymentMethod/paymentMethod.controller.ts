@@ -13,7 +13,7 @@ export class PaymentMethodController {
     return await this.paymentMethodService.getPaymentMethods();
   }
 
-  @Get(':payment_method_id')
+  @Get('id/:payment_method_id')
   @ApiParam({ name: 'payment_method_id', required: true, type: String })
   async getPaymentMethodByID(
     @Param() params: { payment_method_id: string },

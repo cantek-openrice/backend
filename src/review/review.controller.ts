@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UpdateReviewDto } from './dto/update_review.dto';
-import { CreateReviewDto } from './dto/create_review.dto';
+import { CreateReviewDtoExtended } from './dto/create_review.dto';
 import { ReviewService } from './review.service';
 import { ReviewEntity } from './dto/entity/review.entity';
 
@@ -67,7 +67,7 @@ export class ReviewController {
     );
   }
 
-  @Get(':review_id')
+  @Get('id/:review_id')
   @ApiParam({ name: 'review_id', required: true, type: String })
   async getReviewByID(
     @Param() params: { review_id: string },
@@ -88,11 +88,27 @@ export class ReviewController {
   }
 
   @Post()
-  async createReview(@Body() createReviewDto: CreateReviewDto) {
-    return (await this.reviewService.createReview(createReviewDto))[0];
+  @ApiQuery({ name: 'photoCategory', required: false })
+  async createReview(
+    @Body()
+    body: CreateReviewDtoExtended,
+    @Query('photoCategory', new DefaultValuePipe('Review'))
+    photoCategory: string,
+  ) {
+    const photoCategoryID = (
+      await this.reviewService.getPhotoCategoryID(photoCategory)
+    )[0]?.photo_category_id;
+    return (
+      await this.reviewService.createReview(
+        body.createReviewDto,
+        body.imagePrefix,
+        body.restaurantID,
+        photoCategoryID,
+      )
+    )[0];
   }
 
-  @Put(':review_id')
+  @Put('id/:review_id')
   @ApiParam({ name: 'review_id', required: true, type: String })
   async updateReview(
     @Param() params: { review_id: string },
@@ -110,7 +126,7 @@ export class ReviewController {
     }
   }
 
-  @Delete(':review_id')
+  @Delete('id/:review_id')
   @ApiParam({ name: 'review_id', required: true, type: String })
   async deleteReview(
     @Param() params: { review_id: string },

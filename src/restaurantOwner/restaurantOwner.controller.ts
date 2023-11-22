@@ -14,7 +14,7 @@ import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantOwnerEntity } from './dto/entity/restaurantOwner.enttiy';
 
 @ApiTags('restaurant owner')
-@Controller('api/restaurant-owner')
+@Controller('api/restaurant/owner')
 export class RestaurantOwnerController {
   constructor(
     private readonly restaurantOwnerService: RestaurantOwnerService,
@@ -25,7 +25,7 @@ export class RestaurantOwnerController {
     return await this.restaurantOwnerService.getRestaurantOwners();
   }
 
-  @Get(':restaurant_owner_id')
+  @Get('id/:restaurant_owner_id')
   @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
   async getRestaurantOwnerByID(
     @Param() params: { restaurant_owner_id: string },
@@ -48,7 +48,7 @@ export class RestaurantOwnerController {
     )[0];
   }
 
-  @Put(':restaurant_owner_id')
+  @Put('id/:restaurant_owner_id')
   @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
   async updateRestaurantOwner(
     @Param() params: { restaurant_owner_id: string },
@@ -70,7 +70,7 @@ export class RestaurantOwnerController {
     }
   }
 
-  @Delete(':restaurant_owner_id')
+  @Delete('id/:restaurant_owner_id')
   @ApiParam({ name: 'restaurant_owner_id', required: true, type: String })
   async deleteRestaurantOwner(
     @Param() params: { restaurant_owner_id: string },

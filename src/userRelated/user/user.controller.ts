@@ -14,13 +14,13 @@ export class UserController {
     return await this.userService.getUsers();
   }
 
-  @Get(':user_id')
+  @Get('id/:user_id')
   @ApiParam({ name: 'user_id', required: true, type: String })
   async getUserByID(@Param() params: { user_id: string }): Promise<UserEntity> {
     return (await this.userService.getUserByID(params.user_id))[0];
   }
 
-  @Put(':user_id')
+  @Put('id/:user_id')
   @ApiParam({ name: 'user_id', required: true, type: String })
   async updateUser(
     @Param() params: { user_id: string },
@@ -36,7 +36,7 @@ export class UserController {
     }
   }
 
-  @Delete(':user_id')
+  @Delete('id/:user_id')
   @ApiParam({ name: 'user_id', required: true, type: String })
   async deleteUser(
     @Param() params: { user_id: string },

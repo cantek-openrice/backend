@@ -18,28 +18,30 @@ export class PhotoService {
     return await this.knex
       .select('*')
       .from('photo')
-      .leftOuterJoin('review', 'review.review_id', 'review.review_id')
+      .leftOuterJoin('review', 'photo.review_id', 'review.review_id')
       .leftOuterJoin(
         'photo_category',
         'photo.photo_category_id',
         'photo_category.photo_category_id',
       )
       .where('photo_category.name', 'Review')
-      .where('review.restaurant_id', id);
+      .andWhere('review.restaurant_id', id)
+      .andWhere('photo.active', true);
   }
 
   async getMenuPhotos(id: string) {
     return await this.knex
       .select('*')
       .from('photo')
-      .leftOuterJoin('review', 'review.review_id', 'review.review_id')
+      .leftOuterJoin('review', 'photo.review_id', 'review.review_id')
       .leftOuterJoin(
         'photo_category',
         'photo.photo_category_id',
         'photo_category.photo_category_id',
       )
       .where('photo_category.name', 'Menu')
-      .where('review.restaurant_id', id);
+      .andWhere('review.restaurant_id', id)
+      .andWhere('photo.active', true);
   }
 
   async createPhoto(photo: CreatePhotoDto) {

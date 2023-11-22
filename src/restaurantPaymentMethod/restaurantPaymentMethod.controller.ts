@@ -5,7 +5,7 @@ import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantPaymentMethodEntity } from './dto/entity/restaurantPaymentMethod.entity';
 
 @ApiTags('restaurant payment method')
-@Controller('api/restaurant-payment-method')
+@Controller('api/restaurant/payment/method')
 export class RestaurantPaymentMethodController {
   constructor(
     private readonly restaurantPaymentMethodService: RestaurantPaymentMethodService,
@@ -18,7 +18,7 @@ export class RestaurantPaymentMethodController {
     return await this.restaurantPaymentMethodService.getRestaurantPaymentMethods();
   }
 
-  @Get(':restaurant_payment_method_id')
+  @Get('id/:restaurant_payment_method_id')
   @ApiParam({
     name: 'restaurant_payment_method_id',
     required: true,
@@ -45,7 +45,7 @@ export class RestaurantPaymentMethodController {
     )[0];
   }
 
-  @Delete(':restaurant_payment_method_id')
+  @Delete('id/:restaurant_payment_method_id')
   @ApiParam({
     name: 'restaurant_payment_method_id',
     required: true,

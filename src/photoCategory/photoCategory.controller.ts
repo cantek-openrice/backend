@@ -4,8 +4,7 @@ import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { PhotoCategoryEntity } from './dto/entity/photoCategory.entity';
 
 @ApiTags('photo category')
-// @Controller('api/photo/category') // We cannot use this, api/photo/:id with take over the control
-@Controller('api/photo-category')
+@Controller('api/photo/category')
 export class PhotoCategoryController {
   constructor(private readonly photoCategoryService: PhotoCategoryService) {}
 
@@ -14,7 +13,7 @@ export class PhotoCategoryController {
     return await this.photoCategoryService.getPhotoCategories();
   }
 
-  @Get(':photo_category_id')
+  @Get('id/:photo_category_id')
   @ApiParam({ name: 'photo_category_id', required: true, type: String })
   async getPhotoCategoryByID(
     @Param() params: { photo_category_id: string },

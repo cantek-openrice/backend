@@ -5,7 +5,7 @@ import { ApiTags, ApiParam } from '@nestjs/swagger';
 import { RestaurantDishEntity } from './dto/entity/restaurantDish.entity';
 
 @ApiTags('restaurant dish')
-@Controller('api/restaurant-dish')
+@Controller('api/restaurant/dish')
 export class RestaurantDishController {
   constructor(private readonly restaurantDishService: RestaurantDishService) {}
 
@@ -14,7 +14,7 @@ export class RestaurantDishController {
     return await this.restaurantDishService.getRestaurantDishes();
   }
 
-  @Get(':restaurant_dish_id')
+  @Get('id/:restaurant_dish_id')
   @ApiParam({ name: 'restaurant_dish_id', required: true, type: String })
   async getRestaurantDishByID(
     @Param() params: { restaurant_dish_id: string },
@@ -37,7 +37,7 @@ export class RestaurantDishController {
     )[0];
   }
 
-  @Delete(':restaurant_dish_id')
+  @Delete('id/:restaurant_dish_id')
   @ApiParam({ name: 'restaurant_dish_id', required: true, type: String })
   async deleteRestaurantDish(
     @Param() params: { restaurant_dish_id: string },

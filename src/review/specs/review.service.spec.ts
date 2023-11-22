@@ -111,15 +111,25 @@ describe('ReviewService', () => {
 
   describe('createReview', () => {
     it('should return that review after creating a review', async () => {
-      const result = await reviewService.createReview({
-        user_id: userIDs[0].user_id,
-        restaurant_id: restaurantIDs[0].restaurant_id,
-        title: expectedReviews[0].title,
-        content: expectedReviews[0].content,
-        rating: expectedReviews[0].rating,
-        spending: expectedReviews[0].spending,
-        visited_date: expectedReviews[0].visited_date,
-      });
+      photoCategoryIDs = await knex
+        .insert({ name: 'Review' })
+        .into('photo_category')
+        .returning('photo_category_id');
+
+      const result = await reviewService.createReview(
+        {
+          user_id: userIDs[0].user_id,
+          restaurant_id: restaurantIDs[0].restaurant_id,
+          title: expectedReviews[0].title,
+          content: expectedReviews[0].content,
+          rating: expectedReviews[0].rating,
+          spending: expectedReviews[0].spending,
+          visited_date: expectedReviews[0].visited_date,
+        },
+        process.env.IMAGE_PREFIX,
+        restaurantIDs[0].restaurant_id,
+        photoCategoryIDs[0].photo_category_id,
+      );
 
       reviewIDs.push({ review_id: result[0].review_id });
 
@@ -225,6 +235,27 @@ describe('ReviewService', () => {
       expect(result).toEqual([
         {
           photo_url: expectedPhotos[0].photo_url,
+        },
+      ]);
+    });
+  });
+
+  describe('getPhotoCategoryID', () => {
+    it('should get the photo category id of a specific photo category name', async () => {
+      photoCategoryIDs = await knex
+        .insert({ name: 'Review' })
+        .into('photo_category')
+        .returning('photo_category_id');
+
+      const result = await reviewService.getPhotoCategoryID('Review');
+      const photoCategoryIDFiltered = result.filter(
+        (photoCategoryID) =>
+          photoCategoryID.photo_category_id ===
+          photoCategoryIDs[0].photo_category_id,
+      );
+      expect(photoCategoryIDFiltered).toMatchObject([
+        {
+          photo_category_id: photoCategoryIDs[0].photo_category_id,
         },
       ]);
     });

@@ -14,7 +14,7 @@ export class SubscribeController {
     return await this.subscribeService.getSubscribes();
   }
 
-  @Get(':subscribe_id')
+  @Get('id/:subscribe_id')
   @ApiParam({ name: 'subscribe_id', required: true, type: String })
   async getSubscribeByID(
     @Param() params: { subscribe_id: string },
@@ -31,7 +31,7 @@ export class SubscribeController {
     return (await this.subscribeService.createSubscribe(createSubscribeDto))[0];
   }
 
-  @Delete(':subscribe_id')
+  @Delete('id/:subscribe_id')
   @ApiParam({ name: 'subscribe_id', required: true, type: String })
   async deleteSubscribe(
     @Param() params: { subscribe_id: string },
