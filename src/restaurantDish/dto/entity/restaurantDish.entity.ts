@@ -1,4 +1,4 @@
-import { RestaurantDish } from 'src/restaurantDish/interfaces/restaurantDish.interface';
+import { RestaurantDish } from '../../interfaces/restaurantDish.interface';
 
 export class RestaurantDishEntity implements RestaurantDish {
   restaurant_dish_id: string;

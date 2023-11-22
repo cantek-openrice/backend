@@ -14,8 +14,8 @@ export class CreatePhotoDto {
   review_id: string;
 
   @ApiProperty({
-    description: 'The storage address of photo',
+    description: 'The url of photo',
     type: String,
   })
-  address: string;
+  photo_url: string;
 }

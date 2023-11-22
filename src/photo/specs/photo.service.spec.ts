@@ -82,7 +82,7 @@ describe('PhotoService', () => {
       .insert({
         photo_category_id: photoCategoryIDs[0].photo_category_id,
         review_id: reviewIDs[0].review_id,
-        address: expectedPhotos[0].address,
+        photo_url: expectedPhotos[0].photo_url,
       })
       .into('photo')
       .returning('photo_id');
@@ -98,7 +98,7 @@ describe('PhotoService', () => {
         {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
-          address: expectedPhotos[0].address,
+          photo_url: expectedPhotos[0].photo_url,
         },
       ]);
     });
@@ -111,7 +111,99 @@ describe('PhotoService', () => {
         {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
-          address: expectedPhotos[0].address,
+          photo_url: expectedPhotos[0].photo_url,
+        },
+      ]);
+    });
+  });
+
+  describe('getReviewPhotos', () => {
+    it('should return photos in restaurant category', async () => {
+      const photoCategories = await knex
+        .insert({
+          name: 'Review',
+        })
+        .into('photo_category')
+        .returning('*');
+
+      const photoID = await knex
+        .insert({
+          photo_category_id: photoCategories.filter(
+            (photoCategory) => photoCategory.name === 'Review',
+          )[0].photo_category_id,
+          review_id: reviewIDs[0].review_id,
+          photo_url: expectedPhotos[0].photo_url,
+        })
+        .into('photo')
+        .returning('photo_id');
+
+      photoIDs.push({
+        photo_id: photoID[0].photo_id,
+      });
+
+      photoCategoryIDs.push({
+        photo_category_id: photoCategories[0].photo_category_id,
+      });
+
+      const result = await photoService.getReviewPhotos(
+        restaurantIDs[0].restaurant_id,
+      );
+      const photoFiltered = result.filter(
+        (photo) => photo.photo_id === photoID[0].photo_id,
+      );
+      expect(photoFiltered).toMatchObject([
+        {
+          photo_category_id: photoCategories.filter(
+            (photoCategory) => photoCategory.name === 'Review',
+          )[0].photo_category_id,
+          review_id: reviewIDs[0].review_id,
+          photo_url: expectedPhotos[0].photo_url,
+        },
+      ]);
+    });
+  });
+
+  describe('getMenuPhotos', () => {
+    it('should return photos in menu category', async () => {
+      const photoCategories = await knex
+        .insert({
+          name: 'Menu',
+        })
+        .into('photo_category')
+        .returning('*');
+
+      const photoID = await knex
+        .insert({
+          photo_category_id: photoCategories.filter(
+            (photoCategory) => photoCategory.name === 'Menu',
+          )[0].photo_category_id,
+          review_id: reviewIDs[0].review_id,
+          photo_url: expectedPhotos[0].photo_url,
+        })
+        .into('photo')
+        .returning('photo_id');
+
+      photoIDs.push({
+        photo_id: photoID[0].photo_id,
+      });
+
+      photoCategoryIDs.push({
+        photo_category_id: photoCategories[0].photo_category_id,
+      });
+
+      const result = await photoService.getMenuPhotos(
+        restaurantIDs[0].restaurant_id,
+      );
+      const photoFiltered = result.filter(
+        (photo) => photo.photo_id === photoID[0].photo_id,
+      );
+      expect(photoFiltered).toMatchObject([
+        {
+          photo_category_id: photoCategories.filter(
+            (photoCategory) => photoCategory.name === 'Menu',
+          )[0].photo_category_id,
+          review_id: reviewIDs[0].review_id,
+          photo_url: expectedPhotos[0].photo_url,
         },
       ]);
     });
@@ -122,7 +214,7 @@ describe('PhotoService', () => {
       const result = await photoService.createPhoto({
         photo_category_id: photoCategoryIDs[0].photo_category_id,
         review_id: reviewIDs[0].review_id,
-        address: expectedPhotos[0].address,
+        photo_url: expectedPhotos[0].photo_url,
       });
 
       photoIDs.push({ photo_id: result[0].photo_id });
@@ -131,7 +223,7 @@ describe('PhotoService', () => {
         {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
-          address: expectedPhotos[0].address,
+          photo_url: expectedPhotos[0].photo_url,
         },
       ]);
     });
@@ -144,7 +236,7 @@ describe('PhotoService', () => {
         {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
-          address: expectedPhotos[0].address,
+          photo_url: expectedPhotos[0].photo_url,
         },
       ]);
     });

@@ -11,7 +11,7 @@ jest.mock('./photoCategory/photoCategory.service.ts');
 jest.mock('./restaurant/restaurant.service.ts');
 jest.mock('./restaurantDish/restaurantDish.service.ts');
 jest.mock('./restaurantOwner/restaurantOwner.service.ts');
-jest.mock('./restaurantPayment/restaurantPayment.service.ts');
+jest.mock('./restaurantPaymentMethod/restaurantPaymentMethod.service.ts');
 jest.mock('./review/review.service.ts');
 jest.mock('./subscribe/subscribe.service.ts');
 jest.mock('./userRelated/auth/auth.service.ts');

@@ -1,4 +1,4 @@
-import { RestaurantOwner } from 'src/restaurantOwner/interfaces/restaurantOwner.interface';
+import { RestaurantOwner } from '../../interfaces/restaurantOwner.interface';
 
 export class RestaurantOwnerEntity implements RestaurantOwner {
   restaurant_owner_id: string;

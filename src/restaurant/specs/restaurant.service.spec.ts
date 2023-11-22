@@ -258,9 +258,9 @@ describe('RestaurantService', () => {
         restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
       );
 
-    const restaurantPayments = await knex
+    const restaurantPaymentMethods = await knex
       .select('*')
-      .from('restaurant_payment')
+      .from('restaurant_payment_method')
       .whereIn(
         'restaurant_id',
         restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
@@ -285,7 +285,7 @@ describe('RestaurantService', () => {
     if (
       restaurantDishes.length === 0 &&
       restaurantOwners.length === 0 &&
-      restaurantPayments.length === 0 &&
+      restaurantPaymentMethods.length === 0 &&
       reviews.length === 0 &&
       subscribes.length === 0
     ) {

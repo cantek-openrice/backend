@@ -44,7 +44,7 @@ describe('ReviewController', () => {
 
   describe('getReviews', () => {
     it('should return reviews', async () => {
-      const result = await reviewController.getReviews();
+      const result = await reviewController.getReviews('');
       expect(result).toEqual(expectedReviews);
     });
   });

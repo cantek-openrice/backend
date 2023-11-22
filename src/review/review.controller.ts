@@ -1,17 +1,19 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UpdateReviewDto } from './dto/update_review.dto';
 import { CreateReviewDto } from './dto/create_review.dto';
 import { ReviewService } from './review.service';
 import { ReviewEntity } from './dto/entity/review.entity';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('review')
 @Controller('api/review')
@@ -19,8 +21,33 @@ export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Get()
-  async getReviews(): Promise<ReviewEntity[]> {
+  @ApiQuery({ name: 'restaurantID', required: false })
+  async getReviews(
+    @Query('restaurantID', new DefaultValuePipe('')) restaurantID: string,
+  ): Promise<ReviewEntity[]> {
+    let reviewsFiltered;
     const reviews = await this.reviewService.getReviews();
+
+    if (restaurantID) {
+      reviewsFiltered = reviews.filter((review) => {
+        review.restaurant_id === restaurantID;
+      });
+
+      return Promise.all(
+        reviewsFiltered.map(async (review) => ({
+          ...review,
+          username: (
+            await this.reviewService.getReviewerName(review.user_id)
+          )[0].username,
+          restaurantName: (
+            await this.reviewService.getReviewRestaurantName(
+              review.restaurant_id,
+            )
+          )[0].name,
+        })),
+      );
+    }
+
     return Promise.all(
       reviews.map(async (review) => ({
         ...review,

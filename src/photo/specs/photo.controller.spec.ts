@@ -23,12 +23,16 @@ describe('PhotoController', () => {
   beforeEach(() => {
     jest.spyOn(photoService, 'getPhotos').mockResolvedValue(expectedPhotos);
     jest.spyOn(photoService, 'getPhotoByID').mockResolvedValue(expectedPhotos);
+    jest
+      .spyOn(photoService, 'getReviewPhotos')
+      .mockResolvedValue(expectedPhotos);
+    jest.spyOn(photoService, 'getMenuPhotos').mockResolvedValue(expectedPhotos);
     jest.spyOn(photoService, 'createPhoto').mockResolvedValue(expectedPhotos);
     jest.spyOn(photoService, 'deletePhoto').mockResolvedValue(expectedPhotos);
   });
 
   describe('getPhotos', () => {
-    it('should return photo', async () => {
+    it('should return photos', async () => {
       const result = await photoController.getPhotos();
       expect(result).toEqual(expectedPhotos);
     });
@@ -43,12 +47,26 @@ describe('PhotoController', () => {
     });
   });
 
+  describe('getReviewPhotos', () => {
+    it('should return review photos', async () => {
+      const result = await photoController.getReviewPhotos('123');
+      expect(result).toEqual(expectedPhotos);
+    });
+  });
+
+  describe('getMenuPhotos', () => {
+    it('should return menu photos', async () => {
+      const result = await photoController.getMenuPhotos('123');
+      expect(result).toEqual(expectedPhotos);
+    });
+  });
+
   describe('createPhoto', () => {
     it('should return that photo after creating a photo', async () => {
       const result = await photoController.createPhoto({
         photo_category_id: expectedPhotos[0].photo_category_id,
         review_id: expectedPhotos[0].review_id,
-        address: expectedPhotos[0].address,
+        photo_url: expectedPhotos[0].photo_url,
       });
       expect(result).toEqual(expectedPhotos[0]);
     });
