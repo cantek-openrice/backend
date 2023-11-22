@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReviewController } from '../review.controller';
 import { ReviewService } from '../review.service';
+import { expectedUsers } from '../../userRelated/user/specs/expectedUsers';
+import { expectedRestaurants } from '../../restaurant/specs/expectedRestaurants';
+import { expectedPhotos } from '../../photo/specs/expectedPhotos';
 import { expectedReviews } from './expectedReviews';
 
 jest.mock('../review.service');
@@ -36,10 +39,13 @@ describe('ReviewController', () => {
       .mockResolvedValue(expectedReviews);
     jest
       .spyOn(reviewService, 'getReviewerName')
-      .mockResolvedValue([{ username: 'Timothy' }]);
+      .mockResolvedValue([{ username: expectedUsers[0].username }]);
     jest
       .spyOn(reviewService, 'getReviewRestaurantName')
-      .mockResolvedValue([{ name: 'restaurant' }]);
+      .mockResolvedValue([{ name: expectedRestaurants[0].name }]);
+    jest
+      .spyOn(reviewService, 'getReviewPhoto')
+      .mockResolvedValue([{ photo_url: expectedPhotos[0].photo_url }]);
   });
 
   describe('getReviews', () => {

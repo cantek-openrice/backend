@@ -10,6 +10,7 @@ export const expectedReviews = [
     rating: 1,
     spending: 10,
     visited_date: new Date('2023-11-17'),
+    photo: 'address.png',
     active: true,
     created_at: new Date('2023-11-17'),
     modified_at: new Date('2023-11-17'),

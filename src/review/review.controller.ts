@@ -34,17 +34,22 @@ export class ReviewController {
       );
 
       return Promise.all(
-        reviewsFiltered.map(async (review) => ({
-          ...review,
-          username: (
-            await this.reviewService.getReviewerName(review.user_id)
-          )[0].username,
-          restaurantName: (
-            await this.reviewService.getReviewRestaurantName(
-              review.restaurant_id,
-            )
-          )[0].name,
-        })),
+        reviewsFiltered.map(async (review) => {
+          return {
+            ...review,
+            username: (
+              await this.reviewService.getReviewerName(review.user_id)
+            )[0].username,
+            restaurantName: (
+              await this.reviewService.getReviewRestaurantName(
+                review.restaurant_id,
+              )
+            )[0].name,
+            photo: (
+              await this.reviewService.getReviewPhoto(review.review_id)
+            )[0]?.photo_url,
+          };
+        }),
       );
     }
 
@@ -56,6 +61,8 @@ export class ReviewController {
         restaurantName: (
           await this.reviewService.getReviewRestaurantName(review.restaurant_id)
         )[0].name,
+        photo: (await this.reviewService.getReviewPhoto(review.review_id))[0]
+          .photo_url,
       })),
     );
   }
