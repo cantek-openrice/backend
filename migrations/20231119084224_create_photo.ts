@@ -14,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
       table
         .foreign('photo_category_id')
         .references('photo_category.photo_category_id');
-      table.text('address').notNullable();
+      table.text('photo_url').notNullable();
       table.boolean('active').notNullable().defaultTo(true);
       table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     });

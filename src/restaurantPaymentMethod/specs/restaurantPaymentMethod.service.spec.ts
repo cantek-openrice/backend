@@ -1,6 +1,6 @@
 import Knex from 'knex';
 import knexConfigs from '../../../knexfile';
-import { RestaurantPaymentService } from '../restaurantPayment.service';
+import { RestaurantPaymentMethodService } from '../restaurantPaymentMethod.service';
 import { expectedRestaurants } from '../../restaurant/specs/expectedRestaurants';
 import { expectedDistricts } from '../../district/specs/expectedDistricts';
 import { expectedPaymentMethods } from '../../paymentMethod/specs/expectedPaymentMethods';
@@ -9,15 +9,17 @@ const configMode = process.env.TESTING_NODE_ENV || 'testing';
 const knexConfig = knexConfigs[configMode];
 const knex = Knex(knexConfig);
 
-describe('RestaurantPaymentService', () => {
-  let restaurantPaymentService: RestaurantPaymentService;
-  let restaurantPaymentIDs: { restaurant_payment_id: string }[];
+describe('RestaurantPaymentMethodService', () => {
+  let restaurantPaymentMethodService: RestaurantPaymentMethodService;
+  let restaurantPaymentMethodIDs: {
+    restaurant_payment_method_id: string;
+  }[];
   let paymentMethodIDs: { payment_method_id: string }[];
   let districtIDs: { district_id: string }[];
   let restaurantIDs: { restaurant_id: string }[];
 
   beforeAll(async () => {
-    restaurantPaymentService = new RestaurantPaymentService(knex);
+    restaurantPaymentMethodService = new RestaurantPaymentMethodService(knex);
   });
 
   beforeEach(async () => {
@@ -50,24 +52,25 @@ describe('RestaurantPaymentService', () => {
       .into('restaurant')
       .returning('restaurant_id');
 
-    restaurantPaymentIDs = await knex
+    restaurantPaymentMethodIDs = await knex
       .insert({
         restaurant_id: restaurantIDs[0].restaurant_id,
         payment_method_id: paymentMethodIDs[0].payment_method_id,
       })
-      .into('restaurant_payment')
-      .returning('restaurant_payment_id');
+      .into('restaurant_payment_method')
+      .returning('restaurant_payment_method_id');
   });
 
-  describe('getRestaurantPayments', () => {
-    it('should return restaurant payments', async () => {
-      const result = await restaurantPaymentService.getRestaurantPayments();
-      const restaurantPaymentFiltered = result.filter(
-        (restaurantPayment) =>
-          restaurantPayment.restaurant_payment_id ===
-          restaurantPaymentIDs[0].restaurant_payment_id,
+  describe('getRestaurantPaymentMethods', () => {
+    it('should return restaurant payment methods', async () => {
+      const result =
+        await restaurantPaymentMethodService.getRestaurantPaymentMethods();
+      const restaurantPaymentMethodFiltered = result.filter(
+        (restaurantPaymentMethod) =>
+          restaurantPaymentMethod.restaurant_payment_method_id ===
+          restaurantPaymentMethodIDs[0].restaurant_payment_method_id,
       );
-      expect(restaurantPaymentFiltered).toMatchObject([
+      expect(restaurantPaymentMethodFiltered).toMatchObject([
         {
           restaurant_id: restaurantIDs[0].restaurant_id,
           payment_method_id: paymentMethodIDs[0].payment_method_id,
@@ -76,11 +79,12 @@ describe('RestaurantPaymentService', () => {
     });
   });
 
-  describe('getRestaurantPaymentByID', () => {
-    it('should return restaurant payment of that restaurant payment id', async () => {
-      const result = await restaurantPaymentService.getRestaurantPaymentByID(
-        restaurantPaymentIDs[0].restaurant_payment_id,
-      );
+  describe('getRestaurantPaymentMethodByID', () => {
+    it('should return restaurant payment method of that restaurant payment method id', async () => {
+      const result =
+        await restaurantPaymentMethodService.getRestaurantPaymentMethodByID(
+          restaurantPaymentMethodIDs[0].restaurant_payment_method_id,
+        );
       expect(result).toMatchObject([
         {
           restaurant_id: restaurantIDs[0].restaurant_id,
@@ -90,15 +94,16 @@ describe('RestaurantPaymentService', () => {
     });
   });
 
-  describe('createRestaurantPayment', () => {
-    it('should return that restaurant payment after creating a restaurant payment', async () => {
-      const result = await restaurantPaymentService.createRestaurantPayment({
-        restaurant_id: restaurantIDs[0].restaurant_id,
-        payment_method_id: paymentMethodIDs[0].payment_method_id,
-      });
+  describe('createRestaurantPaymentMethod', () => {
+    it('should return that restaurant payment method after creating a restaurant payment method', async () => {
+      const result =
+        await restaurantPaymentMethodService.createRestaurantPaymentMethod({
+          restaurant_id: restaurantIDs[0].restaurant_id,
+          payment_method_id: paymentMethodIDs[0].payment_method_id,
+        });
 
-      restaurantPaymentIDs.push({
-        restaurant_payment_id: result[0].restaurant_payment_id,
+      restaurantPaymentMethodIDs.push({
+        restaurant_payment_method_id: result[0].restaurant_payment_method_id,
       });
 
       expect(result).toMatchObject([
@@ -110,11 +115,12 @@ describe('RestaurantPaymentService', () => {
     });
   });
 
-  describe('deleteRestaurantPayment', () => {
-    it('should return that restaurant payment after changing the active state of a restaurant payment', async () => {
-      const result = await restaurantPaymentService.deleteRestaurantPayment(
-        restaurantPaymentIDs[0].restaurant_payment_id,
-      );
+  describe('deleteRestaurantPaymentMethod', () => {
+    it('should return that restaurant payment method after changing the active state of a restaurant payment method', async () => {
+      const result =
+        await restaurantPaymentMethodService.deleteRestaurantPaymentMethod(
+          restaurantPaymentMethodIDs[0].restaurant_payment_method_id,
+        );
       expect(result).toMatchObject([
         {
           restaurant_id: restaurantIDs[0].restaurant_id,
@@ -125,11 +131,12 @@ describe('RestaurantPaymentService', () => {
   });
 
   afterEach(async () => {
-    await knex('restaurant_payment')
+    await knex('restaurant_payment_method')
       .whereIn(
-        'restaurant_payment_id',
-        restaurantPaymentIDs.map(
-          (restaurantPaymentID) => restaurantPaymentID.restaurant_payment_id,
+        'restaurant_payment_method_id',
+        restaurantPaymentMethodIDs.map(
+          (restaurantPaymentMethodMethodID) =>
+            restaurantPaymentMethodMethodID.restaurant_payment_method_id,
         ),
       )
       .del();

@@ -1,4 +1,4 @@
-import { District } from 'src/district/interfaces/district.interface';
+import { District } from '../../interfaces/district.interface';
 
 export class DistrictEntity implements District {
   district_id: string;

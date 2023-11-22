@@ -35,19 +35,19 @@ export class RestaurantController {
     @Query('name', new DefaultValuePipe(''))
     name: string,
   ): Promise<RestaurantEntity[]> {
-    let filterRestaurants;
+    let restaurantsFiltered;
     const restaurants = await this.restaurantService.getRestaurants(
       limit,
       offset,
     );
 
     if (name) {
-      filterRestaurants = restaurants.filter((restaurant) =>
+      restaurantsFiltered = restaurants.filter((restaurant) =>
         restaurant.name.toLowerCase().includes(name.toLowerCase()),
       );
 
       return Promise.all(
-        filterRestaurants.map(async (restaurant) => ({
+        restaurantsFiltered.map(async (restaurant) => ({
           ...restaurant,
           averageRating: await this.restaurantService.getAverageRating(
             restaurant.restaurant_id,

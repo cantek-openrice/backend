@@ -42,11 +42,11 @@ describe('RestaurantController', () => {
   });
 
   describe('getRestaurants', () => {
-    it('should return restaurants', async () => {
+    it('should return restaurants with name starts with restaurant', async () => {
       const result = await restaurantController.getRestaurants(
         10,
         0,
-        'restaurant',
+        expectedRestaurants[0].name,
       );
       expect(result).toEqual([
         { ...expectedRestaurants[0], averageRating: 1, reviewCount: 1 },
@@ -86,7 +86,7 @@ describe('RestaurantController', () => {
         phone: expectedRestaurants[0].phone,
         intro: expectedRestaurants[0].intro,
         opening_hours: expectedRestaurants[0].opening_hours,
-        cover_image: expectedRestaurants[0].cover_image,
+        cover_image_url: expectedRestaurants[0].cover_image_url,
       });
 
       expect(result).toEqual(expectedRestaurants[0]);
@@ -109,7 +109,7 @@ describe('RestaurantController', () => {
           phone: expectedRestaurants[0].phone,
           intro: expectedRestaurants[0].intro,
           opening_hours: expectedRestaurants[0].opening_hours,
-          cover_image: expectedRestaurants[0].cover_image,
+          cover_image_url: expectedRestaurants[0].cover_image_url,
           active: false,
         },
       );
@@ -136,7 +136,7 @@ describe('RestaurantController', () => {
           phone: expectedRestaurants[0].phone,
           intro: expectedRestaurants[0].intro,
           opening_hours: expectedRestaurants[0].opening_hours,
-          cover_image: expectedRestaurants[0].cover_image,
+          cover_image_url: expectedRestaurants[0].cover_image_url,
           active: false,
         },
       );

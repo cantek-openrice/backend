@@ -1,7 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { PhotoService } from './photo.service';
 import { CreatePhotoDto } from './dto/create_photo.dto';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { PhotoEntity } from './dto/entity/photo.entity';
 
 @ApiTags('photo')
@@ -20,6 +28,22 @@ export class PhotoController {
     @Param() params: { photo_id: string },
   ): Promise<PhotoEntity> {
     return (await this.photoService.getPhotoByID(params.photo_id))[0];
+  }
+
+  @Get('review')
+  @ApiQuery({ name: 'restaurantID', required: true })
+  async getReviewPhotos(
+    @Query('restaurantID') restaurantID: string,
+  ): Promise<PhotoEntity[]> {
+    return await this.photoService.getReviewPhotos(restaurantID);
+  }
+
+  @Get('menu')
+  @ApiQuery({ name: 'restaurantID', required: true })
+  async getMenuPhotos(
+    @Query('restaurantID') restaurantID: string,
+  ): Promise<PhotoEntity[]> {
+    return await this.photoService.getMenuPhotos(restaurantID);
   }
 
   @Post()

@@ -8,6 +8,6 @@ export class UpdateRestaurantDto {
   phone?: string;
   intro?: string;
   opening_hours?: string;
-  cover_image?: string;
+  cover_image_url?: string;
   active?: boolean;
 }

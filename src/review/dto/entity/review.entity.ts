@@ -1,4 +1,4 @@
-import { Review } from 'src/review/interfaces/review.interface';
+import { Review } from '../../interfaces/review.interface';
 
 export class ReviewEntity implements Review {
   review_id: string;
