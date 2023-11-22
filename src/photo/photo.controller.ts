@@ -22,7 +22,7 @@ export class PhotoController {
     return await this.photoService.getPhotos();
   }
 
-  @Get(':photo_id')
+  @Get('id/:photo_id')
   @ApiParam({ name: 'photo_id', required: true, type: String })
   async getPhotoByID(
     @Param() params: { photo_id: string },
@@ -53,7 +53,7 @@ export class PhotoController {
     return (await this.photoService.createPhoto(createPhotoDto))[0];
   }
 
-  @Delete(':photo_id')
+  @Delete('id/:photo_id')
   @ApiParam({ name: 'photo_id', required: true, type: String })
   async deletePhoto(
     @Param() params: { photo_id: string },

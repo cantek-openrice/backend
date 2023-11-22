@@ -13,7 +13,7 @@ export class DishController {
     return await this.dishService.getDishes();
   }
 
-  @Get(':dish_id')
+  @Get('id/:dish_id')
   @ApiParam({ name: 'dish_id', required: true, type: String })
   async getDishByID(@Param() params: { dish_id: string }): Promise<DishEntity> {
     return (await this.dishService.getDishByID(params.dish_id))[0];

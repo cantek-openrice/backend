@@ -13,7 +13,7 @@ export class DistrictController {
     return await this.districtService.getDistricts();
   }
 
-  @Get(':district_id')
+  @Get('id/:district_id')
   @ApiParam({ name: 'district_id', required: true, type: String })
   async getDistrictByID(
     @Param() params: { district_id: string },
