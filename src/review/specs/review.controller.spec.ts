@@ -53,12 +53,26 @@ describe('ReviewController', () => {
       const result = await reviewController.getReviews(
         expectedReviews[0].restaurant_id,
       );
-      expect(result).toEqual(expectedReviews);
+      expect(result).toEqual([
+        {
+          ...expectedReviews[0],
+          username: expectedUsers[0].username,
+          restaurantName: expectedRestaurants[0].name,
+          photo: expectedPhotos[0].photo_url,
+        },
+      ]);
     });
 
     it('should return reviews', async () => {
       const result = await reviewController.getReviews('');
-      expect(result).toEqual(expectedReviews);
+      expect(result).toEqual([
+        {
+          ...expectedReviews[0],
+          username: expectedUsers[0].username,
+          restaurantName: expectedRestaurants[0].name,
+          photo: expectedPhotos[0].photo_url,
+        },
+      ]);
     });
   });
 
@@ -67,7 +81,12 @@ describe('ReviewController', () => {
       const result = await reviewController.getReviewByID({
         review_id: expectedReviews[0].review_id,
       });
-      expect(result).toEqual(expectedReviews[0]);
+      expect(result).toEqual({
+        ...expectedReviews[0],
+        username: expectedUsers[0].username,
+        restaurantName: expectedRestaurants[0].name,
+        photo: expectedPhotos[0].photo_url,
+      });
     });
   });
 

@@ -82,6 +82,8 @@ export class ReviewController {
       restaurantName: (
         await this.reviewService.getReviewRestaurantName(review.restaurant_id)
       )[0].name,
+      photo: (await this.reviewService.getReviewPhoto(review.review_id))[0]
+        .photo_url,
     };
   }
 
