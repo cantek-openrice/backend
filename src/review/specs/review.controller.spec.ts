@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as dotenv from 'dotenv';
 import { ReviewController } from '../review.controller';
 import { ReviewService } from '../review.service';
-import { expectedPhotos } from '../../photo/specs/expectedPhotos';
+import { expectedReviewPhotos } from '../../photo/specs/expectedReviewPhotos';
 import { expectedPhotoCategories } from '../../photoCategory/specs/expectedPhotoCategories';
 import { expectedRestaurants } from '../../restaurant/specs/expectedRestaurants';
 import { expectedUsers } from '../../userRelated/user/specs/expectedUsers';
@@ -48,11 +48,11 @@ describe('ReviewController', () => {
       .mockResolvedValue([{ name: expectedRestaurants[0].name }]);
     jest
       .spyOn(reviewService, 'getReviewPhoto')
-      .mockResolvedValue([{ photo_url: expectedPhotos[0].photo_url }]);
+      .mockResolvedValue([{ photo_url: expectedReviewPhotos[0].photo_url }]);
     jest
       .spyOn(reviewService, 'getPhotoCategoryID')
       .mockResolvedValue([
-        { photo_category_id: expectedPhotos[0].photo_category_id },
+        { photo_category_id: expectedReviewPhotos[0].photo_category_id },
       ]);
   });
 
@@ -66,7 +66,7 @@ describe('ReviewController', () => {
           ...expectedReviews[0],
           username: expectedUsers[0].username,
           restaurantName: expectedRestaurants[0].name,
-          photo: expectedPhotos[0].photo_url,
+          photo: expectedReviewPhotos[0].photo_url,
         },
       ]);
     });
@@ -78,7 +78,7 @@ describe('ReviewController', () => {
           ...expectedReviews[0],
           username: expectedUsers[0].username,
           restaurantName: expectedRestaurants[0].name,
-          photo: expectedPhotos[0].photo_url,
+          photo: expectedReviewPhotos[0].photo_url,
         },
       ]);
     });
@@ -93,7 +93,7 @@ describe('ReviewController', () => {
         ...expectedReviews[0],
         username: expectedUsers[0].username,
         restaurantName: expectedRestaurants[0].name,
-        photo: expectedPhotos[0].photo_url,
+        photo: expectedReviewPhotos[0].photo_url,
       });
     });
   });

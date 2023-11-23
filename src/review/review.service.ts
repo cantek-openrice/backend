@@ -37,7 +37,7 @@ export class ReviewService {
         review_id: reviewDetail[0].review_id,
         photo_url: `${imagePrefix}/${restaurantID}/photos/${reviewDetail[0].review_id}.jpg`,
       })
-      .into('photo');
+      .into('review_photo');
 
     return reviewDetail;
   }
@@ -73,7 +73,7 @@ export class ReviewService {
   async getReviewPhoto(reviewID: string) {
     return await this.knex
       .select('photo_url')
-      .from('photo')
+      .from('review_photo')
       .where('review_id', reviewID);
   }
 

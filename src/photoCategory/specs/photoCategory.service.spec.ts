@@ -54,9 +54,9 @@ describe('PhotoCategoryService', () => {
   });
 
   afterEach(async () => {
-    const photos = await knex
+    const reviewPhotos = await knex
       .select('*')
-      .from('photo')
+      .from('review_photo')
       .whereIn(
         'photo_category_id',
         photoCategoryIDs.map(
@@ -64,7 +64,17 @@ describe('PhotoCategoryService', () => {
         ),
       );
 
-    if (photos.length === 0) {
+    const menuPhotos = await knex
+      .select('*')
+      .from('menu_photo')
+      .whereIn(
+        'photo_category_id',
+        photoCategoryIDs.map(
+          (photoCategoryID) => photoCategoryID.photo_category_id,
+        ),
+      );
+
+    if (reviewPhotos.length === 0 && menuPhotos.length === 0) {
       await knex('photo_category')
         .whereIn(
           'photo_category_id',

@@ -1,6 +1,6 @@
-export const expectedPhotos = [
+export const expectedReviewPhotos = [
   {
-    photo_id: '123',
+    review_photo_id: '123',
     photo_category_id: '123',
     review_id: '123',
     photo_url: 'address.png',

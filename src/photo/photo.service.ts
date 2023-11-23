@@ -7,41 +7,45 @@ export class PhotoService {
   constructor(@Inject('KnexConnection') private readonly knex: Knex) {}
 
   async getPhotos() {
-    return await this.knex.select('*').from('photo');
+    return await this.knex.select('*').from('review_photo');
   }
 
   async getPhotoByID(id: string) {
-    return await this.knex.select('*').from('photo').where('photo_id', id);
+    const reviewPhoto = await this.knex
+      .select('*')
+      .from('review_photo')
+      .where('review_photo_id', id);
+    const menuPhoto = await this.knex
+      .select('*')
+      .from('menu_photo')
+      .where('menu_photo_id', id);
+    if (reviewPhoto.length > 0) {
+      return reviewPhoto;
+    } else {
+      return menuPhoto;
+    }
   }
 
   async getReviewPhotos(id: string) {
     return await this.knex
       .select('*')
-      .from('photo')
-      .leftOuterJoin('review', 'photo.review_id', 'review.review_id')
-      .leftOuterJoin(
-        'photo_category',
-        'photo.photo_category_id',
-        'photo_category.photo_category_id',
-      )
-      .where('photo_category.name', 'Review')
+      .from('review_photo')
+      .leftOuterJoin('review', 'review_photo.review_id', 'review.review_id')
       .andWhere('review.restaurant_id', id)
-      .andWhere('photo.active', true);
+      .andWhere('review_photo.active', true);
   }
 
   async getMenuPhotos(id: string) {
     return await this.knex
       .select('*')
-      .from('photo')
-      .leftOuterJoin('review', 'photo.review_id', 'review.review_id')
+      .from('menu_photo')
       .leftOuterJoin(
-        'photo_category',
-        'photo.photo_category_id',
-        'photo_category.photo_category_id',
+        'restaurant',
+        'menu_photo.restaurant_id',
+        'restaurant.restaurant_id',
       )
-      .where('photo_category.name', 'Menu')
-      .andWhere('review.restaurant_id', id)
-      .andWhere('photo.active', true);
+      .andWhere('menu_photo.restaurant_id', id)
+      .andWhere('menu_photo.active', true);
   }
 
   async createPhoto(photo: CreatePhotoDto) {
@@ -51,14 +55,14 @@ export class PhotoService {
         created_at: new Date(),
         active: true,
       })
-      .into('photo')
+      .into('review_photo')
       .returning('*');
   }
 
   async deletePhoto(id: string) {
-    return await this.knex('photo')
+    return await this.knex('review_photo')
       .update({ active: false })
-      .where('photo_id', id)
+      .where('review_photo_id', id)
       .returning('*');
   }
 }
