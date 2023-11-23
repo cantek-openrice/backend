@@ -355,24 +355,34 @@ describe('PhotoService', () => {
       )
       .del();
 
-    await knex('restaurant')
+    const menuPhotos = await knex
+      .select('*')
+      .from('menu_photo')
       .whereIn(
         'restaurant_id',
         restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
-      )
-      .del();
+      );
+
+    if (menuPhotos.length === 0) {
+      await knex('restaurant')
+        .whereIn(
+          'restaurant_id',
+          restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
+        )
+        .del();
+
+      await knex('district')
+        .whereIn(
+          'district_id',
+          districtIDs.map((districtID) => districtID.district_id),
+        )
+        .del();
+    }
 
     await knex('user')
       .whereIn(
         'user_id',
         userIDs.map((userID) => userID.user_id),
-      )
-      .del();
-
-    await knex('district')
-      .whereIn(
-        'district_id',
-        districtIDs.map((districtID) => districtID.district_id),
       )
       .del();
   });
