@@ -16,6 +16,7 @@ describe('RestaurantService', () => {
   let userIDs: { user_id: string }[];
   let districtIDs: { district_id: string }[];
   let reviewIDs: { review_id: string }[];
+  let restaurantID: { restaurant_id: string }[];
 
   beforeAll(async () => {
     restaurantService = new RestaurantService(knex);
@@ -57,27 +58,10 @@ describe('RestaurantService', () => {
 
   describe('getRestaurants', () => {
     it('should return restaurants', async () => {
-      const restaurantID = await knex
-        .insert({
-          name: expectedRestaurants[0].name,
-          address: expectedRestaurants[0].address,
-          district_id: districtIDs[0].district_id,
-          latitude: expectedRestaurants[0].latitude,
-          longitude: expectedRestaurants[0].longitude,
-          postal_code: expectedRestaurants[0].postal_code,
-          phone: expectedRestaurants[0].phone,
-          intro: expectedRestaurants[0].intro,
-          opening_hours: expectedRestaurants[0].opening_hours,
-        })
-        .into('restaurant')
-        .returning('restaurant_id');
-
-      restaurantIDs.push({ restaurant_id: restaurantID[0].restaurant_id });
-
-      const result = await restaurantService.getRestaurants(10, 0);
+      const result = await restaurantService.getRestaurants(100, 0);
       const restaurantFiltered = result.filter(
         (restaurant) =>
-          restaurant.restaurant_id === restaurantID[0].restaurant_id,
+          restaurant.restaurant_id === restaurantIDs[0].restaurant_id,
       );
 
       expect(restaurantFiltered).toMatchObject([
@@ -321,7 +305,26 @@ describe('RestaurantService', () => {
           restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
         )
         .del();
+    }
 
+    if (restaurantID && restaurantID.length === 0) {
+      await knex('restaurant')
+        .whereIn(
+          'restaurant_id',
+          restaurantID.map((id) => id.restaurant_id),
+        )
+        .del();
+    }
+
+    const restaurants = await knex
+      .select('*')
+      .from('restaurant')
+      .whereIn(
+        'district_id',
+        districtIDs.map((districtID) => districtID.district_id),
+      );
+
+    if (restaurants.length === 0) {
       await knex('district')
         .whereIn(
           'district_id',
