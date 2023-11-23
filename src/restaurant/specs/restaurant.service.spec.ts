@@ -57,10 +57,27 @@ describe('RestaurantService', () => {
 
   describe('getRestaurants', () => {
     it('should return restaurants', async () => {
+      const restaurantID = await knex
+        .insert({
+          name: expectedRestaurants[0].name,
+          address: expectedRestaurants[0].address,
+          district_id: districtIDs[0].district_id,
+          latitude: expectedRestaurants[0].latitude,
+          longitude: expectedRestaurants[0].longitude,
+          postal_code: expectedRestaurants[0].postal_code,
+          phone: expectedRestaurants[0].phone,
+          intro: expectedRestaurants[0].intro,
+          opening_hours: expectedRestaurants[0].opening_hours,
+        })
+        .into('restaurant')
+        .returning('restaurant_id');
+
+      restaurantIDs.push({ restaurant_id: restaurantID[0].restaurant_id });
+
       const result = await restaurantService.getRestaurants(10, 0);
       const restaurantFiltered = result.filter(
         (restaurant) =>
-          restaurant.restaurant_id === restaurantIDs[0].restaurant_id,
+          restaurant.restaurant_id === restaurantID[0].restaurant_id,
       );
 
       expect(restaurantFiltered).toMatchObject([
