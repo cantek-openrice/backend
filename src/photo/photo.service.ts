@@ -48,15 +48,25 @@ export class PhotoService {
       .andWhere('menu_photo.active', true);
   }
 
-  async createPhoto(photo: CreatePhotoDto) {
-    return await this.knex
-      .insert({
-        ...photo,
-        created_at: new Date(),
-        active: true,
-      })
-      .into('review_photo')
-      .returning('*');
+  async createPhoto(
+    photo: CreatePhotoDto,
+    photo_category_id: string,
+    photoCategory: string,
+  ) {
+    if (photo.imagePrefix && photo.restaurantID && photo.imageName) {
+      return await this.knex
+        .insert({
+          photo_category_id,
+          restaurant_id: photo.restaurantID,
+          photo_url: `${photo.imagePrefix}/${
+            photo.restaurantID
+          }/${photoCategory.toLowerCase()}s/${photo.imageName}`,
+          created_at: new Date(),
+          active: true,
+        })
+        .into('menu_photo')
+        .returning('*');
+    }
   }
 
   async deletePhoto(id: string) {
@@ -64,5 +74,12 @@ export class PhotoService {
       .update({ active: false })
       .where('review_photo_id', id)
       .returning('*');
+  }
+
+  async getPhotoCategoryID(photoCategoryName: string) {
+    return await this.knex
+      .select('photo_category_id')
+      .from('photo_category')
+      .where('name', photoCategoryName);
   }
 }

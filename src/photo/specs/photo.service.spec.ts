@@ -252,20 +252,31 @@ describe('PhotoService', () => {
   });
 
   describe('createPhoto', () => {
-    it('should return that photo after creating a photo', async () => {
-      const result = await photoService.createPhoto({
-        photo_category_id: photoCategoryIDs[0].photo_category_id,
-        review_id: reviewIDs[0].review_id,
-        photo_url: expectedReviewPhotos[0].photo_url,
-      });
-
-      reviewPhotoIDs.push({ review_photo_id: result[0].review_photo_id });
-
-      expect(result).toMatchObject([
+    it('should return that photo after creating a photo if image prefix, restaurant id and image name exist', async () => {
+      const result = await photoService.createPhoto(
         {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
           photo_url: expectedReviewPhotos[0].photo_url,
+          imagePrefix: process.env.IMAGE_PREFIX,
+          restaurantID: restaurantIDs[0].restaurant_id,
+          imageName: expectedReviewPhotos[0].photo_url,
+        },
+        photoCategoryIDs[0].photo_category_id,
+        expectedPhotoCategories[0].name,
+      );
+
+      menuPhotoIDs = [{ menu_photo_id: result[0].menu_photo_id }];
+
+      expect(result).toMatchObject([
+        {
+          photo_category_id: photoCategoryIDs[0].photo_category_id,
+          restaurant_id: restaurantIDs[0].restaurant_id,
+          photo_url: `${process.env.IMAGE_PREFIX}/${
+            restaurantIDs[0].restaurant_id
+          }/${expectedPhotoCategories[0].name.toLowerCase()}s/${
+            expectedReviewPhotos[0].photo_url
+          }`,
         },
       ]);
     });
@@ -283,6 +294,31 @@ describe('PhotoService', () => {
           photo_url: expectedReviewPhotos[0].photo_url,
         },
       ]);
+    });
+
+    describe('getPhotoCategoryID', () => {
+      it('should get the photo category id of a specific photo category name', async () => {
+        const menuPhotoCategoryID = await knex
+          .insert({ name: 'Menu' })
+          .into('photo_category')
+          .returning('photo_category_id');
+
+        photoCategoryIDs.push({
+          photo_category_id: menuPhotoCategoryID[0].photo_category_id,
+        });
+
+        const result = await photoService.getPhotoCategoryID('Menu');
+        const photoCategoryIDFiltered = result.filter(
+          (photoCategoryID) =>
+            photoCategoryID.photo_category_id ===
+            menuPhotoCategoryID[0].photo_category_id,
+        );
+        expect(photoCategoryIDFiltered).toMatchObject([
+          {
+            photo_category_id: menuPhotoCategoryID[0].photo_category_id,
+          },
+        ]);
+      });
     });
   });
 

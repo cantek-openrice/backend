@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PhotoController } from '../photo.controller';
 import { PhotoService } from '../photo.service';
+import { expectedPhotoCategories } from '../../photoCategory/specs/expectedPhotoCategories';
 import { expectedReviewPhotos } from './expectedReviewPhotos';
 
 jest.mock('../photo.service');
@@ -39,6 +40,11 @@ describe('PhotoController', () => {
     jest
       .spyOn(photoService, 'deletePhoto')
       .mockResolvedValue(expectedReviewPhotos);
+    jest
+      .spyOn(photoService, 'getPhotoCategoryID')
+      .mockResolvedValue([
+        { photo_category_id: expectedReviewPhotos[0].photo_category_id },
+      ]);
   });
 
   describe('getPhotos', () => {
@@ -73,11 +79,14 @@ describe('PhotoController', () => {
 
   describe('createPhoto', () => {
     it('should return that photo after creating a photo', async () => {
-      const result = await photoController.createPhoto({
-        photo_category_id: expectedReviewPhotos[0].photo_category_id,
-        review_id: expectedReviewPhotos[0].review_id,
-        photo_url: expectedReviewPhotos[0].photo_url,
-      });
+      const result = await photoController.createPhoto(
+        {
+          photo_category_id: expectedReviewPhotos[0].photo_category_id,
+          review_id: expectedReviewPhotos[0].review_id,
+          photo_url: expectedReviewPhotos[0].photo_url,
+        },
+        expectedPhotoCategories[0].name,
+      );
       expect(result).toEqual(expectedReviewPhotos[0]);
     });
   });
