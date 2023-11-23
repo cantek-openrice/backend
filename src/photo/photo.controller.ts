@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
@@ -47,10 +48,20 @@ export class PhotoController {
   }
 
   @Post()
+  @ApiQuery({ name: 'photoCategory', required: false })
   async createPhoto(
     @Body() createPhotoDto: CreatePhotoDto,
-  ): Promise<PhotoEntity> {
-    return (await this.photoService.createPhoto(createPhotoDto))[0];
+    @Query('photoCategory', new DefaultValuePipe('Menu')) photoCategory: string,
+  ): Promise<PhotoEntity[]> {
+    const photoCategoryID = (
+      await this.photoService.getPhotoCategoryID(photoCategory)
+    )[0]?.photo_category_id;
+    const photo = await this.photoService.createPhoto(
+      createPhotoDto,
+      photoCategoryID,
+      photoCategory,
+    );
+    return photo[0];
   }
 
   @Delete('id/:photo_id')
