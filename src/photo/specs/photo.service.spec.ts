@@ -90,7 +90,7 @@ describe('PhotoService', () => {
   });
 
   describe('getPhotos', () => {
-    it('should return photos', async () => {
+    it('should return review photos', async () => {
       const result = await photoService.getPhotos();
       const photoFiltered = result.filter(
         (photo) => photo.review_photo_id === reviewPhotoIDs[0].review_photo_id,
@@ -106,7 +106,7 @@ describe('PhotoService', () => {
   });
 
   describe('getPhotoByID', () => {
-    it('should return photo of that photo id', async () => {
+    it('should return review photo of that review photo id', async () => {
       const result = await photoService.getPhotoByID(
         reviewPhotoIDs[0].review_photo_id,
       );
@@ -114,6 +114,49 @@ describe('PhotoService', () => {
         {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
+          photo_url: expectedReviewPhotos[0].photo_url,
+        },
+      ]);
+    });
+
+    it('should return review photo of that review photo id', async () => {
+      await knex('review_photo')
+        .whereIn(
+          'review_photo_id',
+          reviewPhotoIDs.map((reviewPhotoID) => reviewPhotoID.review_photo_id),
+        )
+        .del();
+
+      const photoCategory = await knex
+        .insert({
+          name: 'Menu',
+        })
+        .into('photo_category')
+        .returning('*');
+
+      const photo_category_id = photoCategory.filter(
+        (photoCategory) => photoCategory.name === 'Menu',
+      )[0].photo_category_id;
+
+      menuPhotoIDs = await knex
+        .insert({
+          photo_category_id,
+          restaurant_id: restaurantIDs[0].restaurant_id,
+          photo_url: expectedReviewPhotos[0].photo_url,
+        })
+        .into('menu_photo')
+        .returning('menu_photo_id');
+
+      photoCategoryIDs.push({
+        photo_category_id: photoCategory[0].photo_category_id,
+      });
+      const result = await photoService.getPhotoByID(
+        menuPhotoIDs[0].menu_photo_id,
+      );
+      expect(result).toMatchObject([
+        {
+          photo_category_id,
+          restaurant_id: restaurantIDs[0].restaurant_id,
           photo_url: expectedReviewPhotos[0].photo_url,
         },
       ]);
@@ -168,14 +211,14 @@ describe('PhotoService', () => {
 
   describe('getMenuPhotos', () => {
     it('should return photos in menu category', async () => {
-      const photoCategories = await knex
+      const photoCategory = await knex
         .insert({
           name: 'Menu',
         })
         .into('photo_category')
         .returning('*');
 
-      const photo_category_id = photoCategories.filter(
+      const photo_category_id = photoCategory.filter(
         (photoCategory) => photoCategory.name === 'Menu',
       )[0].photo_category_id;
 
@@ -189,7 +232,7 @@ describe('PhotoService', () => {
         .returning('menu_photo_id');
 
       photoCategoryIDs.push({
-        photo_category_id: photoCategories[0].photo_category_id,
+        photo_category_id: photoCategory[0].photo_category_id,
       });
 
       const result = await photoService.getMenuPhotos(
