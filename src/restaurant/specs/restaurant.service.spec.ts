@@ -242,6 +242,14 @@ describe('RestaurantService', () => {
         .del();
     }
 
+    const menuPhotos = await knex
+      .select('*')
+      .from('menu_photo')
+      .whereIn(
+        'restaurant_id',
+        restaurantIDs.map((restaurantID) => restaurantID.restaurant_id),
+      );
+
     const restaurantDishes = await knex
       .select('*')
       .from('restaurant_dish')
@@ -283,6 +291,7 @@ describe('RestaurantService', () => {
       );
 
     if (
+      menuPhotos.length === 0 &&
       restaurantDishes.length === 0 &&
       restaurantOwners.length === 0 &&
       restaurantPaymentMethods.length === 0 &&

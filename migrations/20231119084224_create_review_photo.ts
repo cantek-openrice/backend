@@ -1,10 +1,10 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  if (!(await knex.schema.hasTable('photo'))) {
-    await knex.schema.createTable('photo', (table) => {
+  if (!(await knex.schema.hasTable('review_photo'))) {
+    await knex.schema.createTable('review_photo', (table) => {
       table
-        .uuid('photo_id')
+        .uuid('review_photo_id')
         .primary()
         .defaultTo(knex.raw('gen_random_uuid()'))
         .notNullable();
@@ -22,5 +22,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTableIfExists('photo');
+  await knex.schema.dropTableIfExists('review_photo');
 }
