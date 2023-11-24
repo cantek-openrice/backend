@@ -50,11 +50,6 @@ export class CreateReviewDtoExtended {
   @ApiProperty({ type: CreateReviewDto })
   createReviewDto: CreateReviewDto;
 
-  @ApiProperty({
-    type: String,
-  })
-  imagePrefix: string;
-
   @ApiProperty({ type: String })
   restaurantID: string;
 

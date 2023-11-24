@@ -258,7 +258,6 @@ describe('PhotoService', () => {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           review_id: reviewIDs[0].review_id,
           photo_url: expectedReviewPhotos[0].photo_url,
-          imagePrefix: process.env.IMAGE_PREFIX,
           restaurantID: restaurantIDs[0].restaurant_id,
           imageName: expectedReviewPhotos[0].photo_url,
         },

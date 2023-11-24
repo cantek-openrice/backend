@@ -126,7 +126,6 @@ describe('ReviewService', () => {
           spending: expectedReviews[0].spending,
           visited_date: expectedReviews[0].visited_date,
         },
-        process.env.IMAGE_PREFIX,
         restaurantIDs[0].restaurant_id,
         photoCategoryIDs[0].photo_category_id,
         'png',

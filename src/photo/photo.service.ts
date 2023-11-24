@@ -53,12 +53,12 @@ export class PhotoService {
     photo_category_id: string,
     photoCategory: string,
   ) {
-    if (photo.imagePrefix && photo.restaurantID && photo.imageName) {
+    if (photo.restaurantID && photo.imageName) {
       return await this.knex
         .insert({
           photo_category_id,
           restaurant_id: photo.restaurantID,
-          photo_url: `${photo.imagePrefix}/${
+          photo_url: `${process.env.IMAGE_PREFIX}/${
             photo.restaurantID
           }/${photoCategory.toLowerCase()}s/${photo.imageName}`,
           created_at: new Date(),

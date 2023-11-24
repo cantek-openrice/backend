@@ -22,11 +22,6 @@ export class CreatePhotoDto {
   @ApiPropertyOptional({
     type: String,
   })
-  imagePrefix?: string;
-
-  @ApiPropertyOptional({
-    type: String,
-  })
   restaurantID?: string;
 
   @ApiPropertyOptional({

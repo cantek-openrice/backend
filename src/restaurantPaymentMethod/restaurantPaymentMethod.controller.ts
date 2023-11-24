@@ -38,11 +38,11 @@ export class RestaurantPaymentMethodController {
   async createRestaurantPaymentMethod(
     @Body() createRestaurantPaymentMethodDto: CreateRestaurantPaymentMethodDto,
   ): Promise<RestaurantPaymentMethodEntity> {
-    return (
+    const restaurantPaymentMethod =
       await this.restaurantPaymentMethodService.createRestaurantPaymentMethod(
         createRestaurantPaymentMethodDto,
-      )
-    )[0];
+      );
+    return restaurantPaymentMethod[0];
   }
 
   @Delete('id/:restaurant_payment_method_id')

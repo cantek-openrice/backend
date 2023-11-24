@@ -17,7 +17,6 @@ export class ReviewService {
 
   async createReview(
     review: CreateReviewDto,
-    imagePrefix: string,
     restaurantID: string,
     photo_category_id: string,
     fileExtension?: string,
@@ -37,7 +36,7 @@ export class ReviewService {
         .insert({
           photo_category_id,
           review_id: reviewDetail[0].review_id,
-          photo_url: `${imagePrefix}/${restaurantID}/photos/${reviewDetail[0].review_id}.${fileExtension}`,
+          photo_url: `${process.env.IMAGE_PREFIX}/${restaurantID}/photos/${reviewDetail[0].review_id}.${fileExtension}`,
         })
         .into('review_photo');
     }

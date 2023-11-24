@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as dotenv from 'dotenv';
 import { ReviewController } from '../review.controller';
 import { ReviewService } from '../review.service';
 import { expectedReviewPhotos } from '../../photo/specs/expectedReviewPhotos';
@@ -8,7 +7,6 @@ import { expectedRestaurants } from '../../restaurant/specs/expectedRestaurants'
 import { expectedUsers } from '../../userRelated/user/specs/expectedUsers';
 import { expectedReviews } from './expectedReviews';
 
-dotenv.config();
 jest.mock('../review.service');
 
 describe('ReviewController', () => {
@@ -111,7 +109,6 @@ describe('ReviewController', () => {
             spending: expectedReviews[0].spending,
             visited_date: expectedReviews[0].visited_date,
           },
-          imagePrefix: process.env.IMAGE_PREFIX,
           restaurantID: expectedRestaurants[0].restaurant_id,
         },
         expectedPhotoCategories[0].name,
