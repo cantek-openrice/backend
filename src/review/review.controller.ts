@@ -101,7 +101,6 @@ export class ReviewController {
     return (
       await this.reviewService.createReview(
         body.createReviewDto,
-        body.imagePrefix,
         body.restaurantID,
         photoCategoryID,
         body.fileExtension,
