@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { CspMiddleware } from '../csp.middleware';
 import { CspService } from '../csp.service';
 
-describe('CspMiddle', () => {
+describe('CspMiddleware', () => {
   let csp: TestingModule;
   let cspMiddleware: CspMiddleware;
   let cspService: CspService;
