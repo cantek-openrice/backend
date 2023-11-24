@@ -390,6 +390,7 @@ static.express.module.ts
 junit.xml
 coverage.xml
 pipes
+node.sh
 
 # Supabase
 ./supabase/branches
