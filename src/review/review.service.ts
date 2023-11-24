@@ -20,6 +20,7 @@ export class ReviewService {
     imagePrefix: string,
     restaurantID: string,
     photo_category_id: string,
+    fileExtension?: string,
   ) {
     const reviewDetail = await this.knex
       .insert({
@@ -31,13 +32,15 @@ export class ReviewService {
       .into('review')
       .returning('*');
 
-    await this.knex
-      .insert({
-        photo_category_id,
-        review_id: reviewDetail[0].review_id,
-        photo_url: `${imagePrefix}/${restaurantID}/photos/${reviewDetail[0].review_id}.jpg`,
-      })
-      .into('review_photo');
+    if (fileExtension) {
+      await this.knex
+        .insert({
+          photo_category_id,
+          review_id: reviewDetail[0].review_id,
+          photo_url: `${imagePrefix}/${restaurantID}/photos/${reviewDetail[0].review_id}.${fileExtension}`,
+        })
+        .into('review_photo');
+    }
 
     return reviewDetail;
   }

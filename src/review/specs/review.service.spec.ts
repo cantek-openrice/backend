@@ -129,6 +129,7 @@ describe('ReviewService', () => {
         process.env.IMAGE_PREFIX,
         restaurantIDs[0].restaurant_id,
         photoCategoryIDs[0].photo_category_id,
+        'png',
       );
 
       reviewIDs.push({ review_id: result[0].review_id });

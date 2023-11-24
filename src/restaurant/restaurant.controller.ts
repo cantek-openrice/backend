@@ -28,7 +28,7 @@ export class RestaurantController {
   @ApiQuery({ name: 'name', required: false })
   @ApiQuery({ name: 'role', enum: UserRole, required: false })
   async getRestaurants(
-    @Query('limit', new DefaultValuePipe('10'), ParseIntPipe)
+    @Query('limit', new DefaultValuePipe('100'), ParseIntPipe)
     limit: number,
     @Query('offset', new DefaultValuePipe('0'), ParseIntPipe)
     offset: number,

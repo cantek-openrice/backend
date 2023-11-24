@@ -104,6 +104,7 @@ export class ReviewController {
         body.imagePrefix,
         body.restaurantID,
         photoCategoryID,
+        body.fileExtension,
       )
     )[0];
   }
