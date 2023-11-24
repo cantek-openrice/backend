@@ -5,8 +5,7 @@
     "node_modules",
     "dto/entity",
     "cache",
-    "static.express.module.ts",
-    "<rootDir>/src/main.ts"
+    "static.express.module.ts"
   ],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
