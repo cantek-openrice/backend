@@ -22,6 +22,7 @@ jobs:
           TESTING_DB_NAME: ${{ secrets.TESTING_DB_NAME }}
           TESTING_DB_USERNAME: ${{ secrets.TESTING_DB_USERNAME }}
           TESTING_DB_PASSWORD: ${{ secrets.TESTING_DB_PASSWORD }}
+          IMAGE_PREFIX: ${{ secrets.IMAGE_PREFIX }}
         run: |
           npm ci --legacy-peer-deps
           npm run lint
