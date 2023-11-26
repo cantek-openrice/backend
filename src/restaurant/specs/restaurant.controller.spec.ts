@@ -26,6 +26,9 @@ describe('RestaurantController', () => {
       .spyOn(restaurantService, 'getRestaurants')
       .mockResolvedValue(expectedRestaurants);
     jest
+      .spyOn(restaurantService, 'getRestaurantsByDish')
+      .mockResolvedValue(expectedRestaurants);
+    jest
       .spyOn(restaurantService, 'getRestaurantByID')
       .mockResolvedValue(expectedRestaurants);
     jest
@@ -44,7 +47,7 @@ describe('RestaurantController', () => {
   describe('getRestaurants', () => {
     it('should return restaurants with name starts with restaurant', async () => {
       const result = await restaurantController.getRestaurants(
-        100,
+        1000,
         0,
         expectedRestaurants[0].name,
       );
@@ -54,9 +57,22 @@ describe('RestaurantController', () => {
     });
 
     it('should return restaurants', async () => {
-      const result = await restaurantController.getRestaurants(100, 0, '');
+      const result = await restaurantController.getRestaurants(1000, 0, '');
       expect(result).toEqual([
         { ...expectedRestaurants[0], averageRating: 1, reviewCount: 1 },
+      ]);
+    });
+  });
+
+  describe('getRestaurantsByDish', () => {
+    it('should return restaurants of that dish category', async () => {
+      const result = await restaurantController.getRestaurantsByDish('Chinese');
+      expect(result).toEqual([
+        {
+          ...expectedRestaurants[0],
+          averageRating: 1,
+          reviewCount: 1,
+        },
       ]);
     });
   });

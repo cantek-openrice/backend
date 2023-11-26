@@ -7,12 +7,29 @@ import { UpdateRestaurantDto } from './dto/update_restaurant.dto';
 export class RestaurantService {
   constructor(@Inject('KnexConnection') private readonly knex: Knex) {}
 
-  async getRestaurants(limit: number, offset: number) {
+  async getRestaurants(limit: number | null, offset: number) {
+    if (limit) {
+      return await this.knex
+        .select('*')
+        .from('restaurant')
+        .limit(limit)
+        .offset(offset);
+    } else {
+      return await this.knex.select('*').from('restaurant').offset(offset);
+    }
+  }
+
+  async getRestaurantsByDish(dish: string) {
     return await this.knex
-      .select('*')
+      .select('restaurant.*')
       .from('restaurant')
-      .limit(limit)
-      .offset(offset);
+      .leftOuterJoin(
+        'restaurant_dish',
+        'restaurant.restaurant_id',
+        'restaurant_dish.restaurant_id',
+      )
+      .leftOuterJoin('dish', 'restaurant_dish.dish_id', 'dish.dish_id')
+      .where('dish.name', dish);
   }
 
   async getRestaurantByID(id: string) {

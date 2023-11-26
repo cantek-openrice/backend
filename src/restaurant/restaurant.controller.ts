@@ -28,7 +28,7 @@ export class RestaurantController {
   @ApiQuery({ name: 'name', required: false })
   @ApiQuery({ name: 'role', enum: UserRole, required: false })
   async getRestaurants(
-    @Query('limit', new DefaultValuePipe('100'), ParseIntPipe)
+    @Query('limit', new DefaultValuePipe('20'), ParseIntPipe)
     limit: number,
     @Query('offset', new DefaultValuePipe('0'), ParseIntPipe)
     offset: number,
@@ -59,6 +59,25 @@ export class RestaurantController {
       );
     }
 
+    return Promise.all(
+      restaurants.map(async (restaurant) => ({
+        ...restaurant,
+        averageRating: await this.restaurantService.getAverageRating(
+          restaurant.restaurant_id,
+        ),
+        reviewCount: await this.restaurantService.getReviewCount(
+          restaurant.restaurant_id,
+        ),
+      })),
+    );
+  }
+
+  @Get('dish')
+  @ApiQuery({ name: 'dish', required: false })
+  async getRestaurantsByDish(
+    @Query('dish', new DefaultValuePipe('')) dish: string,
+  ): Promise<RestaurantEntity[]> {
+    const restaurants = await this.restaurantService.getRestaurantsByDish(dish);
     return Promise.all(
       restaurants.map(async (restaurant) => ({
         ...restaurant,
