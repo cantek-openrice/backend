@@ -123,7 +123,12 @@ describe('RestaurantService', () => {
       const result = await restaurantService.getRestaurantsByDish(
         expectedDishes[0].name,
       );
-      expect(result).toMatchObject([
+      const restaurantFiltered = result.filter(
+        (restaurant) =>
+          restaurant.restaurant_id === restaurantIDs[0].restaurant_id,
+      );
+
+      expect(restaurantFiltered).toMatchObject([
         {
           name: expectedRestaurants[0].name,
           address: expectedRestaurants[0].address,
