@@ -28,7 +28,7 @@ export class PhotoService {
 
   async getReviewPhotos(id: string) {
     return await this.knex
-      .select('*')
+      .select('review_photo.*')
       .from('review_photo')
       .leftOuterJoin('review', 'review_photo.review_id', 'review.review_id')
       .andWhere('review.restaurant_id', id)
@@ -37,7 +37,7 @@ export class PhotoService {
 
   async getMenuPhotos(id: string) {
     return await this.knex
-      .select('*')
+      .select('menu_photo.*')
       .from('menu_photo')
       .leftOuterJoin(
         'restaurant',
