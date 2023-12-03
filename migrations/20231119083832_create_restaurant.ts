@@ -19,6 +19,8 @@ export async function up(knex: Knex): Promise<void> {
       table.text('intro').notNullable();
       table.text('opening_hours').notNullable();
       table.text('cover_image_url');
+      table.uuid('image_id');
+      table.foreign('image_id').references('image.image_id');
       table.boolean('active').notNullable().defaultTo(true);
       table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       table.timestamp('modified_at').notNullable().defaultTo(knex.fn.now());
