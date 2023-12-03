@@ -27,5 +27,7 @@ jobs:
           npm ci --legacy-peer-deps
           npm run lint
           npm run test:e2e
+          npx knex migrate:rollback --env testing
+          npx knex migrate:latest --env testing
           npm run test:cov
           npm run build
