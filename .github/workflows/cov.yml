@@ -34,8 +34,6 @@ jobs:
           IMAGE_PREFIX: ${{ secrets.IMAGE_PREFIX }}
         run: |
           npm ci --legacy-peer-deps
-          npx knex migrate:rollback --env testing
-          npx knex migrate:latest --env testing
           npm run test:cov
       - name: Upload Coverage Report to Codecov
         uses: codecov/codecov-action@v3
