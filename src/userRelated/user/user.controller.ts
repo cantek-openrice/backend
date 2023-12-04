@@ -11,8 +11,9 @@ import {
 import { ApiTags, ApiParam } from '@nestjs/swagger';
 import * as jwtSimple from 'jwt-simple';
 
-import { UserService } from './user.service';
 import { AuthGuard } from '../../global/guards/auth.guard';
+import { hashPassword } from '../../global/lib/hash';
+import { UserService } from './user.service';
 import { User } from './interfaces/user.interface';
 import { UpdateUserDtoExtended } from './dto/update_user.dto';
 import {
@@ -66,13 +67,27 @@ export class UserController {
         };
       }
 
-      const user = (
-        await this.userService.updateUserProfile(
-          params.user_id,
-          body.updateUserDto,
-          body.fileExtension,
-        )
-      )[0];
+      let user;
+      if (body.updateUserDto.password) {
+        user = (
+          await this.userService.updateUserProfile(
+            params.user_id,
+            {
+              ...body.updateUserDto,
+              password: await hashPassword(body.updateUserDto.password),
+            },
+            body.fileExtension,
+          )
+        )[0];
+      } else {
+        user = (
+          await this.userService.updateUserProfile(
+            params.user_id,
+            body.updateUserDto,
+            body.fileExtension,
+          )
+        )[0];
+      }
       const token = jwtSimple.encode(user, process.env.JWT_SECRET as string);
 
       return {

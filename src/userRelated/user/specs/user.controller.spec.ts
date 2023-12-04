@@ -72,6 +72,41 @@ describe('UserController', () => {
       const result = await userController.updateUserProfile(
         { user_id: expectedUsers[0].user_id },
         {
+          updateUserDto: {
+            username: expectedUsers[0].username,
+            password: expectedUsers[0].password,
+          },
+          fileExtension: '',
+        },
+        req,
+      );
+
+      const token = jwtSimple.encode(
+        expectedUsersHashPasswordSync[0],
+        process.env.JWT_SECRET as string,
+      );
+
+      expect(result).toEqual({
+        userInfo: {
+          user_id: expectedUsers[0].user_id,
+          email: expectedUsers[0].email,
+          username: expectedUsers[0].username,
+          role: expectedUsers[0].role,
+          profile_picture_url: expectedUsers[0].profile_picture_url,
+        },
+        token,
+      });
+    });
+
+    it('should return that user after updating a user profile', async () => {
+      const expectedUsersHashPasswordSync = await expectedUsersHashPassword();
+      jest
+        .spyOn(userService, 'updateUserProfile')
+        .mockResolvedValue(expectedUsersHashPasswordSync);
+
+      const result = await userController.updateUserProfile(
+        { user_id: expectedUsers[0].user_id },
+        {
           updateUserDto: { username: expectedUsers[0].username },
           fileExtension: '',
         },
