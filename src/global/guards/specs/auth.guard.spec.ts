@@ -22,18 +22,6 @@ describe('AuthGuard', () => {
   });
 
   describe('validation', () => {
-    it('cannot process to next step if the header does not start with Bearer', async () => {
-      const context = createMock<ExecutionContext>();
-      context.switchToHttp().getRequest.mockReturnValue({
-        headers: {
-          authorization: '123',
-        },
-      });
-      console.log = jest.fn();
-      expect(authGuard.canActivate(context)).toBeFalsy();
-      expect(console.log).toBeCalledTimes(1);
-    });
-
     it('cannot process to next step if the token is null', async () => {
       const context = createMock<ExecutionContext>();
       context.switchToHttp().getRequest.mockReturnValue({

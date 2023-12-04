@@ -29,8 +29,20 @@ describe('UserController', () => {
   });
 
   beforeEach(() => {
+    req = {
+      user: {
+        user_id: expectedUsers[0].user_id,
+        username: expectedUsers[0].username,
+        email: expectedUsers[0].email,
+        role: expectedUsers[0].role,
+        profile_picture_url: expectedUsers[0].profile_picture_url,
+      },
+    } as any as Request;
     jest.spyOn(userService, 'getUsers').mockResolvedValue(expectedUsers);
     jest.spyOn(userService, 'getUserByID').mockResolvedValue(expectedUsers);
+    jest
+      .spyOn(userService, 'updateUserProfile')
+      .mockResolvedValue(expectedUsers);
     jest.spyOn(userService, 'deleteUser').mockResolvedValue(expectedUsers);
   });
 
@@ -52,15 +64,6 @@ describe('UserController', () => {
 
   describe('updateUserProfile', () => {
     it('should return that user after updating a user profile', async () => {
-      req = {
-        user: {
-          user_id: expectedUsers[0].user_id,
-          username: expectedUsers[0].username,
-          email: expectedUsers[0].email,
-          role: expectedUsers[0].role,
-          profile_picture_url: expectedUsers[0].profile_picture_url,
-        },
-      } as any as Request;
       const expectedUsersHashPasswordSync = await expectedUsersHashPassword();
       jest
         .spyOn(userService, 'updateUserProfile')
@@ -89,6 +92,46 @@ describe('UserController', () => {
           profile_picture_url: expectedUsers[0].profile_picture_url,
         },
         token,
+      });
+    });
+
+    it('cannot update the user profile if the new username already exists or it is different from the original username', async () => {
+      jest
+        .spyOn(userService, 'getUsers')
+        .mockResolvedValue([{ ...expectedUsers[0], username: 'ttiimmothy' }]);
+      const result = await userController.updateUserProfile(
+        { user_id: expectedUsers[0].user_id },
+        {
+          updateUserDto: { username: 'ttiimmothy' },
+          fileExtension: '',
+        },
+        req,
+      );
+
+      expect(result).toEqual({
+        message:
+          'The username cannot be updated because this username is already used',
+      });
+    });
+
+    it('cannot update the user profile if the new email already exists or it is different from the original email', async () => {
+      jest
+        .spyOn(userService, 'getUsers')
+        .mockResolvedValue([
+          { ...expectedUsers[0], email: 'timothyemail805@gmail.com' },
+        ]);
+      const result = await userController.updateUserProfile(
+        { user_id: expectedUsers[0].user_id },
+        {
+          updateUserDto: { email: 'timothyemail805@gmail.com' },
+          fileExtension: '',
+        },
+        req,
+      );
+
+      expect(result).toEqual({
+        message:
+          'The email cannot be updated because this email is already used',
       });
     });
 
