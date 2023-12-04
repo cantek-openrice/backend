@@ -18,8 +18,9 @@ export async function up(knex: Knex): Promise<void> {
         .foreign('photo_category_id')
         .references('photo_category.photo_category_id');
       table.boolean('active').notNullable().defaultTo(true);
-      table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
-      table.timestamp('modified_at').notNullable().defaultTo(knex.fn.now());
+      table.timestamps(false, true);
+      table.uuid('date_id').notNullable();
+      table.foreign('date_id').references('date.date_id');
     });
   }
 }

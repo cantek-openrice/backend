@@ -1,22 +1,20 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  if (!(await knex.schema.hasTable('user_role'))) {
-    await knex.schema.createTable('user_role', (table) => {
+  if (!(await knex.schema.hasTable('date'))) {
+    await knex.schema.createTable('date', (table) => {
       table
-        .uuid('user_role_id')
+        .uuid('date_id')
         .primary()
         .defaultTo(knex.raw('gen_random_uuid()'))
         .notNullable();
-      table.uuid('user_role_name').notNullable();
+      table.text('date_name').notNullable();
       table.boolean('active').notNullable().defaultTo(true);
       table.timestamps(false, true);
-      table.uuid('date_id').notNullable();
-      table.foreign('date_id').references('date.date_id');
     });
   }
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTableIfExists('user_role');
+  await knex.schema.dropTableIfExists('date');
 }
