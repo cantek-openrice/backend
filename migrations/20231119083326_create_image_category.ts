@@ -10,7 +10,9 @@ export async function up(knex: Knex): Promise<void> {
         .notNullable();
       table.text('image_category_name').notNullable();
       table.boolean('active').notNullable().defaultTo(true);
-      table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+      table.timestamps(false, true);
+      table.uuid('date_id').notNullable();
+      table.foreign('date_id').references('date.date_id');
     });
   }
 }
