@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
+import { KnexModule } from '../../global/modules/knex.module';
+import { AuthService } from '../auth/auth.service';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { KnexModule } from '../../global/modules/knex.module';
 
 @Module({
   imports: [KnexModule],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [AuthService, UserService],
 })
 export class UserModule {}

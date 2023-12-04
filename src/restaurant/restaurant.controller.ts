@@ -10,7 +10,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { CreateRestaurantDto } from './dto/create_restaurant.dto';
+import { CreateRestaurantDtoExtended } from './dto/create_restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update_restaurant.dto';
 import { RestaurantService } from './restaurant.service';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
@@ -28,7 +28,7 @@ export class RestaurantController {
   @ApiQuery({ name: 'name', required: false })
   @ApiQuery({ name: 'role', enum: UserRole, required: false })
   async getRestaurants(
-    @Query('limit', new DefaultValuePipe('20'), ParseIntPipe)
+    @Query('limit', new DefaultValuePipe('30'), ParseIntPipe)
     limit: number,
     @Query('offset', new DefaultValuePipe('0'), ParseIntPipe)
     offset: number,
@@ -112,10 +112,13 @@ export class RestaurantController {
 
   @Post()
   async createRestaurant(
-    @Body() createRestaurantDto: CreateRestaurantDto,
+    @Body() body: CreateRestaurantDtoExtended,
   ): Promise<RestaurantEntity> {
     return (
-      await this.restaurantService.createRestaurant(createRestaurantDto)
+      await this.restaurantService.createRestaurant(
+        body.createRestaurantDto,
+        body.fileExtension,
+      )
     )[0];
   }
 

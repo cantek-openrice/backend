@@ -8,6 +8,7 @@ export const expectedUsers = [
     password: 'Timothy',
     role: UserRole.Admin,
     active: true,
+    profile_picture_url: 'image.png',
     created_at: new Date('2023-11-14'),
     modified_at: new Date('2023-11-14'),
   },

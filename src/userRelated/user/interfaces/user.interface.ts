@@ -5,8 +5,9 @@ export interface User {
   username: string;
   email: string;
   password: string;
+  role: UserRole;
+  profile_picture_url?: string;
   created_at: Date;
   modified_at: Date;
   active: boolean;
-  role: UserRole;
 }

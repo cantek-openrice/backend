@@ -58,7 +58,7 @@ export class PhotoService {
         .insert({
           photo_category_id,
           restaurant_id: photo.restaurantID,
-          photo_url: `${process.env.IMAGE_PREFIX}/${
+          photo_url: `${process.env.IMAGE_PREFIX}/restaurant/${
             photo.restaurantID
           }/${photoCategory.toLowerCase()}s/${photo.imageName}`,
           created_at: new Date(),

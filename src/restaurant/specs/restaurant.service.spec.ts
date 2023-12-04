@@ -167,8 +167,8 @@ describe('RestaurantService', () => {
 
   describe('createRestaurant', () => {
     it('should return that restaurant after creating a restaurant with cover image url', async () => {
-      const result = await restaurantService.createRestaurant({
-        restaurant: {
+      const result = await restaurantService.createRestaurant(
+        {
           name: expectedRestaurants[0].name,
           address: expectedRestaurants[0].address,
           district_id: districtIDs[0].district_id,
@@ -179,8 +179,8 @@ describe('RestaurantService', () => {
           intro: expectedRestaurants[0].intro,
           opening_hours: expectedRestaurants[0].opening_hours,
         },
-        fileExtension: 'png',
-      });
+        'png',
+      );
 
       restaurantIDs.push({ restaurant_id: result[0].restaurant_id });
 
@@ -195,14 +195,14 @@ describe('RestaurantService', () => {
           phone: expectedRestaurants[0].phone,
           intro: expectedRestaurants[0].intro,
           opening_hours: expectedRestaurants[0].opening_hours,
-          cover_image_url: `${process.env.IMAGE_PREFIX}/${result[0].restaurant_id}/cover_image_url.png`,
+          cover_image_url: `${process.env.IMAGE_PREFIX}/restaurant/${result[0].restaurant_id}/cover_image_url.png`,
         },
       ]);
     });
 
     it('should return that restaurant after creating a restaurant', async () => {
-      const result = await restaurantService.createRestaurant({
-        restaurant: {
+      const result = await restaurantService.createRestaurant(
+        {
           name: expectedRestaurants[0].name,
           address: expectedRestaurants[0].address,
           district_id: districtIDs[0].district_id,
@@ -213,8 +213,8 @@ describe('RestaurantService', () => {
           intro: expectedRestaurants[0].intro,
           opening_hours: expectedRestaurants[0].opening_hours,
         },
-        fileExtension: '',
-      });
+        '',
+      );
 
       restaurantIDs.push({ restaurant_id: result[0].restaurant_id });
 

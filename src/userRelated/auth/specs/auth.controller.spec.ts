@@ -9,7 +9,6 @@ import { expectedUsersHashPassword } from './expectedUsersHashPassword';
 import { expectedUsers } from './expectedUsers';
 
 dotenv.config();
-
 jest.mock('../auth.service');
 jest.mock('../../user/user.service');
 
@@ -38,6 +37,7 @@ describe('AuthController', () => {
         username: expectedUsers[0].username,
         email: expectedUsers[0].email,
         role: expectedUsers[0].role,
+        profile_picture_url: expectedUsers[0].profile_picture_url,
       },
     } as any as Request;
 
@@ -54,10 +54,13 @@ describe('AuthController', () => {
         .mockResolvedValue(expectedUsersHashPasswordSync);
 
       const result = await authController.register({
-        username: 'ttiimmothy',
-        email: 'ttiimmothhylsff@gmail.com',
-        password: expectedUsers[0].password,
-        role: expectedUsers[0].role,
+        createUserDto: {
+          username: 'ttiimmothy',
+          email: 'ttiimmothhylsff@gmail.com',
+          password: expectedUsers[0].password,
+          role: expectedUsers[0].role,
+        },
+        fileExtension: '',
       });
 
       const token = jwtSimple.encode(
@@ -65,15 +68,27 @@ describe('AuthController', () => {
         process.env.JWT_SECRET as string,
       );
 
-      expect(result).toEqual({ token });
+      expect(result).toEqual({
+        user: {
+          user_id: expectedUsers[0].user_id,
+          username: expectedUsers[0].username,
+          email: expectedUsers[0].email,
+          role: expectedUsers[0].role,
+          profile_picture_url: expectedUsers[0].profile_picture_url,
+        },
+        token,
+      });
     });
 
     it('cannot register if the username is already used', async () => {
       const result = await authController.register({
-        username: expectedUsers[0].username,
-        email: 'ttiimmothhylsff@gmail.com',
-        password: expectedUsers[0].password,
-        role: expectedUsers[0].role,
+        createUserDto: {
+          username: expectedUsers[0].username,
+          email: 'ttiimmothhylsff@gmail.com',
+          password: expectedUsers[0].password,
+          role: expectedUsers[0].role,
+        },
+        fileExtension: '',
       });
 
       expect(result).toEqual({ message: 'This username is already used' });
@@ -81,10 +96,13 @@ describe('AuthController', () => {
 
     it('cannot register if the email is already used', async () => {
       const result = await authController.register({
-        username: 'ttiimmothy',
-        email: expectedUsers[0].email,
-        password: expectedUsers[0].password,
-        role: expectedUsers[0].role,
+        createUserDto: {
+          username: 'ttiimmothy',
+          email: expectedUsers[0].email,
+          password: expectedUsers[0].password,
+          role: expectedUsers[0].role,
+        },
+        fileExtension: '',
       });
 
       expect(result).toEqual({ message: 'This email is already used' });
@@ -114,6 +132,7 @@ describe('AuthController', () => {
           username: expectedUsers[0].username,
           email: expectedUsers[0].email,
           role: expectedUsers[0].role,
+          profile_picture_url: expectedUsers[0].profile_picture_url,
         },
         token,
       });
@@ -147,6 +166,7 @@ describe('AuthController', () => {
           username: expectedUsers[0].username,
           email: expectedUsers[0].email,
           role: expectedUsers[0].role,
+          profile_picture_url: expectedUsers[0].profile_picture_url,
         },
       });
     });

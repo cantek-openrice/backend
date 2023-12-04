@@ -93,7 +93,7 @@ describe('RestaurantController', () => {
   describe('createRestaurant', () => {
     it('should return that restaurant after creating a restaurant ', async () => {
       const result = await restaurantController.createRestaurant({
-        restaurant: {
+        createRestaurantDto: {
           name: expectedRestaurants[0].name,
           address: expectedRestaurants[0].address,
           district_id: expectedRestaurants[0].district_id,

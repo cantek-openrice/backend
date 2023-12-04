@@ -1,19 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import * as jwtSimple from 'jwt-simple';
+import * as dotenv from 'dotenv';
+import { Request } from 'express';
+import { AuthService } from '../../../userRelated/auth/auth.service';
 import { UserController } from '../user.controller';
 import { UserService } from '../user.service';
 import { expectedUsers } from './expectedUsers';
+import { expectedUsersHashPassword } from './expectedUsersHashPassword';
 
+dotenv.config();
 jest.mock('../user.service');
+jest.mock('../../auth/auth.service');
 
 describe('UserController', () => {
   let user: TestingModule;
   let userController: UserController;
   let userService: UserService;
+  let req: Request;
 
   beforeAll(async () => {
     user = await Test.createTestingModule({
       controllers: [UserController],
-      providers: [UserService],
+      providers: [AuthService, UserService],
     }).compile();
 
     userController = user.get<UserController>(UserController);
@@ -23,7 +31,6 @@ describe('UserController', () => {
   beforeEach(() => {
     jest.spyOn(userService, 'getUsers').mockResolvedValue(expectedUsers);
     jest.spyOn(userService, 'getUserByID').mockResolvedValue(expectedUsers);
-    jest.spyOn(userService, 'updateUser').mockResolvedValue(expectedUsers);
     jest.spyOn(userService, 'deleteUser').mockResolvedValue(expectedUsers);
   });
 
@@ -43,26 +50,59 @@ describe('UserController', () => {
     });
   });
 
-  describe('updateUser', () => {
-    it('should return that user after updating a user', async () => {
-      const result = await userController.updateUser(
+  describe('updateUserProfile', () => {
+    it('should return that user after updating a user profile', async () => {
+      req = {
+        user: {
+          user_id: expectedUsers[0].user_id,
+          username: expectedUsers[0].username,
+          email: expectedUsers[0].email,
+          role: expectedUsers[0].role,
+          profile_picture_url: expectedUsers[0].profile_picture_url,
+        },
+      } as any as Request;
+      const expectedUsersHashPasswordSync = await expectedUsersHashPassword();
+      jest
+        .spyOn(userService, 'updateUserProfile')
+        .mockResolvedValue(expectedUsersHashPasswordSync);
+
+      const result = await userController.updateUserProfile(
         { user_id: expectedUsers[0].user_id },
         {
-          username: expectedUsers[0].username,
+          updateUserDto: { username: expectedUsers[0].username },
+          fileExtension: '',
         },
+        req,
       );
-      expect(result).toEqual(expectedUsers[0]);
+
+      const token = jwtSimple.encode(
+        expectedUsersHashPasswordSync[0],
+        process.env.JWT_SECRET as string,
+      );
+
+      expect(result).toEqual({
+        userInfo: {
+          user_id: expectedUsers[0].user_id,
+          email: expectedUsers[0].email,
+          username: expectedUsers[0].username,
+          role: expectedUsers[0].role,
+          profile_picture_url: expectedUsers[0].profile_picture_url,
+        },
+        token,
+      });
     });
 
     it('should return user cannot be found message if the user cannot be found', async () => {
       jest.spyOn(userService, 'getUserByID').mockResolvedValue(null);
-      const result = await userController.updateUser(
+      const result = await userController.updateUserProfile(
         {
           user_id: expectedUsers[0].user_id,
         },
         {
-          username: expectedUsers[0].username,
+          updateUserDto: { username: expectedUsers[0].username },
+          fileExtension: '',
         },
+        req,
       );
       expect(result).toEqual({ message: 'This user cannot be found' });
     });

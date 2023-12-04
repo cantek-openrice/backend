@@ -271,7 +271,7 @@ describe('PhotoService', () => {
         {
           photo_category_id: photoCategoryIDs[0].photo_category_id,
           restaurant_id: restaurantIDs[0].restaurant_id,
-          photo_url: `${process.env.IMAGE_PREFIX}/${
+          photo_url: `${process.env.IMAGE_PREFIX}/restaurant/${
             restaurantIDs[0].restaurant_id
           }/${expectedPhotoCategories[0].name.toLowerCase()}s/${
             expectedReviewPhotos[0].photo_url
