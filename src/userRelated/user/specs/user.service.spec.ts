@@ -79,16 +79,59 @@ describe('UserService', () => {
         },
       ]);
     });
+
+    it('should return that user with profile picture url after creating a user', async () => {
+      const result = await userService.createUser(
+        {
+          username: expectedUsers[0].username,
+          email: expectedUsers[0].email,
+          password: expectedUsers[0].password,
+          role: expectedUsers[0].role,
+        },
+        'png',
+      );
+
+      userIDs.push({ user_id: result[0].user_id });
+
+      expect(result).toMatchObject([
+        {
+          username: expectedUsers[0].username,
+          email: expectedUsers[0].email,
+          password: expectedUsers[0].password,
+          role: expectedUsers[0].role,
+          profile_picture_url: `${process.env.IMAGE_PREFIX}/user/${result[0].user_id}/profile_picture_url.png`,
+        },
+      ]);
+    });
   });
 
   describe('updateUserProfile', () => {
-    it('should return that user after updating a user profile', async () => {
+    it('should return that user with profile picture url after updating a user profile', async () => {
       const result = await userService.updateUserProfile(
         userIDs[0].user_id,
         {
           username: 'ttiimmothy',
         },
         'png',
+      );
+      expect(result).toMatchObject([
+        {
+          username: 'ttiimmothy',
+          email: expectedUsers[0].email,
+          password: expectedUsers[0].password,
+          role: expectedUsers[0].role,
+          profile_picture_url: `${process.env.IMAGE_PREFIX}/user/${result[0].user_id}/profile_picture_url.png`,
+        },
+      ]);
+    });
+
+    it('should return that user after updating a user profile', async () => {
+      const result = await userService.updateUserProfile(
+        userIDs[0].user_id,
+        {
+          username: 'ttiimmothy',
+        },
+        '',
       );
       expect(result).toMatchObject([
         {

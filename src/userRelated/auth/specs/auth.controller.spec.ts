@@ -40,10 +40,8 @@ describe('AuthController', () => {
         profile_picture_url: expectedUsers[0].profile_picture_url,
       },
     } as any as Request;
-
-    jest
-      .spyOn(userService, 'getUsers')
-      .mockImplementation(() => Promise.resolve(expectedUsers));
+    jest.spyOn(userService, 'getUsers').mockResolvedValue(expectedUsers);
+    jest.spyOn(userService, 'createUser').mockResolvedValue(expectedUsers);
   });
 
   describe('register', () => {
