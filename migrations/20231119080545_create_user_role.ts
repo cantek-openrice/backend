@@ -11,8 +11,6 @@ export async function up(knex: Knex): Promise<void> {
       table.uuid('user_role_name').notNullable();
       table.boolean('active').notNullable().defaultTo(true);
       table.timestamps(false, true);
-      table.uuid('date_id').notNullable();
-      table.foreign('date_id').references('date.date_id');
     });
   }
 }

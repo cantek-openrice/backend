@@ -17,6 +17,10 @@ export async function up(knex: Knex): Promise<void> {
       table
         .foreign('photo_category_id')
         .references('photo_category.photo_category_id');
+      table.uuid('image_container_id').notNullable();
+      table
+        .foreign('image_container_id')
+        .references('image_container.image_container_id');
       table.boolean('active').notNullable().defaultTo(true);
       table.timestamps(false, true);
       table.uuid('date_id').notNullable();
@@ -26,5 +30,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTableIfExists('image');
+  await knex.schema.dropTableIfExists('user');
 }
