@@ -81,11 +81,15 @@ describe('UserService', () => {
     });
   });
 
-  describe('updateUser', () => {
-    it('should return that user after updating a user', async () => {
-      const result = await userService.updateUser(userIDs[0].user_id, {
-        username: 'ttiimmothy',
-      });
+  describe('updateUserProfile', () => {
+    it('should return that user after updating a user profile', async () => {
+      const result = await userService.updateUserProfile(
+        userIDs[0].user_id,
+        {
+          username: 'ttiimmothy',
+        },
+        'png',
+      );
       expect(result).toMatchObject([
         {
           username: 'ttiimmothy',

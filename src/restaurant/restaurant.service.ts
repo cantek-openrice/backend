@@ -39,10 +39,13 @@ export class RestaurantService {
       .where('restaurant_id', id);
   }
 
-  async createRestaurant(restaurant: CreateRestaurantDto) {
+  async createRestaurant(
+    restaurant: CreateRestaurantDto,
+    fileExtension: string,
+  ) {
     const restaurantDetail = await this.knex
       .insert({
-        ...restaurant.restaurant,
+        ...restaurant,
         created_at: new Date(),
         modified_at: new Date(),
         active: true,
@@ -50,10 +53,10 @@ export class RestaurantService {
       .into('restaurant')
       .returning('*');
 
-    if (restaurant.fileExtension) {
+    if (fileExtension) {
       return await this.knex('restaurant')
         .update({
-          cover_image_url: `${process.env.IMAGE_PREFIX}/${restaurantDetail[0].restaurant_id}/cover_image_url.${restaurant.fileExtension}`,
+          cover_image_url: `${process.env.IMAGE_PREFIX}/restaurant/${restaurantDetail[0].restaurant_id}/cover_image_url.${fileExtension}`,
           modified_at: new Date(),
         })
         .where('restaurant_id', restaurantDetail[0].restaurant_id)

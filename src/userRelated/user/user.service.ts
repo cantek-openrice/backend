@@ -15,8 +15,8 @@ export class UserService {
     return await this.knex.select('*').from('user').where('user_id', id);
   }
 
-  async createUser(user: CreateUserDto) {
-    return await this.knex
+  async createUser(user: CreateUserDto, fileExtension?: string) {
+    const userDetail = await this.knex
       .insert({
         ...user,
         role: user.role ? user.role : 'User',
@@ -26,13 +26,40 @@ export class UserService {
       })
       .into('user')
       .returning('*');
+    if (fileExtension) {
+      return await this.knex('user')
+        .update({
+          profile_picture_url: `${process.env.IMAGE_PREFIX}/user/${userDetail[0].user_id}/profile_picture_url.${fileExtension}`,
+        })
+        .where('user_id', userDetail[0].user_id)
+        .returning('*');
+    }
+    return userDetail;
   }
 
-  async updateUser(id: string, user: UpdateUserDto) {
-    return await this.knex('user')
-      .update({ ...user, modified_at: new Date() })
-      .where('user_id', id)
-      .returning('*');
+  async updateUserProfile(
+    id: string,
+    user: UpdateUserDto,
+    fileExtension: string,
+  ) {
+    if (fileExtension) {
+      return await this.knex('user')
+        .update({
+          ...user,
+          profile_picture_url: `${process.env.IMAGE_PREFIX}/user/${id}/profile_picture_url.${fileExtension}`,
+          modified_at: new Date(),
+        })
+        .where('user_id', id)
+        .returning('*');
+    } else {
+      return await this.knex('user')
+        .update({
+          ...user,
+          modified_at: new Date(),
+        })
+        .where('user_id', id)
+        .returning('*');
+    }
   }
 
   async deleteUser(id: string) {
