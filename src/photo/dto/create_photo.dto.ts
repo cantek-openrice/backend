@@ -20,7 +20,7 @@ export class CreatePhotoDto {
   photo_url?: string;
 
   @ApiPropertyOptional({
-    description: 'The restaurant id',
+    description: 'The restaurant id (UUID)',
     type: String,
   })
   restaurantID?: string;

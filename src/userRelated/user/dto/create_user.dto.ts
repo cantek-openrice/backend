@@ -30,10 +30,14 @@ export class CreateUserDto {
 
 export class CreateUserDtoExtended {
   @ApiProperty({
+    description: 'create user dto',
     type: CreateUserDto,
   })
   createUserDto: CreateUserDto;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiPropertyOptional({
+    description: 'file extension of the profile picture',
+    type: String,
+  })
   fileExtension?: string;
 }

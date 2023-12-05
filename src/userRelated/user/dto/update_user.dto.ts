@@ -29,9 +29,12 @@ export class UpdateUserDto {
 }
 
 export class UpdateUserDtoExtended {
-  @ApiProperty({ type: UpdateUserDto })
+  @ApiProperty({ description: 'update user dto', type: UpdateUserDto })
   updateUserDto: UpdateUserDto;
 
-  @ApiProperty({ type: String })
-  fileExtension: string;
+  @ApiPropertyOptional({
+    description: 'file extension of the profile picture',
+    type: String,
+  })
+  fileExtension?: string;
 }
