@@ -47,12 +47,15 @@ export class CreateReviewDto {
 }
 
 export class CreateReviewDtoExtended {
-  @ApiProperty({ type: CreateReviewDto })
+  @ApiProperty({ description: 'create review dto', type: CreateReviewDto })
   createReviewDto: CreateReviewDto;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ description: 'restaurant id (UUID)', type: String })
   restaurantID: string;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiPropertyOptional({
+    description: 'file extension of the review photo',
+    type: String,
+  })
   fileExtension?: string;
 }

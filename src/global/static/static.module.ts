@@ -29,6 +29,10 @@ import { join } from 'path';
       ),
       serveRoot: '/test/jest/coverage/e2e',
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', '..', '..', 'public'),
+      serveRoot: '/static',
+    }),
   ],
 })
 export class StaticModule {}

@@ -21,7 +21,6 @@ async function bootstrap() {
       credentials: true,
     }),
   );
-
   app.use(helmet());
 
   const config = new DocumentBuilder()
@@ -31,7 +30,10 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/swagger', app, document);
+  SwaggerModule.setup('api/swagger', app, document, {
+    customSiteTitle: 'Swagger API Documentation',
+    customfavIcon: '/static/recent_favicon.ico',
+  });
 
   await app.listen(process.env.PORT);
 }

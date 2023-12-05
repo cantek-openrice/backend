@@ -64,9 +64,15 @@ export class CreateRestaurantDto {
 }
 
 export class CreateRestaurantDtoExtended {
-  @ApiProperty({ type: CreateRestaurantDto })
+  @ApiProperty({
+    description: 'create restaurant dto',
+    type: CreateRestaurantDto,
+  })
   createRestaurantDto: CreateRestaurantDto;
 
-  @ApiPropertyOptional({ type: String })
+  @ApiPropertyOptional({
+    description: 'file extension of the restaurant cover image',
+    type: String,
+  })
   fileExtension?: string;
 }

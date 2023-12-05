@@ -8,7 +8,7 @@ export class CreateRestaurantOwnerDto {
   user_id: string;
 
   @ApiProperty({
-    description: 'The foreign (UUID, restaurant_id) from restaurant table',
+    description: 'The foreign key (UUID, restaurant_id) from restaurant table',
     type: String,
   })
   restaurant_id: string;
