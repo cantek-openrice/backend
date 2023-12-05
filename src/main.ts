@@ -16,7 +16,10 @@ async function bootstrap() {
     cors({
       origin: [
         'http://localhost:3865',
+        'http://localhost:3870',
+        'http://localhost:3880',
         'https://openricecanadafrontend.vercel.app',
+        'https://ttiimmothy.github.io/openrice-timothy-frontend',
       ],
       credentials: true,
     }),
