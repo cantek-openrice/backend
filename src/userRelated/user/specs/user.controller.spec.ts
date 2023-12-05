@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as jwtSimple from 'jwt-simple';
 import * as dotenv from 'dotenv';
 import { Request } from 'express';
-import { AuthService } from '../../../userRelated/auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { UserController } from '../user.controller';
 import { UserService } from '../user.service';
 import { expectedUsers } from './expectedUsers';
