@@ -20,6 +20,7 @@ async function bootstrap() {
         'http://localhost:3880',
         'https://openricecanadafrontend.vercel.app',
         'https://ttiimmothy.github.io/openrice-timothy-frontend',
+        'https://ttiimmothy.github.io',
       ],
       credentials: true,
     }),
