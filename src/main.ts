@@ -19,6 +19,7 @@ async function bootstrap() {
         'http://localhost:3870',
         'http://localhost:3880',
         'https://openricecanadafrontend.vercel.app',
+        'https://openricetimothyfrontend.vercel.app',
         'https://ttiimmothy.github.io/openrice-timothy-frontend',
         'https://ttiimmothy.github.io',
       ],
